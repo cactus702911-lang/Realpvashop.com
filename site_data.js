@@ -90,17 +90,17 @@ var categories = [
             "MoonPay Account ",
             "Verified Bluebird Accounts",
             "Verified Binance Account",
-            "Buy Verified WebMoney Account – Wallet Access & Testing Package",
-            "Buy Verified FTX Account – Exchange Access & Testing Package",
-            "Buy Verified eBay Account – Marketplace Access & Testing Package",
-            "Buy Naver Accounts – Platform Access & Testing Package",
-            "Buy Verified Payoneer Account – Global Payment Access & Testing Package",
-            "Buy Verified Perfect Money Account – Wallet Access & Testing Package",
-            "Buy Verified Payeer Accounts – Payment Wallet Access & Testing Package",
-            "Buy Verified PayPal Accounts – Payment Platform Access & Testing Package",
-            "Buy Verified Cash App Accounts – Payment Access & Workflow Testing Package",
-            "Buy Verified Coinbase Accounts – Exchange Access & Compliance Testing Package",
-            "Buy Verified Paxful Accounts – P2P Exchange Access Testing Package"
+            "Verified WebMoney Account",
+            "Verified FTX Account",
+            "Verified eBay Account",
+            "Naver Accounts",
+            "Verified Payoneer Account",
+            "Verified Perfect Money Account ",
+            "Verified Payeer Accounts",
+            "Verified PayPal Accounts",
+            "Verified Cash App Accounts",
+            "Verified Coinbase Accounts",
+            "Verified Paxful Accounts"
         ]
     }
 ];
@@ -1168,7 +1168,7 @@ var products = [
         "long_description": "<h1><br></h1>",
         "meta_description": "Buy Verified Paxful Accounts to test P2P exchange verification levels, dashboard access, and workflow behavior. Suitable for QA, training, and educational use.",
         "active": true,
-        "display_title": "",
+        "display_title": "Verified Paxful Accounts",
         "image": "",
         "image_title": "Buy Verified Paxful Accounts – P2P Exchange Access Testing Package",
         "related_ids": []
@@ -1197,7 +1197,7 @@ var products = [
         "long_description": "<h1><br></h1>",
         "meta_description": "Buy Verified Coinbase Accounts for testing exchange access, verification status, and account workflow. Ideal for QA, education, and compliance research.",
         "active": true,
-        "display_title": "",
+        "display_title": "Verified Coinbase Accounts",
         "image": "",
         "image_title": "Buy Verified Coinbase Accounts – Exchange Access & Compliance Testing Package",
         "related_ids": []
@@ -1226,7 +1226,7 @@ var products = [
         "long_description": "<h1><br></h1>",
         "meta_description": "Buy Verified Cash App Accounts for testing payment app verification, feature access, and workflow behavior. Suitable for QA, training, and research use.",
         "active": true,
-        "display_title": "",
+        "display_title": "Verified Cash App Accounts",
         "image": "",
         "image_title": "Buy Verified Cash App Accounts – Payment Access & Workflow Testing Package",
         "related_ids": []
@@ -1255,7 +1255,7 @@ var products = [
         "long_description": "<h1><br></h1>",
         "meta_description": "Buy Verified PayPal Accounts for testing payment platform verification, feature access, and workflow behavior. Designed for QA, training, and research use.",
         "active": true,
-        "display_title": "",
+        "display_title": "Verified PayPal Accounts",
         "image": "",
         "image_title": "Buy Verified PayPal Accounts – Payment Platform Access & Testing Package",
         "related_ids": []
@@ -1284,7 +1284,7 @@ var products = [
         "long_description": "<h1><br></h1>",
         "meta_description": "Buy verified Payeer accounts to evaluate wallet verification, access features, and payment workflows. Designed for QA, training, and research use.",
         "active": true,
-        "display_title": "",
+        "display_title": "Verified Payeer Accounts",
         "image": "",
         "image_title": "Buy Verified Payeer Accounts – Payment Wallet Access & Testing Package",
         "related_ids": []
@@ -1313,7 +1313,7 @@ var products = [
         "long_description": "<h1><br></h1>",
         "meta_description": "Buy verified Perfect Money account packages for wallet verification testing, dashboard evaluation, and payment workflow research. Suitable for QA and training use.",
         "active": true,
-        "display_title": "",
+        "display_title": "Verified Perfect Money Account ",
         "image": "",
         "image_title": "Buy Verified Perfect Money Account – Wallet Access & Testing Package",
         "related_ids": []
@@ -1342,7 +1342,7 @@ var products = [
         "long_description": "<h1><br></h1>",
         "meta_description": "Buy verified Payoneer account access for payment workflow testing, verification evaluation, and dashboard research. Suitable for QA, training, and educational use.",
         "active": true,
-        "display_title": "",
+        "display_title": "Verified Payoneer Account",
         "image": "",
         "image_title": "Buy Verified Payoneer Account – Global Payment Access & Testing Package",
         "related_ids": []
@@ -1371,7 +1371,7 @@ var products = [
         "long_description": "<h1><br></h1>",
         "meta_description": "Buy Naver accounts to test platform access, account behavior, and service workflows. Ideal for QA testing, training, and research purposes.",
         "active": true,
-        "display_title": "",
+        "display_title": "Naver Accounts",
         "image": "",
         "image_title": "Buy Naver Accounts – Platform Access & Testing Package",
         "related_ids": []
@@ -1400,7 +1400,7 @@ var products = [
         "long_description": "<h1><br></h1>",
         "meta_description": "Buy verified eBay account access for testing seller dashboard features, verification status, and marketplace workflows. Ideal for QA, training, and research use.",
         "active": true,
-        "display_title": "",
+        "display_title": "Verified eBay Account",
         "image": "",
         "image_title": "Buy Verified eBay Account – Marketplace Access & Testing Package",
         "related_ids": []
@@ -1429,7 +1429,7 @@ var products = [
         "long_description": "<h1><br></h1>",
         "meta_description": "Buy verified FTX account access for exchange dashboard testing, verification evaluation, and workflow research. Suitable for QA, training, and educational use.",
         "active": true,
-        "display_title": "",
+        "display_title": "Verified FTX Account",
         "image": "",
         "image_title": "Buy Verified FTX Account – Exchange Access & Testing Package",
         "related_ids": []
@@ -1459,7 +1459,7 @@ var products = [
         "meta_description": "Buy verified WebMoney account access for wallet verification testing, dashboard evaluation, and workflow research. Suitable for QA and training use.",
         "related_ids": [],
         "active": true,
-        "display_title": "",
+        "display_title": "Verified WebMoney Account",
         "image": "",
         "image_title": "Buy Verified WebMoney Account – Wallet Access & Testing Package"
     }
