@@ -27,8 +27,42 @@ while ($listener.IsListening) {
     $path = $request.Url.LocalPath
     $method = $request.HttpMethod
 
+    # API Endpoint: Upload Image
+    if ($path -eq "/api/upload" -and $method -eq "POST") {
+        try {
+            $filename = $request.QueryString["filename"]
+            if ([string]::IsNullOrWhiteSpace($filename)) {
+                throw "Filename is required"
+            }
+
+            # Ensure images/products directory exists
+            $imageDir = Join-Path $root "images\products"
+            if (-not (Test-Path $imageDir)) {
+                New-Item -ItemType Directory -Force -Path $imageDir | Out-Null
+            }
+
+            $filePath = Join-Path $imageDir $filename
+            $fileStream = [System.IO.File]::Create($filePath)
+            $request.InputStream.CopyTo($fileStream)
+            $fileStream.Close()
+
+            Write-Host "Saved image: $filename" -ForegroundColor Green
+
+            $response.StatusCode = 200
+            $response.StatusDescription = "OK"
+            # Return the relative path to be stored in the CMS (Must start with / for root-relative)
+            $bytesOut = [System.Text.Encoding]::UTF8.GetBytes("/images/products/$filename")
+            $response.OutputStream.Write($bytesOut, 0, $bytesOut.Length)
+        } catch {
+            Write-Host "Error uploading image: $_" -ForegroundColor Red
+            $response.StatusCode = 500
+            $msg = "Error: $_"
+            $bytesOut = [System.Text.Encoding]::UTF8.GetBytes($msg)
+            $response.OutputStream.Write($bytesOut, 0, $bytesOut.Length)
+        }
+    }
     # API Endpoint: Save Data
-    if ($path -eq "/api/save" -and $method -eq "POST") {
+    elseif ($path -eq "/api/save" -and $method -eq "POST") {
         try {
             $reader = New-Object System.IO.StreamReader($request.InputStream, [System.Text.Encoding]::UTF8)
             $content = $reader.ReadToEnd()
@@ -114,6 +148,9 @@ while ($listener.IsListening) {
                     ".css"  { $response.ContentType = "text/css" }
                     ".png"  { $response.ContentType = "image/png" }
                     ".jpg"  { $response.ContentType = "image/jpeg" }
+                    ".jpeg" { $response.ContentType = "image/jpeg" }
+                    ".gif"  { $response.ContentType = "image/gif" }
+                    ".webp" { $response.ContentType = "image/webp" }
                     ".svg"  { $response.ContentType = "image/svg+xml" }
                     Default { $response.ContentType = "application/octet-stream" }
                 }

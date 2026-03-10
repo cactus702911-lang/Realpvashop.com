@@ -36,6 +36,32 @@
         ::-webkit-scrollbar-track { background: #0f172a; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
         ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+        /* Full Screen Editor */
+        .editor-fullscreen {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 9999;
+            width: 100vw;
+            height: 100vh;
+            border-radius: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            background: #1e293b;
+        }
+        .editor-fullscreen #prod-quill-editor,
+        .editor-fullscreen #prod-html-source {
+            flex: 1;
+            height: auto !important;
+            border-radius: 0;
+        }
+        .editor-fullscreen #prod-quill-toolbar {
+            border-radius: 0;
+        }
     </style>
 </head>
 <body class="min-h-screen pb-24">
@@ -307,34 +333,78 @@
                         <textarea id="edit-prod-meta" class="input-field h-20"></textarea>
                     </div>
 
-                    <div class="input-group mb-12">
-                        <label class="input-label">Full Description (Visual Editor)</label>
-                        <div class="bg-slate-800 border border-slate-600 rounded-lg overflow-hidden">
-                            <div class="flex flex-wrap gap-1 bg-slate-700 p-2 border-b border-slate-600">
-                                <button type="button" onclick="execCmd('bold')" class="p-1.5 hover:bg-slate-600 rounded text-white font-bold" title="Bold">B</button>
-                                <button type="button" onclick="execCmd('italic')" class="p-1.5 hover:bg-slate-600 rounded text-white italic" title="Italic">I</button>
-                                <button type="button" onclick="execCmd('underline')" class="p-1.5 hover:bg-slate-600 rounded text-white underline" title="Underline">U</button>
-                                <button type="button" onclick="execCmd('strikeThrough')" class="p-1.5 hover:bg-slate-600 rounded text-white line-through" title="Strikethrough">S</button>
-                                <div class="w-px h-6 bg-slate-500 mx-1"></div>
-                                <button type="button" onclick="execCmd('formatBlock', 'H2')" class="p-1.5 hover:bg-slate-600 rounded text-white font-bold text-sm" title="Heading 2">H2</button>
-                                <button type="button" onclick="execCmd('formatBlock', 'H3')" class="p-1.5 hover:bg-slate-600 rounded text-white font-bold text-xs" title="Heading 3">H3</button>
-                                <button type="button" onclick="execCmd('formatBlock', 'H4')" class="p-1.5 hover:bg-slate-600 rounded text-white font-bold text-[10px]" title="Heading 4">H4</button>
-                                <div class="w-px h-6 bg-slate-500 mx-1"></div>
-                                <button type="button" onclick="execCmd('justifyLeft')" class="p-1.5 hover:bg-slate-600 rounded text-white text-xs" title="Align Left">Left</button>
-                                <button type="button" onclick="execCmd('justifyCenter')" class="p-1.5 hover:bg-slate-600 rounded text-white text-xs" title="Align Center">Center</button>
-                                <button type="button" onclick="execCmd('justifyRight')" class="p-1.5 hover:bg-slate-600 rounded text-white text-xs" title="Align Right">Right</button>
-                                <div class="w-px h-6 bg-slate-500 mx-1"></div>
-                                <button type="button" onclick="execCmd('insertUnorderedList')" class="p-1.5 hover:bg-slate-600 rounded text-white" title="Bullet List">&bull; List</button>
-                                <button type="button" onclick="execCmd('insertOrderedList')" class="p-1.5 hover:bg-slate-600 rounded text-white" title="Numbered List">1. List</button>
-                                <div class="w-px h-6 bg-slate-500 mx-1"></div>
-                                <button type="button" onclick="execCmd('createLink')" class="p-1.5 hover:bg-slate-600 rounded text-white text-sm" title="Link">Link</button>
-                                <button type="button" onclick="execCmd('insertHorizontalRule')" class="p-1.5 hover:bg-slate-600 rounded text-white font-bold" title="Horizontal Rule">&mdash;</button>
-                                <button type="button" onclick="execCmd('removeFormat')" class="p-1.5 hover:bg-slate-600 rounded text-white text-sm" title="Clean Format">Clean</button>
-                                <div class="w-px h-6 bg-slate-500 mx-1"></div>
-                                <button type="button" onclick="execCmd('undo')" class="p-1.5 hover:bg-slate-600 rounded text-white" title="Undo">↺</button>
-                                <button type="button" onclick="execCmd('redo')" class="p-1.5 hover:bg-slate-600 rounded text-white" title="Redo">↻</button>
+                    <div class="input-group mb-12 relative" id="prod-editor-wrapper">
+                        <label class="input-label flex justify-between items-center">
+                            <span>Full Description (Rich Text)</span>
+                            <span id="char-count" class="text-xs text-slate-400">0 / 5000</span>
+                        </label>
+                        
+                        <!-- Custom Toolbar for Quill -->
+                        <div id="prod-quill-toolbar" class="bg-slate-700 border-b border-slate-600 rounded-t-lg">
+                            <span class="ql-formats">
+                                <select class="ql-font"></select>
+                                <select class="ql-size"></select>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-bold"></button>
+                                <button class="ql-italic"></button>
+                                <button class="ql-underline"></button>
+                                <button class="ql-strike"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <select class="ql-color"></select>
+                                <select class="ql-background"></select>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-header" value="1"></button>
+                                <button class="ql-header" value="2"></button>
+                                <button class="ql-header" value="3"></button>
+                                <button class="ql-header" value="4"></button>
+                                <button class="ql-header" value="5"></button>
+                                <button class="ql-blockquote"></button>
+                                <button class="ql-code-block"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-list" value="ordered"></button>
+                                <button class="ql-list" value="bullet"></button>
+                                <button class="ql-indent" value="-1"></button>
+                                <button class="ql-indent" value="+1"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <select class="ql-align"></select>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-link"></button>
+                                <button class="ql-image"></button>
+                            </span>
+                            <span class="ql-formats">
+                                <button class="ql-clean"></button>
+                            </span>
+                            <!-- Custom Actions -->
+                            <span class="ql-formats">
+                                <button id="btn-undo" type="button" title="Undo" class="flex items-center justify-center"><i data-lucide="undo-2" class="w-3 h-3"></i></button>
+                                <button id="btn-redo" type="button" title="Redo" class="flex items-center justify-center"><i data-lucide="redo-2" class="w-3 h-3"></i></button>
+                            </span>
+                            <span class="ql-formats">
+                                <button id="btn-hr" type="button" title="Horizontal Rule" class="font-bold">&mdash;</button>
+                                <button id="btn-source" type="button" title="Source Code" class="flex items-center justify-center"><i data-lucide="code" class="w-3 h-3"></i></button>
+                                <button id="btn-fullscreen" type="button" title="Full Screen" class="flex items-center justify-center"><i data-lucide="maximize" class="w-3 h-3"></i></button>
+                                <button id="btn-preview" type="button" title="Preview" class="flex items-center justify-center"><i data-lucide="eye" class="w-3 h-3"></i></button>
+                            </span>
+                        </div>
+
+                        <div id="prod-quill-editor" class="h-[500px] bg-slate-800 text-white rounded-b-lg"></div>
+                        <textarea id="prod-html-source" class="hidden w-full h-[500px] bg-slate-900 text-green-400 font-mono p-4 border border-slate-700 focus:outline-none rounded-b-lg"></textarea>
+                    </div>
+
+                    <!-- Preview Modal -->
+                    <div id="preview-modal" class="fixed inset-0 z-[100] hidden bg-black/80 flex items-center justify-center p-4">
+                        <div class="bg-slate-900 w-full max-w-4xl h-[90vh] rounded-lg border border-slate-700 flex flex-col shadow-2xl">
+                            <div class="flex justify-between items-center p-4 border-b border-slate-700 bg-slate-800">
+                                <h3 class="text-xl font-bold text-white">Preview</h3>
+                                <button onclick="closePreview()" class="text-slate-400 hover:text-white"><i data-lucide="x"></i></button>
                             </div>
-                            <div id="edit-prod-visual" contenteditable="true" class="w-full h-[420px] p-4 text-slate-300 focus:outline-none overflow-y-auto"></div>
+                            <div id="preview-content" class="flex-1 overflow-y-auto p-8 prose prose-invert max-w-none bg-slate-900 text-slate-300"></div>
                         </div>
                     </div>
 
@@ -516,6 +586,10 @@
             return false;
         };
 
+        function closePreview() {
+            document.getElementById('preview-modal').classList.add('hidden');
+        }
+
         // --- Global State ---
         let currentUserRole = null; 
 
@@ -540,7 +614,7 @@
             }
         }
 
-        function handleImageUpload(input, targetId) {
+        async function handleImageUpload(input, targetId) {
             const file = input.files[0];
             if (!file) return;
             
@@ -552,19 +626,48 @@
                 return;
             }
 
-            // Security: Validate File Size (Max 500KB)
-            if (file.size > 512 * 1024) {
-                alert('Image is too large. Max 500KB.');
+            // Security: Validate File Size (Max 10MB)
+            const maxSize = 10 * 1024 * 1024; // 10MB
+            if (file.size > maxSize) {
+                alert('Image is too large. Max 10MB.');
                 input.value = ''; // Clear input
                 return;
             }
 
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                // Sanitize output (though Data URL is generally safe in src)
-                document.getElementById(targetId).value = e.target.result;
-            };
-            reader.readAsDataURL(file);
+            // Upload to server
+            const uploadBtn = input.nextElementSibling;
+            const originalText = uploadBtn ? uploadBtn.textContent : 'Upload File';
+            
+            if (uploadBtn) {
+                uploadBtn.textContent = 'Uploading...';
+                uploadBtn.disabled = true;
+            }
+
+            try {
+                // Use the filename in the query string so the server knows where to save it
+                const response = await fetch(`/api/upload?filename=${encodeURIComponent(file.name)}`, {
+                    method: 'POST',
+                    body: file // Send raw file content
+                });
+
+                if (response.ok) {
+                    const imagePath = await response.text();
+                    document.getElementById(targetId).value = imagePath; // Set the path in the text input
+                    alert('Image uploaded successfully!');
+                } else {
+                    const errorText = await response.text();
+                    throw new Error(errorText || 'Upload failed');
+                }
+            } catch (error) {
+                console.error('Error uploading image:', error);
+                alert('Error uploading image: ' + error.message);
+            } finally {
+                if (uploadBtn) {
+                    uploadBtn.textContent = originalText;
+                    uploadBtn.disabled = false;
+                }
+                input.value = ''; // Clear file input so the same file can be selected again if needed
+            }
         }
 
         function clearProductImage() {
@@ -690,7 +793,98 @@
             ];
 
             try {
-                // Product editor replaced with textarea
+                // --- Product Editor (Custom Toolbar) ---
+                if (document.getElementById('prod-quill-editor')) {
+                    // Custom modules/blots for Quill could be registered here
+                    prodQuill = new Quill('#prod-quill-editor', { 
+                        theme: 'snow', 
+                        modules: { 
+                            toolbar: { container: '#prod-quill-toolbar' },
+                            history: { delay: 1000, maxStack: 500, userOnly: true }
+                        }
+                    });
+
+                    // Character Count Limit
+                    const limit = 5000;
+                    prodQuill.on('text-change', function() {
+                        const len = prodQuill.getLength() - 1; // -1 for newline
+                        const countEl = document.getElementById('char-count');
+                        if (countEl) {
+                            countEl.textContent = `${len} / ${limit}`;
+                            if (len > limit) countEl.classList.add('text-red-500');
+                            else countEl.classList.remove('text-red-500');
+                        }
+                    });
+
+                    // Custom Handlers
+                    const btnUndo = document.getElementById('btn-undo');
+                    if (btnUndo) btnUndo.addEventListener('click', () => prodQuill.history.undo());
+                    
+                    const btnRedo = document.getElementById('btn-redo');
+                    if (btnRedo) btnRedo.addEventListener('click', () => prodQuill.history.redo());
+
+                    const btnHr = document.getElementById('btn-hr');
+                    if (btnHr) {
+                        btnHr.addEventListener('click', () => {
+                            const range = prodQuill.getSelection();
+                            if (range) {
+                                // Insert HR HTML
+                                const currentHtml = prodQuill.root.innerHTML;
+                                // Simple workaround for HR
+                                prodQuill.clipboard.dangerouslyPasteHTML(range.index, '<hr>');
+                            }
+                        });
+                    }
+
+                    const btnSource = document.getElementById('btn-source');
+                    if (btnSource) {
+                        btnSource.addEventListener('click', () => {
+                            const editorDiv = document.getElementById('prod-quill-editor');
+                            const toolbar = document.getElementById('prod-quill-toolbar'); // Maybe disable toolbar?
+                            const sourceArea = document.getElementById('prod-html-source');
+                            const isSourceMode = !sourceArea.classList.contains('hidden');
+                            
+                            if (isSourceMode) {
+                                // Switch back to Quill
+                                const html = sourceArea.value;
+                                prodQuill.clipboard.dangerouslyPasteHTML(html);
+                                sourceArea.classList.add('hidden');
+                                editorDiv.classList.remove('hidden');
+                                // Enable toolbar buttons if needed
+                            } else {
+                                // Switch to Source
+                                sourceArea.value = prodQuill.root.innerHTML;
+                                editorDiv.classList.add('hidden');
+                                sourceArea.classList.remove('hidden');
+                            }
+                        });
+                    }
+
+                    const btnFs = document.getElementById('btn-fullscreen');
+                    if (btnFs) {
+                        btnFs.addEventListener('click', () => {
+                            const wrapper = document.getElementById('prod-editor-wrapper');
+                            wrapper.classList.toggle('editor-fullscreen');
+                        });
+                    }
+
+                    const btnPreview = document.getElementById('btn-preview');
+                    if (btnPreview) {
+                        btnPreview.addEventListener('click', () => {
+                            // Sync source first if needed
+                            const sourceArea = document.getElementById('prod-html-source');
+                            let html = prodQuill.root.innerHTML;
+                            if (!sourceArea.classList.contains('hidden')) html = sourceArea.value;
+                            
+                            const modal = document.getElementById('preview-modal');
+                            const content = document.getElementById('preview-content');
+                            content.innerHTML = html;
+                            modal.classList.remove('hidden');
+                        });
+                    }
+                }
+
+                // --- Other Editors (Default Toolbar) ---
                 if (document.getElementById('cat-quill-editor')) {
                     catQuill = new Quill('#cat-quill-editor', { theme: 'snow', modules: { toolbar: toolbarOptions } });
                 }
@@ -860,7 +1054,15 @@
             
             // Fallback to description if long_description is missing
             const desc = p.long_description || p.description || '';
-            document.getElementById('edit-prod-visual').innerHTML = desc;
+            // document.getElementById('edit-prod-visual').innerHTML = desc; // OLD
+            if (prodQuill) {
+                // Handle source mode state
+                const sourceArea = document.getElementById('prod-html-source');
+                if (sourceArea && !sourceArea.classList.contains('hidden')) {
+                    sourceArea.value = desc;
+                }
+                prodQuill.clipboard.dangerouslyPasteHTML(desc);
+            }
 
             // Related Products
             const relatedContainer = document.getElementById('related-products-container');
@@ -897,7 +1099,19 @@
             p.meta_description = document.getElementById('edit-prod-meta').value;
             p.features = document.getElementById('edit-prod-features').value.split('\n').filter(x => x.trim());
             p.pricing = document.getElementById('edit-prod-pricing').value.split('\n').filter(x => x.trim());
-            p.long_description = document.getElementById('edit-prod-visual').innerHTML;
+            // p.long_description = document.getElementById('edit-prod-visual').innerHTML; // OLD
+            if (prodQuill) {
+                 const sourceArea = document.getElementById('prod-html-source');
+                 if (sourceArea && !sourceArea.classList.contains('hidden')) {
+                     p.long_description = sourceArea.value;
+                     // Sync back to quill for consistency
+                     prodQuill.clipboard.dangerouslyPasteHTML(p.long_description);
+                 } else {
+                     p.long_description = prodQuill.root.innerHTML;
+                 }
+            } else {
+                p.long_description = '';
+            }
 
             const newName = p.display_title || p.title;
             const newCategory = p.category;
@@ -925,6 +1139,8 @@
 
             alert('Product Updated in Memory');
             renderProducts();
+            // Restore selection after re-render
+            document.getElementById('edit-prod-category').value = p.category;
         }
         function createNewProduct() {
             const newId = cmsProducts.length > 0 ? Math.max(...cmsProducts.map(p => p.id)) + 1 : 1;
