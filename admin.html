@@ -1121,16 +1121,23 @@
                 if (!cat.items) cat.items = [];
                 // Remove any reference to this product (using old OR new identifiers)
                 cat.items = cat.items.filter(item => {
+                    // Also check against old identifiers to ensure we catch renames
                     const isThisProduct = (oldIdentifiers.includes(item) || item === p.title || item === p.display_title || item === p.slug);
                     return !isThisProduct;
                 });
             });
 
-            // 4. Add to the target category
-            const targetCat = cmsCategories.find(c => c.name === newCategory);
-            if (targetCat) {
-                if (!targetCat.items) targetCat.items = [];
-                targetCat.items.push(newName);
+            // 4. Add to the target category IF ACTIVE
+            // Only add to menu if product is active
+            if (p.active !== false) {
+                const targetCat = cmsCategories.find(c => c.name === newCategory);
+                if (targetCat) {
+                    if (!targetCat.items) targetCat.items = [];
+                    // Prevent duplicates
+                    if (!targetCat.items.includes(newName)) {
+                        targetCat.items.push(newName);
+                    }
+                }
             }
             
             // Related
@@ -1172,6 +1179,15 @@
             if(confirm('Delete this product? This cannot be undone.')) {
                 const idx = cmsProducts.findIndex(x => x.id == currentProdId);
                 if (idx > -1) {
+                    const p = cmsProducts[idx];
+                    
+                    // Remove from categories
+                    cmsCategories.forEach(cat => {
+                        if (cat.items) {
+                            cat.items = cat.items.filter(item => item !== p.title && item !== p.display_title && item !== p.slug);
+                        }
+                    });
+
                     cmsProducts.splice(idx, 1);
                     document.getElementById('product-editor').classList.add('hidden');
                     renderProducts();
