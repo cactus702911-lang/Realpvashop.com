@@ -118,11 +118,11 @@
         <div class="bg-[#1E293B]/50 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-2xl border border-white/5">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
                 
-                <div id="product-card-container" class="relative w-full aspect-[4/3] md:aspect-[4/3] rounded-xl overflow-hidden shadow-lg border border-white/5 group" data-bg-color="{{SOLID_COLOR}}" style="--product-solid-color: rgb(1, 2, 3); background-color: var(--product-solid-color);">
+                <div id="product-card-container" class="relative w-full aspect-[4/3] md:aspect-[4/3] rounded-xl overflow-hidden shadow-lg border border-white/5 group hover:scale-105 transition-transform duration-500" data-bg-color="{{SOLID_COLOR}}" style="--product-solid-color: rgb(1, 2, 3); background-color: var(--product-solid-color);">
                     <div id="product-image-container" class="absolute inset-0 z-0">
                         {{PRODUCT_IMAGE_HTML}}
                     </div>
-                    <div id="product-bg" role="img" aria-label="{{IMAGE_TITLE}}" class="relative md:absolute md:inset-0 flex flex-col items-center justify-between p-6 md:p-8 text-white transition-transform duration-500 group-hover:scale-105 z-10 {{PRODUCT_BG_CLASS}}" data-bg-color="{{SOLID_COLOR}}" style="--product-solid-color: rgb(1, 2, 3); background-color: transparent;">
+                    <div id="product-bg" role="img" aria-label="{{IMAGE_TITLE}}" class="relative md:absolute md:inset-0 flex flex-col items-center justify-between p-6 md:p-8 text-white z-10 {{PRODUCT_BG_CLASS}}" data-bg-color="{{SOLID_COLOR}}" style="--product-solid-color: rgb(1, 2, 3); background-color: transparent;">
                         
                         <!-- Top Spacer / Badge Placeholder -->
                         <div class="w-full h-12 md:h-0"></div>
