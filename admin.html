@@ -143,6 +143,15 @@
                     </div>
                 </div>
 
+                <!-- SEO & Analytics -->
+                <div class="section-card">
+                    <h2 class="text-xl font-bold text-white mb-4 border-b border-slate-700 pb-2 flex items-center gap-2"><i data-lucide="bar-chart-2"></i> SEO & Analytics</h2>
+                    <div class="input-group">
+                        <label class="input-label">Google Analytics ID (e.g., G-XXXXXXXXXX)</label>
+                        <input type="text" id="conf-analyticsId" class="input-field" placeholder="Leave empty to disable">
+                    </div>
+                </div>
+
                 <!-- Hero Section -->
                 <div class="section-card">
                     <h2 class="text-xl font-bold text-white mb-4 border-b border-slate-700 pb-2 flex items-center gap-2"><i data-lucide="layout-template"></i> Homepage Hero</h2>
@@ -948,14 +957,14 @@
 
         // --- General ---
         function loadGeneral() {
-            const fields = ['siteTitle', 'metaDescription', 'faviconUrl', 'logoUrl', 'logoText', 'logoBadge', 'heroTitle', 'heroSubtitle', 'supportEmail', 'whatsapp', 'telegram', 'popupTitle', 'popupMessage'];
+            const fields = ['siteTitle', 'metaDescription', 'faviconUrl', 'logoUrl', 'logoText', 'logoBadge', 'heroTitle', 'heroSubtitle', 'supportEmail', 'whatsapp', 'telegram', 'popupTitle', 'popupMessage', 'analyticsId'];
             fields.forEach(f => {
                 const el = document.getElementById(`conf-${f}`);
                 if(el) el.value = cmsConfig[f] || '';
             });
         }
         function saveGeneral() {
-            const fields = ['siteTitle', 'metaDescription', 'faviconUrl', 'logoUrl', 'logoText', 'logoBadge', 'heroTitle', 'heroSubtitle', 'supportEmail', 'whatsapp', 'telegram', 'popupTitle', 'popupMessage'];
+            const fields = ['siteTitle', 'metaDescription', 'faviconUrl', 'logoUrl', 'logoText', 'logoBadge', 'heroTitle', 'heroSubtitle', 'supportEmail', 'whatsapp', 'telegram', 'popupTitle', 'popupMessage', 'analyticsId'];
             fields.forEach(f => {
                 const el = document.getElementById(`conf-${f}`);
                 if(el) cmsConfig[f] = el.value;

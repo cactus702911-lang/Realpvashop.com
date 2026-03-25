@@ -295,6 +295,61 @@ function initUI() {
     }
     hydratePage();
 
+    // 5. Floating WhatsApp Button
+    function initFloatingWhatsApp() {
+        if (document.getElementById('floating-whatsapp')) return;
+
+        const whatsappNumberRaw = (window.siteConfig && window.siteConfig.whatsapp) ? window.siteConfig.whatsapp : '+15485801949';
+        const whatsappNumber = whatsappNumberRaw.replace(/\D/g, '');
+
+        const a = document.createElement('a');
+        a.id = 'floating-whatsapp';
+        a.href = '#';
+        a.className = 'fixed bottom-6 right-6 z-[9999] flex items-center justify-center w-14 h-14 bg-[#25D366] text-white rounded-full shadow-lg shadow-green-500/30 hover:bg-[#20ba5a] hover:scale-110 transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-green-500/50 group';
+        a.setAttribute('aria-label', 'Chat on WhatsApp');
+        
+        a.innerHTML = `
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 fill-current" viewBox="0 0 24 24">
+                <path d="M12.01 2.014c-5.46 0-9.89 4.43-9.89 9.89 0 1.74.45 3.39 1.31 4.86L2 22l5.44-1.42c1.42.82 3.04 1.25 4.57 1.25 5.46 0 9.89-4.43 9.89-9.89 0-5.46-4.43-9.89-9.89-9.89zm0 17.9c-1.46 0-2.88-.39-4.14-1.14l-.3-.18-3.08.8.82-3-.2-.31c-.81-1.28-1.24-2.75-1.24-4.28 0-4.46 3.63-8.09 8.09-8.09s8.09 3.63 8.09 8.09-3.63 8.09-8.09 8.09zm4.44-6.07c-.24-.12-1.43-.71-1.65-.79-.22-.08-.38-.12-.54.12-.16.24-.62.79-.76.95-.14.16-.28.18-.52.06-.24-.12-1.02-.38-1.95-1.21-.72-.65-1.21-1.45-1.35-1.7-.14-.24-.01-.37.11-.49.11-.11.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.31-.74-1.79-.2-.47-.4-.41-.54-.42h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.69 2.58 4.09 3.62.57.25 1.02.4 1.37.51.57.18 1.09.16 1.5.1.45-.07 1.43-.58 1.63-1.14.2-.56.2-.1.14-.11z"/>
+            </svg>
+            <span class="absolute right-16 bg-white text-slate-800 text-sm font-bold py-1.5 px-3 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-md pointer-events-none">
+                Chat with us
+            </span>
+        `;
+
+        a.addEventListener('click', (e) => {
+            e.preventDefault();
+            let message = '';
+            
+            const productTitleEl = document.getElementById('detail-title');
+            if (productTitleEl) {
+                const productName = productTitleEl.innerText.trim();
+                let price = 'N/A';
+                const pricingOptions = document.getElementById('pricing-options');
+                const detailPriceEl = document.getElementById('detail-price');
+                
+                if (pricingOptions && pricingOptions.options.length > 0) {
+                    price = pricingOptions.options[pricingOptions.selectedIndex].text.trim();
+                } else if (detailPriceEl) {
+                    price = detailPriceEl.innerText.trim();
+                }
+                
+                // Adding a fallback SKU to match the user request, although not present in DOM
+                message = `Product: ${productName}\nSKU: N/A\nPrice: ${price}\n\nHi, I am interested in this product.`;
+            }
+
+            let whatsappUrl = `https://wa.me/${whatsappNumber}`;
+            if (message) {
+                whatsappUrl += `?text=${encodeURIComponent(message)}`;
+            }
+
+            window.open(whatsappUrl, '_blank');
+        });
+
+        document.body.appendChild(a);
+    }
+    initFloatingWhatsApp();
+
     // 6. Hydration Logic (Lucide Icons)
     function initIcons() {
         if (window.lucide && typeof window.lucide.createIcons === 'function') {
