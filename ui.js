@@ -186,6 +186,12 @@ function initUI() {
 
     // 5. Dynamic Hydration Logic (Ensures site_data.js updates reflect immediately)
     function hydratePage() {
+        const hasRuntimeData =
+            Array.isArray(window.products) ||
+            Array.isArray(window.categories) ||
+            (window.siteConfig && typeof window.siteConfig === 'object');
+        if (!hasRuntimeData) return;
+
         const urlParams = new URLSearchParams(window.location.search);
         const dynamicProductPath = urlParams.get('p');
         const dynamicCategoryPath = urlParams.get('c');
@@ -196,9 +202,7 @@ function initUI() {
         
         // If we came from 404 redirect, we might need to show a special UI or just hydrate the home
         if (dynamicProductPath || dynamicCategoryPath) {
-            console.log("Dynamic route detected:", path);
-            // In a real SPA we would swap templates here. 
-            // For now, let's at least show the correct info if possible.
+            // Reserved for dynamic-route fallback handling.
         }
 
         // Helper: Find item by slug in a list
@@ -217,7 +221,6 @@ function initUI() {
             const slug = slugPart.replace(/\/+$/, '');
             const product = findBySlug(window.products, slug);
             if (product) {
-                console.log("Hydrating Product:", product.title);
                 const titleEl = document.getElementById('detail-title') || document.querySelector('h1');
                 const priceEl = document.getElementById('detail-price');
                 const descEl = document.getElementById('detail-desc') || document.getElementById('long-desc');
@@ -244,7 +247,6 @@ function initUI() {
             const slug = slugPart.replace(/\/+$/, '');
             const category = findBySlug(window.categories, slug);
             if (category) {
-                console.log("Hydrating Category:", category.name);
                 const titleEl = document.querySelector('h1');
                 if (titleEl) titleEl.textContent = category.name;
             }
@@ -352,12 +354,9 @@ function initUI() {
 
     // 6. Hydration Logic (Lucide Icons)
     function initIcons() {
-        if (window.lucide && typeof window.lucide.createIcons === 'function') {
-            window.lucide.createIcons();
-        } else {
-            // Retry if lucide is not yet loaded
-            setTimeout(initIcons, 100);
-        }
+        if (!document.querySelector('[data-lucide]')) return;
+        if (!window.lucide || typeof window.lucide.createIcons !== 'function') return;
+        window.lucide.createIcons();
     }
     initIcons();
 }

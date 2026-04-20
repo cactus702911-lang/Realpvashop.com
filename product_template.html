@@ -7,11 +7,8 @@
     <link rel="icon" type="image/svg+xml" href="{{FAVICON_URL}}" sizes="any">
 
     <!-- Resource Hints for Performance -->
-    <link rel="preconnect" href="https://unpkg.com">
-    <link rel="dns-prefetch" href="https://unpkg.com">
 
     <!-- Preload Critical Resources -->
-    <link rel="preload" href="https://unpkg.com/lucide@latest" as="script" crossorigin>
     {{PRODUCT_IMAGE_PRELOAD}}
     
     <title>{{SEO_TITLE}}</title>
@@ -428,9 +425,7 @@
     </div>
 
     <!-- Core Scripts -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="../../site_data.js"></script>
-    <script src="../../ui.js"></script>
+    <script src="../../ui.js" defer></script>
     <script>
         // --- Interaction Handlers ---
         function updateInputStars(rating) {

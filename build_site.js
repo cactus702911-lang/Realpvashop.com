@@ -376,6 +376,16 @@ function minifyHTML(html) {
         .trim();
 }
 
+function minifyCSS(css) {
+    if (!css) return '';
+    return css
+        .replace(/\/\*[\s\S]*?\*\//g, '')
+        .replace(/\s+/g, ' ')
+        .replace(/\s*([{}:;,>])\s*/g, '$1')
+        .replace(/;}/g, '}')
+        .trim();
+}
+
 function renderStars(rating = 5, sizeClass = "w-4 h-4") {
     let html = '';
     for (let i = 1; i <= 5; i++) {
@@ -435,7 +445,7 @@ function computeProductColor(product) {
 function renderProductCard(product, basePath = '/') {
     const fullImgUrl = getImageUrl(product.image, basePath);
     const imageHtml = fullImgUrl 
-        ? `<img src="${fullImgUrl}" alt="${product.image_title || product.title}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" width="400" height="300">`
+        ? `<img src="${fullImgUrl}" alt="${product.image_title || product.title}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" decoding="async" width="400" height="300">`
         : '';
     const solidColor = computeProductColor(product);
     const overlayClass = fullImgUrl ? '' : 'bg-black/0 group-hover:bg-black/0';
@@ -612,7 +622,7 @@ function generateFullHeader(unused_basePath, products, categories, siteConfig) {
     return header;
 }
 
-console.log("Reading output.css for Critical CSS inlining...");
+console.log("Reading output.css for shared CSS generation...");
 let cssContent = fs.readFileSync('output.css', 'utf8');
 
 // --- Fix CSS Linter Warnings in inlined CSS ---
@@ -632,6 +642,11 @@ cssContent = cssContent.replace(/(appearance:\s*[^;! }]+);\s*appearance:\s*\1/g,
 cssContent = cssContent.replace(/(canvas|audio|iframe|embed|object)[^{]*\{[^}]*display:\s*block;?[^}]*vertical-align:\s*middle;?[^}]*\}/g, (match) => {
     return match.replace(/vertical-align:\s*middle;?/g, '');
 });
+
+const sharedCssFile = 'output.min.css';
+const sharedCssHref = `/${sharedCssFile}`;
+const sharedCssTags = `<link rel="preload" href="${sharedCssHref}" as="style"><link rel="stylesheet" href="${sharedCssHref}">`;
+fs.writeFileSync(sharedCssFile, minifyCSS(cssContent));
 
 console.log("Reading header_partial.html...");
 // We will generate the header dynamically for each page using generateFullHeader()
@@ -654,10 +669,6 @@ indexHtml = indexHtml.replace('{{CATEGORY_OPTIONS}}', categoryOptions);
 // Generate Product Grid
 const productGridHtml = products.map((p, idx) => {
     const card = renderProductCard(p, '');
-    // Prioritize first 4 products on homepage for LCP/SI
-    if (idx < 4) {
-        return card.replace('loading="lazy"', 'fetchpriority="high"').replace('width="400" height="300"', 'width="400" height="300" fetchpriority="high"');
-    }
     return card;
 }).join('\n');
 indexHtml = indexHtml.replace('{{PRODUCT_GRID}}', `
@@ -672,19 +683,17 @@ indexHtml = indexHtml.replace('{{FOOTER}}', generateFooter(products, siteConfig)
 // Generate Latest Articles
 indexHtml = indexHtml.replace('{{LATEST_ARTICLES}}', generateLatestArticlesHtml(blogs));
 
-// Inline Critical CSS
-indexHtml = indexHtml.replace(/{{CRITICAL_CSS}}/g, `<style>${cssContent}</style>`);
+// Link cacheable shared CSS
+indexHtml = indexHtml.replace(/{{CRITICAL_CSS}}/g, sharedCssTags);
 
-// Preload first 2 product images for LCP
-const homepagePreload = products.slice(0, 2).map(p => `<link rel="preload" href="${getImageUrl(p.image)}" as="image" fetchpriority="high">`).join('');
-indexHtml = indexHtml.replace('{{PRODUCT_IMAGE_PRELOAD}}', homepagePreload);
+indexHtml = indexHtml.replace('{{PRODUCT_IMAGE_PRELOAD}}', '');
 
 // Global Placeholders
 indexHtml = indexHtml.replace(/{{CANONICAL_URL}}/g, 'https://bestpvashop.com/');
 indexHtml = replaceGlobalPlaceholders(indexHtml, siteConfig);
 
 // Save Homepage
-fs.writeFileSync('index.html', indexHtml);
+fs.writeFileSync('index.html', minifyHTML(indexHtml));
 console.log("Homepage built.");
 
 // --- 3.1 Build Category Pages ---
@@ -740,12 +749,8 @@ uniqueCategories.forEach(cat => {
     
     // Filter Products
     const catProducts = products.filter(p => p.category === cat);
-    const catGrid = catProducts.map((p, idx) => {
+    const catGrid = catProducts.map((p) => {
         const card = renderProductCard(p, '../../');
-        // Prioritize first 4 products for LCP/SI
-        if (idx < 4) {
-            return card.replace('loading="lazy"', 'fetchpriority="high"').replace('width="400" height="300"', 'width="400" height="300" fetchpriority="high"');
-        }
         return card;
     }).join('\n');
     
@@ -770,17 +775,9 @@ uniqueCategories.forEach(cat => {
     catHtml = catHtml.replace('{{FOOTER}}', generateFooter(products, siteConfig).replace(new RegExp(`href="/${paths.product}`, 'g'), `href="../../${paths.product}`).replace(/href="#"/g, 'href="../../"'));
 
     // CSS
-    catHtml = catHtml.replace(/{{CRITICAL_CSS}}/g, `<style>${cssContent}</style>`);
+    catHtml = catHtml.replace(/{{CRITICAL_CSS}}/g, sharedCssTags);
     
-    // Preload first 2 product images for LCP
-    const catPreload = catProducts.slice(0, 2)
-        .map(p => {
-            const url = getImageUrl(p.image);
-            return url ? `<link rel="preload" href="${url}" as="image" fetchpriority="high">` : '';
-        })
-        .filter(Boolean)
-        .join('');
-    catHtml = catHtml.replace('{{PRODUCT_IMAGE_PRELOAD}}', catPreload);
+    catHtml = catHtml.replace('{{PRODUCT_IMAGE_PRELOAD}}', '');
 
     // Global Placeholders
     catHtml = replaceGlobalPlaceholders(catHtml, siteConfig);
@@ -1012,7 +1009,7 @@ for (let i = 1; i <= totalPages; i++) {
     const blogGrid = pageBlogs.map((b, idx) => `
         <article class="group relative flex flex-col bg-[#0F172A] rounded-3xl border border-white/5 overflow-hidden transition-all duration-500 hover:border-cyan-500/50 hover:shadow-[0_0_50px_-12px_rgba(6,182,212,0.25)] hover:-translate-y-2 h-full">
             <a href="${getDynamicUrl('blog', b.slug).replace(baseUrl, '/')}" class="h-64 overflow-hidden relative block">
-                <img src="${b.image || 'https://via.placeholder.com/600x400?text=No+Image'}" alt="${b.title}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" ${i === 1 && idx === 0 ? 'fetchpriority="high"' : 'loading="lazy"'} width="600" height="400">
+                <img src="${b.image || 'https://via.placeholder.com/600x400?text=No+Image'}" alt="${b.title}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" decoding="async" width="600" height="400">
                 <div class="absolute inset-0 bg-gradient-to-t from-[#0F172A] via-transparent to-transparent opacity-80"></div>
                 
                 <!-- Floating Date Badge -->
@@ -1075,7 +1072,7 @@ for (let i = 1; i <= totalPages; i++) {
 
     // Footer & Links
     blogListHtml = blogListHtml.replace('{{FOOTER}}', generateFooter(products, siteConfig));
-    blogListHtml = blogListHtml.replace(/{{CRITICAL_CSS}}/g, `<style>${cssContent}</style>`);
+    blogListHtml = blogListHtml.replace(/{{CRITICAL_CSS}}/g, sharedCssTags);
     
     // Global Placeholders
     blogListHtml = replaceGlobalPlaceholders(blogListHtml, siteConfig);
@@ -1114,7 +1111,8 @@ blogs.forEach((post, index) => {
     <meta name="description" content="${post.excerpt}">
     <link rel="canonical" href="${getDynamicUrl('blog', post.slug)}" />
     <meta name="robots" content="index, follow" />
-    <style>${cssContent}</style>
+    <link rel="preload" href="${sharedCssHref}" as="style">
+    <link rel="stylesheet" href="${sharedCssHref}">
     <style>
         /* Robust Navigation Visibility */
         .desktop-nav-container { display: none !important; }
@@ -1125,8 +1123,6 @@ blogs.forEach((post, index) => {
             .mobile-menu-btn-container { display: none !important; }
         }
     </style>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest" defer></script>
 </head>
 <body class="bg-[#0B1120] text-slate-200 font-sans antialiased">
     ${generateFullHeader('../../', products, categories, siteConfig)}
@@ -1155,7 +1151,7 @@ blogs.forEach((post, index) => {
                     </p>
                 </header>
 
-                ${post.image ? `<img src="${post.image}" alt="${post.title}" class="w-full rounded-2xl mb-10 shadow-2xl border border-white/5" fetchpriority="high" width="1200" height="630">` : ''}
+                ${post.image ? `<img src="${post.image}" alt="${post.title}" class="w-full rounded-2xl mb-10 shadow-2xl border border-white/5" loading="eager" fetchpriority="high" decoding="async" width="1200" height="630">` : ''}
 
                 <div class="prose prose-invert lg:prose-xl max-w-none prose-headings:text-white prose-a:text-cyan-400 prose-a:no-underline hover:prose-a:underline prose-strong:text-white">
                     ${contentWithCta}
@@ -1183,16 +1179,7 @@ blogs.forEach((post, index) => {
     </footer>
 
     <!-- Scripts -->
-    <script>
-        document.write('<script src="../../site_data.js?v=' + Date.now() + '"><\\/script>');
-        document.write('<script src="../../ui.js?v=' + Date.now() + '"><\\/script>');
-    </script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-        });
-    </script>
+    <script src="../../ui.js" defer></script>
 </body>
 </html>`;
 
@@ -1213,8 +1200,6 @@ blogs.forEach((post, index) => {
 console.log("Building Product Pages...");
 cleanDirectory(paths.product);
 const productTemplate = fs.readFileSync('product_template.html', 'utf8');
-
-const productCssContent = cssContent;
 
 products.forEach(product => {
     if (!product.slug) return;
@@ -1255,7 +1240,7 @@ products.forEach(product => {
         const relUrl = getDynamicUrl('product', relSlug, false);
         const relImgUrl = getImageUrl(p.image, '../../');
         const relImgHtml = relImgUrl 
-            ? `<img src="${relImgUrl}" alt="${p.image_title || p.title}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" width="400" height="300">`
+            ? `<img src="${relImgUrl}" alt="${p.image_title || p.title}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" decoding="async" width="400" height="300">`
             : '';
         const relOverlayClass = relImgUrl ? '' : 'bg-black/0 group-hover:bg-black/0';
         const relOverlayLayerHtml = relImgUrl ? '' : `<div class="absolute inset-0 ${relOverlayClass} transition-colors duration-300"></div>`;
@@ -1381,7 +1366,7 @@ products.forEach(product => {
     html = html.replace('{{PRODUCT_IMAGE_PRELOAD}}', preloadHtml);
 
     const productImageHtml = fullImgUrl 
-        ? `<img src="${fullImgUrl}" alt="${product.image_title || product.title}" class="absolute inset-0 w-full h-full object-cover z-0" fetchpriority="high" width="800" height="600">`
+        ? `<img src="${fullImgUrl}" alt="${product.image_title || product.title}" class="absolute inset-0 w-full h-full object-cover z-0" loading="eager" fetchpriority="high" decoding="async" width="800" height="600">`
         : '';
     html = html.replace('{{PRODUCT_IMAGE_HTML}}', productImageHtml);
     html = html.replace('{{PRODUCT_BG_CLASS}}', fullImgUrl ? 'hidden' : '');
@@ -1413,8 +1398,8 @@ products.forEach(product => {
     html = html.replace('{{RELATED_ARTICLES}}', generateRelatedArticlesHtml(product, blogs));
     html = html.replace('{{SOCIAL_SHARE}}', generateSocialShare(product));
     
-    // Inline Critical CSS
-    html = html.replace(/{{CRITICAL_CSS}}/g, `<style>${productCssContent}</style>`);
+    // Link cacheable shared CSS
+    html = html.replace(/{{CRITICAL_CSS}}/g, sharedCssTags);
 
     html = html.replace('{{FOOTER}}', generateFooter(products, siteConfig));
 
@@ -1535,7 +1520,7 @@ sitemapPageHtml = sitemapPageHtml.replace('{{PRODUCT_IMAGE_PRELOAD}}', '');
 sitemapPageHtml = sitemapPageHtml.replace('{{PRODUCT_GRID}}', sitemapHtmlContent);
 sitemapPageHtml = sitemapPageHtml.replace('{{LATEST_ARTICLES}}', ''); // Clear latest articles section
 sitemapPageHtml = sitemapPageHtml.replace('{{FOOTER}}', generateFooter(products, siteConfig));
-sitemapPageHtml = sitemapPageHtml.replace(/{{CRITICAL_CSS}}/g, `<style>${cssContent}</style>`);
+sitemapPageHtml = sitemapPageHtml.replace(/{{CRITICAL_CSS}}/g, sharedCssTags);
 sitemapPageHtml = sitemapPageHtml.replace(/Best PVA Shop – Buy Verified Accounts & Reviews Instantly/g, 'Sitemap | BestPVAShop');
 
 // Important: Replace all global placeholders in sitemap page too

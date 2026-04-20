@@ -7,13 +7,10 @@
     <link rel="icon" type="image/svg+xml" href="{{FAVICON_URL}}" sizes="any">
 
     <!-- Resource Hints for Performance -->
-    <link rel="preconnect" href="https://unpkg.com">
-    <link rel="dns-prefetch" href="https://unpkg.com">
     <link rel="preconnect" href="https://www.googletagmanager.com">
     {{PRODUCT_IMAGE_PRELOAD}}
 
     <!-- Preload Critical Resources -->
-    <link rel="preload" href="https://unpkg.com/lucide@latest" as="script" crossorigin>
     
     <title>{{SITE_TITLE}}</title>
     <meta name="description" content="{{META_DESCRIPTION}}">
@@ -123,7 +120,6 @@
     {{CRITICAL_CSS}}
     
     <!-- Defer Non-Critical CSS/JS -->
-    <script src="https://unpkg.com/lucide@latest" defer></script>
     <style>
         /* Premium Glow Effects */
         .premium-glow {
@@ -294,26 +290,16 @@
             if (depth > 0 && parts[depth - 1].includes('.')) depth -= 1;
             if (depth < 0) depth = 0;
             const prefix = '../'.repeat(depth);
-            const v = Date.now();
             const loadScript = (src, onLoad, onError) => {
                 const s = document.createElement('script');
                 s.src = src;
+                s.defer = true;
                 if (onLoad) s.onload = onLoad;
                 if (onError) s.onerror = onError;
                 document.head.appendChild(s);
             };
-            loadScript(prefix + 'site_data.js?v=' + v, () => {
-                loadScript(prefix + 'ui.js?v=' + v, null, () => loadScript(prefix + 'ui.js'));
-            }, () => {
-                loadScript(prefix + 'site_data.js', () => loadScript(prefix + 'ui.js'), () => loadScript(prefix + 'ui.js'));
-            });
+            loadScript(prefix + 'ui.js');
         })();
-    </script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            if (typeof lucide !== 'undefined') lucide.createIcons();
-        });
     </script>
 </body>
 </html>
