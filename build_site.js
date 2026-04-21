@@ -685,7 +685,11 @@ console.log("Building Homepage...");
 const indexTemplateRaw = fs.readFileSync('site_template.html', 'utf8'); // Keep master template in memory
 
 // Pre-fill Latest Products globally for all pages using site_template.html
-const latestProductsHtml = products.slice(-4).reverse().map(p => renderProductCard(p, '', true)).join('\n');
+const latestProductsHtml = [...products]
+    .sort((a, b) => (b.id || 0) - (a.id || 0))
+    .slice(0, 4)
+    .map(p => renderProductCard(p, '', true))
+    .join('\n');
 const indexTemplate = indexTemplateRaw.replace('{{LATEST_PRODUCTS_GRID}}', `
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         ${latestProductsHtml}
