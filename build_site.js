@@ -51,12 +51,24 @@ const paths = siteConfig.pathConfig || {
     sitemap: 'sitemap.xml'
 };
 
+function slugify(str) {
+    if (!str) return '';
+    return String(str)
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .replace(/^-+|-+$/g, '');
+}
+
 /**
  * Helper to construct URLs dynamically from site_data.js config
  */
 function getDynamicUrl(type, slug = '', isAbsolute = true) {
     const base = paths[type] || type;
-    const cleanSlug = slug.replace(/^\/+|\/+$/g, '');
+    const cleanSlug = slugify(slug);
     
     let urlPath = '';
     if (type === 'home') {
@@ -87,6 +99,15 @@ console.log(`Loaded ${products.length} products and ${blogs.length} blog posts.`
 const headerHtml = fs.readFileSync('header_partial.html', 'utf8');
 
 // --- 2. Helper Functions ---
+
+function escapeXml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&apos;');
+}
 
 /**
  * Recursively deletes a directory and its contents
@@ -724,34 +745,24 @@ const uniqueCategories = [...new Set(products.map(p => p.category))];
 let sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n';
 sitemap += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n';
 
-function escapeXml(unsafe) {
-    if (!unsafe) return '';
-    return unsafe.replace(/[<>&'"]/g, function (c) {
-        switch (c) {
-            case '<': return '&lt;';
-            case '>': return '&gt;';
-            case '&': return '&amp;';
-            case '\\\'': return '&apos;';
-            case '"': return '&quot;';
-        }
-    });
-}
+// Skip old escapeXml definition
+
 
 let rssFeed = `<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
   <title>${escapeXml(siteConfig.siteTitle || 'BestPVAShop')}</title>
-  <link>${getDynamicUrl('home')}</link>
+  <link>${escapeXml(getDynamicUrl('home'))}</link>
   <description>${escapeXml('Buy verified accounts and digital services')}</description>
   <language>en-us</language>
   <pubDate>${new Date().toUTCString()}</pubDate>
   <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
-  <atom:link href="${getDynamicUrl('home')}feed.xml" rel="self" type="application/rss+xml" />
+  <atom:link href="${escapeXml(getDynamicUrl('home'))}feed.xml" rel="self" type="application/rss+xml" />
 `;
 
 // Add Homepage to Sitemap
 sitemap += '  <url>\n';
-sitemap += '    <loc>https://bestpvashop.com/</loc>\n';
+sitemap += `    <loc>${escapeXml(getDynamicUrl('home'))}</loc>\n`;
 sitemap += '    <lastmod>' + new Date().toISOString().split('T')[0] + '</lastmod>\n';
 sitemap += '    <priority>1.0</priority>\n';
 sitemap += '  </url>\n';
@@ -762,7 +773,7 @@ uniqueCategories.forEach(cat => {
             console.warn(`Category "${cat}" has no slug defined in site_data.js. Skipping page generation.`);
             return;
         }
-        const slug = catData.slug;
+        const slug = slugify(catData.slug);
         const dir = path.join(paths.category, slug);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 
@@ -832,7 +843,7 @@ uniqueCategories.forEach(cat => {
 
     // Sitemap
     sitemap += '  <url>\n';
-    sitemap += `    <loc>${getDynamicUrl('category', slug)}</loc>\n`;
+    sitemap += `    <loc>${escapeXml(getDynamicUrl('category', slug))}</loc>\n`;
     sitemap += '    <lastmod>' + new Date().toISOString().split('T')[0] + '</lastmod>\n';
     sitemap += '    <priority>0.9</priority>\n';
     sitemap += '  </url>\n';
@@ -1129,14 +1140,15 @@ for (let i = 1; i <= totalPages; i++) {
 
 // Sitemap Entry for Blog
 sitemap += '  <url>\n';
-sitemap += `    <loc>${getDynamicUrl('blog')}</loc>\n`;
+sitemap += `    <loc>${escapeXml(getDynamicUrl('blog'))}</loc>\n`;
 sitemap += '    <lastmod>' + new Date().toISOString().split('T')[0] + '</lastmod>\n';
 sitemap += '    <priority>0.8</priority>\n';
 sitemap += '  </url>\n';
 
 // Single Blog Posts
 blogs.forEach((post, index) => {
-    const dir = path.join(paths.blog, post.slug);
+    const slug = slugify(post.slug);
+    const dir = path.join(paths.blog, slug);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
 
     const sidebarHtml = generateSidebar(products, blogs);
@@ -1240,18 +1252,18 @@ blogs.forEach((post, index) => {
     fs.writeFileSync(path.join(dir, 'index.html'), minifyHTML(finalBlogPageHtml));
 
     sitemap += '  <url>\n';
-    sitemap += `    <loc>${getDynamicUrl('blog', post.slug)}</loc>\n`;
+    sitemap += `    <loc>${escapeXml(getDynamicUrl('blog', post.slug))}</loc>\n`;
     sitemap += '    <lastmod>' + new Date().toISOString().split('T')[0] + '</lastmod>\n';
     sitemap += '    <priority>0.7</priority>\n';
     if (post.image) {
-        sitemap += `    <image:image>\n      <image:loc>${getImageUrl(post.image, baseUrl)}</image:loc>\n    </image:image>\n`;
+        sitemap += `    <image:image>\n      <image:loc>${escapeXml(getImageUrl(post.image, baseUrl))}</image:loc>\n    </image:image>\n`;
     }
     sitemap += '  </url>\n';
 
     rssFeed += `
   <item>
     <title>${escapeXml(post.title)}</title>
-    <link>${getDynamicUrl('blog', post.slug)}</link>
+    <link>${escapeXml(getDynamicUrl('blog', post.slug))}</link>
     <description>${escapeXml(post.excerpt)}</description>
     <pubDate>${new Date(post.date).toUTCString() !== 'Invalid Date' ? new Date(post.date).toUTCString() : new Date().toUTCString()}</pubDate>
   </item>
@@ -1268,17 +1280,16 @@ products.forEach(product => {
 
     // --- Sitemap ---
     sitemap += '  <url>\n';
-    sitemap += `    <loc>${getDynamicUrl('product', product.slug)}</loc>\n`;
+    sitemap += `    <loc>${escapeXml(getDynamicUrl('product', product.slug))}</loc>\n`;
     sitemap += '    <lastmod>' + new Date().toISOString().split('T')[0] + '</lastmod>\n';
     sitemap += '    <priority>0.8</priority>\n';
     if (product.image) {
-        sitemap += `    <image:image>\n      <image:loc>${getImageUrl(product.image, baseUrl)}</image:loc>\n      <image:title>${escapeXml(product.image_title || product.title)}</image:title>\n    </image:image>\n`;
+        sitemap += `    <image:image>\n      <image:loc>${escapeXml(getImageUrl(product.image, baseUrl))}</image:loc>\n      <image:title>${escapeXml(product.image_title || product.title)}</image:title>\n    </image:image>\n`;
     }
     sitemap += '  </url>\n';
 
     // --- Prepare Data ---
-    const slug = product.slug.trim().replace(/^\/+|\/+$/g, ''); 
-    const solidColor = computeProductColor(product);
+    const slug = slugify(product.slug);    const solidColor = computeProductColor(product);
     const featuresList = product.features.map(f => 
         `<li class="flex items-start gap-2 text-slate-300 text-sm"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-cyan-400 mt-0.5 shrink-0"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg> ${f}</li>`
     ).join('');
@@ -1549,7 +1560,7 @@ function buildStaticPage(pagePath, title, description, content, jsonLd) {
     fs.writeFileSync(path.join(dir, 'index.html'), minifyHTML(html));
     
     sitemap += '  <url>\n';
-    sitemap += `    <loc>${pageUrl}</loc>\n`;
+    sitemap += `    <loc>${escapeXml(pageUrl)}</loc>\n`;
     sitemap += '    <lastmod>' + new Date().toISOString().split('T')[0] + '</lastmod>\n';
     sitemap += '    <priority>0.6</priority>\n';
     sitemap += '  </url>\n';

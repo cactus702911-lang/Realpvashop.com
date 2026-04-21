@@ -574,7 +574,7 @@
             <i data-lucide="info" class="w-4 h-4"></i> Changes are held in memory. Click Save to apply and rebuild site.
         </div>
         <div class="flex gap-2">
-             <button onclick="saveCurrentProduct()" class="btn-primary flex items-center gap-2">
+             <button onclick="handleGlobalUpdate(true)" id="update-btn" class="btn-primary flex items-center gap-2">
                 Update Product
             </button>
             <button onclick="saveToDisk()" id="save-btn" class="btn-success flex items-center gap-2">
@@ -612,6 +612,23 @@
 
         // Editors
         let prodQuill, catQuill, blogQuill;
+        let currentTabId = 'general';
+
+        // Wrapper for the global "Update" button
+        function handleGlobalUpdate(showAlert = true) {
+            if (currentTabId === 'general') {
+                if (currentUserRole === 'admin') saveGeneral();
+                if (showAlert) alert('Settings Updated in Memory');
+            } else if (currentTabId === 'categories') {
+                saveCurrentCategory(!showAlert);
+            } else if (currentTabId === 'products') {
+                saveCurrentProduct(!showAlert);
+            } else if (currentTabId === 'blog') {
+                saveCurrentBlog(!showAlert);
+            } else if (currentTabId === 'reviews') {
+                saveCurrentReview(!showAlert);
+            }
+        }
 
         // --- Helpers ---
         function execCmd(command, value = null) {
@@ -935,6 +952,7 @@
         }
 
         function switchTab(tabId, btn) {
+            currentTabId = tabId;
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById(`tab-${tabId}`).classList.remove('hidden');
             
@@ -944,6 +962,16 @@
                 b.className = 'px-4 py-2 rounded-lg text-sm font-bold transition bg-slate-800 text-slate-400 hover:bg-slate-700';
             }
             btn.className = 'px-4 py-2 rounded-lg text-sm font-bold transition bg-cyan-600 text-white shadow-lg shadow-cyan-500/20';
+
+            // Update Global Save Bar Button Text
+            const updateBtn = document.getElementById('update-btn');
+            if (updateBtn) {
+                if (tabId === 'general') updateBtn.textContent = 'Update Settings';
+                else if (tabId === 'categories') updateBtn.textContent = 'Update Category';
+                else if (tabId === 'products') updateBtn.textContent = 'Update Product';
+                else if (tabId === 'blog') updateBtn.textContent = 'Update Article';
+                else if (tabId === 'reviews') updateBtn.textContent = 'Update Review';
+            }
         }
 
         // --- Renderers ---
@@ -991,14 +1019,14 @@
             document.getElementById('edit-cat-desc').value = c.description || '';
             catQuill.root.innerHTML = c.content || '';
         }
-        function saveCurrentCategory() {
+        function saveCurrentCategory(silent = false) {
             if(currentCatIndex === null) return;
             cmsCategories[currentCatIndex].name = document.getElementById('edit-cat-name').value;
             cmsCategories[currentCatIndex].slug = document.getElementById('edit-cat-slug').value;
             cmsCategories[currentCatIndex].description = document.getElementById('edit-cat-desc').value;
             cmsCategories[currentCatIndex].content = catQuill.root.innerHTML;
             if (!Array.isArray(cmsCategories[currentCatIndex].items)) cmsCategories[currentCatIndex].items = [];
-            alert('Category Updated in Memory');
+            if (!silent) alert('Category Updated in Memory');
             renderCategories();
         }
         function createNewCategory() {
@@ -1083,10 +1111,10 @@
                 </label>
             `).join('');
         }
-        async function saveCurrentProduct() {
+        async function saveCurrentProduct(silent = false) {
             if(!currentProdId) return;
             const idx = cmsProducts.findIndex(x => x.id == currentProdId);
-            if(idx === -1) { alert('Error: Product not found in memory.'); return; }
+            if(idx === -1) { if (!silent) alert('Error: Product not found in memory.'); return; }
             const p = cmsProducts[idx];
             
             // 1. Capture ALL old identifiers BEFORE updating p
@@ -1153,7 +1181,7 @@
             const cbs = document.querySelectorAll('.related-cb:checked');
             p.related_ids = Array.from(cbs).map(cb => parseInt(cb.value));
 
-            alert('Product Updated in Memory');
+            if (!silent) alert('Product Updated in Memory');
             renderProducts();
             // Restore selection after re-render
             document.getElementById('edit-prod-category').value = p.category;
@@ -1252,9 +1280,13 @@
                 </label>
             `).join('');
         }
-        function saveCurrentBlog() {
+        function saveCurrentBlog(silent = false) {
             if(!currentBlogId) return;
-            const idx = cmsBlogs.findIndex(x => x.id === currentBlogId);
+            const idx = cmsBlogs.findIndex(x => x.id == currentBlogId);
+            if (idx === -1) {
+                if (!silent) alert('Error: Article not found in memory.');
+                return;
+            }
             
             cmsBlogs[idx].title = document.getElementById('edit-blog-title').value;
             cmsBlogs[idx].slug = document.getElementById('edit-blog-slug').value;
@@ -1268,13 +1300,15 @@
             cmsBlogs[idx].cta_2_link = document.getElementById('edit-blog-cta2-link').value;
 
             cmsBlogs[idx].excerpt = document.getElementById('edit-blog-excerpt').value;
-            cmsBlogs[idx].content = blogQuill.root.innerHTML;
+            if (blogQuill) {
+                cmsBlogs[idx].content = blogQuill.root.innerHTML;
+            }
             
             // Save Related Products
             const cbs = document.querySelectorAll('.blog-related-cb:checked');
             cmsBlogs[idx].related_ids = Array.from(cbs).map(cb => parseInt(cb.value));
 
-            alert('Blog Updated in Memory');
+            if (!silent) alert('Blog Updated in Memory');
             renderBlogs();
         }
         function createNewBlog() {
@@ -1327,14 +1361,14 @@
             document.getElementById('edit-review-date').value = r.date || '';
             document.getElementById('edit-review-text').value = r.text;
         }
-        function saveCurrentReview() {
+        function saveCurrentReview(silent = false) {
             if(currentReviewIndex === null) return;
             cmsReviews[currentReviewIndex].productId = parseInt(document.getElementById('edit-review-product').value);
             cmsReviews[currentReviewIndex].user = document.getElementById('edit-review-user').value;
             cmsReviews[currentReviewIndex].rating = parseFloat(document.getElementById('edit-review-rating').value);
             cmsReviews[currentReviewIndex].date = document.getElementById('edit-review-date').value;
             cmsReviews[currentReviewIndex].text = document.getElementById('edit-review-text').value;
-            alert('Review Updated in Memory');
+            if (!silent) alert('Review Updated in Memory');
             renderReviews();
         }
         function createNewReview() {
@@ -1354,7 +1388,8 @@
 
         // --- SAVE TO DISK ---
         async function saveToDisk() {
-            if(currentUserRole === 'admin') saveGeneral();
+            // Auto-save current tab data to memory first
+            handleGlobalUpdate(false);
             
             const btn = document.getElementById('save-btn');
             const originalText = btn.innerHTML;
