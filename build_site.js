@@ -428,8 +428,21 @@ function renderStars(rating = 5, sizeClass = "w-4 h-4") {
 
 function getImageUrl(img, basePath = '/') {
     if (!img) return null;
-    if (img.startsWith('http') || img.startsWith('data:') || img.startsWith('/')) return img;
-    return `${basePath}images/products/${img}`;
+    if (img.startsWith('http') || img.startsWith('data:')) return img;
+    
+    // If img starts with /, it's root-relative
+    if (img.startsWith('/')) {
+        // If basePath is a full URL, we must prepend it to make the image URL absolute for search engines
+        if (basePath.startsWith('http')) {
+            return `${basePath.replace(/\/+$/, '')}${img}`;
+        }
+        // Otherwise keep it as root-relative for browser usage
+        return img;
+    }
+    
+    // Ensure basePath has a trailing slash for filenames if it's a full URL
+    const cleanBase = (basePath.startsWith('http') && !basePath.endsWith('/')) ? basePath + '/' : basePath;
+    return `${cleanBase}images/products/${img}`;
 }
 
 function getProductSeed(product) {
