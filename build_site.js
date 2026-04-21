@@ -41,6 +41,7 @@ const productsRaw = sandbox.products;
 const products = productsRaw ? productsRaw.filter(p => p.active !== false) : [];
 const blogs = sandbox.blogs || [];
 const gradients = sandbox.gradients || {}; // gradients might be missing or defined elsewhere
+const redirects = sandbox.redirects || siteConfig.redirects || []; // For 301 redirects
 
 // --- URL Configuration ---
 const baseUrl = siteConfig.baseUrl || 'https://bestpvashop.com/';
@@ -548,48 +549,49 @@ function generateRichDescription(product) {
     
     const productName = product.title;
     return `
-        <h2 class="text-xl md:text-2xl font-bold text-white mb-4">${productName} – Safe Online & Trusted Account</h2>
+        <h2 class="text-xl md:text-2xl font-bold text-white mb-4">Why You Need ${productName} for Your Business</h2>
         <p class="mb-4">
-            In the modern world of online business, having a reliable <strong>${productName}</strong> is crucial. 
-            Whether you are an entrepreneur, a digital marketer, or a freelancer, verified accounts provide the stability and credibility you need. 
-            At <strong class="text-cyan-400">BestPVAShop</strong>, we provide premium, fully verified ${productName} that are ready to use. 
-            Our accounts are safe, secure, and come with a replacement guarantee.
+            In the modern digital landscape, having a reliable <strong>${productName}</strong> is essential for building trust and scaling operations. 
+            Whether you are a startup, an established agency, or an individual marketer, high-quality verified accounts and authentic reviews provide the stability you need. 
+            At <strong class="text-cyan-400">BestPVAShop</strong>, we supply premium ${productName} that are fully verified and ready to deploy. 
         </p>
 
-        <h3 class="text-lg font-bold text-white mb-3 mt-8">Why is a ${productName} Best For Online Business?</h3>
+        <h3 class="text-lg font-bold text-white mb-3 mt-8">Core Benefits of ${productName}</h3>
         <p class="mb-4">
-            Efficiency and authenticity are key factors for online success. Using verified accounts ensures that your business operations run smoothly without interruptions. 
-            A ${productName} allows you to access features that might be restricted on unverified or new accounts.
+            Authenticity and reliability dictate online success. Utilizing ${productName} ensures your business can operate smoothly across platforms without unexpected disruptions.
         </p>
         <ul class="list-disc pl-5 space-y-2 mb-6 text-slate-300">
-            <li><strong>Instant Access:</strong> No waiting time, get started immediately.</li>
-            <li><strong>High Trust Score:</strong> Verified accounts carry more authority.</li>
-            <li><strong>Security:</strong> Reduced risk of suspension or bans.</li>
+            <li><strong>Instant Operational Readiness:</strong> Skip the lengthy verification steps and begin immediately.</li>
+            <li><strong>Enhanced Trust Signals:</strong> Our ${productName} provides immediate authority to your profile.</li>
+            <li><strong>Platform Security:</strong> Created with clean IPs and unique device fingerprints to reduce suspension risks.</li>
         </ul>
 
-        <h3 class="text-lg font-bold text-white mb-3 mt-8">Buy Trusted ${productName} For Secure Operations</h3>
+        <h3 class="text-lg font-bold text-white mb-3 mt-8">How We Ensure Quality for ${productName}</h3>
         <p class="mb-4">
-            When it comes to online transactions or marketing, security is paramount. 
-            Buying trusted ${productName} from us ensures that you get a clean, high-quality account. 
-            We use unique IPs and real device fingerprints to create these accounts, ensuring they look natural and authentic.
+            Security and longevity are our top priorities. When you buy ${productName} from us, you receive a meticulously crafted asset. 
+            We use residential proxies, verified phone numbers, and aged profiles where applicable, making our ${productName} indistinguishable from natural user accounts.
         </p>
 
-        <h3 class="text-lg font-bold text-white mb-3 mt-8">How to Buy ${productName} Safely (Practical Steps)</h3>
-        <p class="mb-4">
-            When choosing a provider, safety should be your top priority. Here is why we are the best choice:
-        </p>
-        <ol class="list-decimal pl-5 space-y-2 mb-6 text-slate-300">
-            <li><strong>Select Your Package:</strong> Choose the ${productName} package that fits your needs.</li>
-            <li><strong>Secure Payment:</strong> We accept various secure payment methods including Crypto.</li>
-            <li><strong>Instant Delivery:</strong> Receive your account details via email shortly after purchase.</li>
-            <li><strong>24/7 Support:</strong> Our team is always ready to assist you.</li>
-        </ol>
+        <h3 class="text-lg font-bold text-white mb-3 mt-8">Frequently Asked Questions about ${productName}</h3>
+        <div class="space-y-4 mb-6">
+            <div class="bg-[#1E293B]/50 p-4 rounded-xl border border-white/5">
+                <h4 class="font-bold text-white mb-1">Is ${productName} safe for my main business?</h4>
+                <p class="text-slate-400 text-sm">Yes, our ${productName} is generated following strict security protocols to ensure it is completely safe to integrate with your existing workflows.</p>
+            </div>
+            <div class="bg-[#1E293B]/50 p-4 rounded-xl border border-white/5">
+                <h4 class="font-bold text-white mb-1">How quickly will I receive my ${productName}?</h4>
+                <p class="text-slate-400 text-sm">Delivery is typically instant or within a few hours depending on the stock and current network conditions.</p>
+            </div>
+            <div class="bg-[#1E293B]/50 p-4 rounded-xl border border-white/5">
+                <h4 class="font-bold text-white mb-1">Do you offer a warranty on ${productName}?</h4>
+                <p class="text-slate-400 text-sm">Absolutely. If your ${productName} does not work on the first login as described, we will replace it free of charge.</p>
+            </div>
+        </div>
 
-        <h3 class="text-lg font-bold text-white mb-3 mt-8">Conclusion</h3>
+        <h3 class="text-lg font-bold text-white mb-3 mt-8">Secure Your ${productName} Today</h3>
         <p class="mb-4">
-            In conclusion, buying a ${productName} from BestPVAShop is a smart investment for your digital growth. 
-            Save time, avoid hassles, and focus on scaling your business while we handle the technicalities. 
-            Order your ${productName} today and experience the difference!
+            Don't let verification hurdles slow down your growth. Buying a ${productName} from BestPVAShop is a strategic investment in your digital infrastructure. 
+            Select your package above and experience seamless delivery and 24/7 dedicated support.
         </p>
     `;
 }
@@ -1183,7 +1185,7 @@ blogs.forEach((post, index) => {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${post.title} - BestPVAShop</title>
+    <title>${post.seo_title || post.title + ' - BestPVAShop'}</title>
     <meta name="description" content="${post.excerpt}">
     <link rel="canonical" href="${getDynamicUrl('blog', post.slug)}" />
     <meta name="robots" content="index, follow" />
@@ -1446,7 +1448,7 @@ products.forEach(product => {
     html = html.replace('{{HEADER}}', generateFullHeader('../../', products, categories, siteConfig));
 
     // SEO
-    const seoTitle = `${product.title} – Verified & Fast | BestPVAShop`;
+    const seoTitle = product.seo_title || `${product.title} – Verified & Fast | BestPVAShop`;
     let seoDesc = product.meta_description || product.short_description || `Buy ${product.title} instantly.`;
     
     // Ensure Description Length (120-160 chars)
@@ -1947,8 +1949,33 @@ products.slice(-10).forEach(product => {
   </item>
 `;
 });
-rssFeed += `</channel>\n</rss>`;
+
+rssFeed += '</channel>\n</rss>';
 fs.writeFileSync('feed.xml', rssFeed);
+console.log("feed.xml created.");
+
+// Generate 301 Redirects in .htaccess
+console.log("Updating .htaccess with 301 redirects...");
+try {
+    let htaccessContent = fs.readFileSync('.htaccess', 'utf8');
+    const redirectSectionStart = '# --- CMS GENERATED REDIRECTS START ---';
+    const redirectSectionEnd = '# --- CMS GENERATED REDIRECTS END ---';
+    
+    let redirectRules = redirects.map(r => `Redirect 301 ${r.old} ${r.new}`).join('\n');
+    let redirectBlock = `\n${redirectSectionStart}\n${redirectRules}\n${redirectSectionEnd}\n`;
+    
+    if (htaccessContent.includes(redirectSectionStart)) {
+        const regex = new RegExp(`${redirectSectionStart}[\\s\\S]*?${redirectSectionEnd}`, 'g');
+        htaccessContent = htaccessContent.replace(regex, redirectBlock.trim());
+    } else {
+        htaccessContent += redirectBlock;
+    }
+    
+    fs.writeFileSync('.htaccess', htaccessContent);
+    console.log(".htaccess updated with redirects.");
+} catch (err) {
+    console.warn("Failed to update .htaccess:", err.message);
+}
 console.log("feed.xml created.");
 
 const robots = `User-agent: *

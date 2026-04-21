@@ -150,6 +150,10 @@
                         <label class="input-label">Google Analytics ID (e.g., G-XXXXXXXXXX)</label>
                         <input type="text" id="conf-analyticsId" class="input-field" placeholder="Leave empty to disable">
                     </div>
+                    <div class="input-group mt-4">
+                        <label class="input-label">301 Redirects (One per line: /old-url /new-url)</label>
+                        <textarea id="conf-redirects" class="input-field h-32 font-mono text-sm" placeholder="/old-path /new-path"></textarea>
+                    </div>
                 </div>
 
                 <!-- Hero Section -->
@@ -269,17 +273,23 @@
                             <input type="text" id="edit-prod-title" class="input-field">
                         </div>
                         <div class="input-group">
+                            <label class="input-label">SEO Title (Title Tag)</label>
+                            <input type="text" id="edit-prod-seo-title" class="input-field" placeholder="Default: Title - Verified & Fast...">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="input-group">
+                            <label class="input-label">Image Display Title (Overlay)</label>
+                            <input type="text" id="edit-prod-display-title" class="input-field" placeholder="Text shown over the blue/image area">
+                        </div>
+                        <div class="input-group">
                             <label class="input-label">Status</label>
                             <select id="edit-prod-active" class="input-field">
                                 <option value="true">Active</option>
                                 <option value="false">Inactive</option>
                             </select>
                         </div>
-                    </div>
-
-                    <div class="input-group">
-                        <label class="input-label">Image Display Title (Overlay)</label>
-                        <input type="text" id="edit-prod-display-title" class="input-field" placeholder="Text shown over the blue/image area">
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
@@ -456,9 +466,15 @@
                     </div>
                     <input type="hidden" id="edit-blog-id">
                     
-                    <div class="input-group">
-                        <label class="input-label">Title (H1)</label>
-                        <input type="text" id="edit-blog-title" class="input-field">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="input-group">
+                            <label class="input-label">Title (H1)</label>
+                            <input type="text" id="edit-blog-title" class="input-field">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">SEO Title (Title Tag)</label>
+                            <input type="text" id="edit-blog-seo-title" class="input-field" placeholder="Default: Title - BestPVAShop">
+                        </div>
                     </div>
 
                     <div class="grid grid-cols-2 gap-4">
@@ -990,6 +1006,12 @@
                 const el = document.getElementById(`conf-${f}`);
                 if(el) el.value = cmsConfig[f] || '';
             });
+            
+            // Load Redirects
+            if (cmsConfig.redirects) {
+                const rStr = cmsConfig.redirects.map(r => `${r.old} ${r.new}`).join('\n');
+                document.getElementById('conf-redirects').value = rStr;
+            }
         }
         function saveGeneral() {
             const fields = ['siteTitle', 'metaDescription', 'faviconUrl', 'logoUrl', 'logoText', 'logoBadge', 'heroTitle', 'heroSubtitle', 'supportEmail', 'whatsapp', 'telegram', 'popupTitle', 'popupMessage', 'analyticsId'];
@@ -997,6 +1019,15 @@
                 const el = document.getElementById(`conf-${f}`);
                 if(el) cmsConfig[f] = el.value;
             });
+            
+            // Save Redirects
+            const redirectsVal = document.getElementById('conf-redirects').value || '';
+            const rLines = redirectsVal.split('\n').filter(l => l.trim().length > 0);
+            cmsConfig.redirects = rLines.map(l => {
+                const parts = l.split(' ').filter(p => p.trim());
+                if (parts.length >= 2) return { old: parts[0], new: parts[1] };
+                return null;
+            }).filter(r => r !== null);
         }
 
         // --- Categories ---
@@ -1074,6 +1105,7 @@
             document.getElementById('product-editor').classList.remove('hidden');
             
             document.getElementById('edit-prod-title').value = p.title;
+            document.getElementById('edit-prod-seo-title').value = p.seo_title || '';
             document.getElementById('edit-prod-active').value = (p.active !== false).toString();
             document.getElementById('edit-prod-display-title').value = p.display_title || '';
             document.getElementById('edit-prod-category').value = p.category;
@@ -1122,6 +1154,7 @@
             
             // 2. Update p with NEW values from the form
             p.title = document.getElementById('edit-prod-title').value;
+            p.seo_title = document.getElementById('edit-prod-seo-title').value;
             p.active = document.getElementById('edit-prod-active').value === 'true';
             p.display_title = document.getElementById('edit-prod-display-title').value;
             p.category = document.getElementById('edit-prod-category').value;
@@ -1257,6 +1290,7 @@
             document.getElementById('blog-editor').classList.remove('hidden');
             
             document.getElementById('edit-blog-title').value = b.title;
+            document.getElementById('edit-blog-seo-title').value = b.seo_title || '';
             document.getElementById('edit-blog-slug').value = b.slug;
             document.getElementById('edit-blog-date').value = b.date;
             document.getElementById('edit-blog-image').value = b.image || '';
@@ -1289,6 +1323,7 @@
             }
             
             cmsBlogs[idx].title = document.getElementById('edit-blog-title').value;
+            cmsBlogs[idx].seo_title = document.getElementById('edit-blog-seo-title').value;
             cmsBlogs[idx].slug = document.getElementById('edit-blog-slug').value;
             cmsBlogs[idx].date = document.getElementById('edit-blog-date').value;
             cmsBlogs[idx].image = document.getElementById('edit-blog-image').value;

@@ -16,7 +16,16 @@ RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
 # The server just needs to serve files.
 
 # 4. Custom Error Pages
-ErrorDocument 404 /index.html
+ErrorDocument 404 /404.html
+
+# 5. Security Headers
+<IfModule mod_headers.c>
+  Header set X-Content-Type-Options "nosniff"
+  Header set X-Frame-Options "SAMEORIGIN"
+  Header set X-XSS-Protection "1; mode=block"
+  Header set Referrer-Policy "strict-origin-when-cross-origin"
+  Header set Strict-Transport-Security "max-age=31536000; includeSubDomains; preload"
+</IfModule>
 
 <IfModule mod_deflate.c>
   AddOutputFilterByType DEFLATE text/html text/plain text/css
@@ -51,3 +60,7 @@ ErrorDocument 404 /index.html
   ExpiresByType image/x-icon "access plus 1 year"
   ExpiresByType text/html "access plus 5 minutes"
 </IfModule>
+
+# --- CMS GENERATED REDIRECTS START ---
+
+# --- CMS GENERATED REDIRECTS END ---
