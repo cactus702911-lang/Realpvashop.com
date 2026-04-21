@@ -46,7 +46,7 @@ const gradients = sandbox.gradients || {}; // gradients might be missing or defi
 const baseUrl = siteConfig.baseUrl || 'https://bestpvashop.com/';
 const paths = siteConfig.pathConfig || {
     product: 'product',
-    category: 'category',
+    category: 'categories',
     blog: 'blog',
     sitemap: 'sitemap.xml'
 };
@@ -199,15 +199,22 @@ function generateFooter(products, siteConfig) {
             
             <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
                 <p class="text-slate-500 text-sm">Copyright © ${new Date().getFullYear()} ${siteDomain}. All rights reserved.</p>
-                <div class="flex gap-4 text-sm text-slate-500">
+                <div class="flex gap-4 text-sm text-slate-500 flex-wrap justify-center">
+                    <a href="${getDynamicUrl('about', '', false)}" class="hover:text-white transition-colors">About</a>
+                    <a href="${getDynamicUrl('contact', '', false)}" class="hover:text-white transition-colors">Contact</a>
+                    <a href="${getDynamicUrl('faq', '', false)}" class="hover:text-white transition-colors">FAQ</a>
                     <a href="${getDynamicUrl('blog', '', false)}" class="hover:text-white transition-colors">Blog</a>
-                    <a href="#" class="hover:text-white transition-colors">Privacy Policy</a>
-                    <a href="#" class="hover:text-white transition-colors">Terms of Service</a>
+                    <a href="${getDynamicUrl('policies/privacy-policy', '', false)}" class="hover:text-white transition-colors">Privacy Policy</a>
+                    <a href="${getDynamicUrl('policies/terms-and-conditions', '', false)}" class="hover:text-white transition-colors">Terms of Service</a>
+                    <a href="${getDynamicUrl('policies/refund-policy', '', false)}" class="hover:text-white transition-colors">Refund Policy</a>
+                    <a href="${getDynamicUrl('policies/shipping-or-delivery-policy', '', false)}" class="hover:text-white transition-colors">Shipping Policy</a>
                 </div>
             </div>
         </div>
     `;
 }
+
+
 
 function generateLatestArticlesHtml(blogs) {
     if (!blogs || blogs.length === 0) return '';
@@ -226,7 +233,7 @@ function generateLatestArticlesHtml(blogs) {
             </h3>
             <p class="mt-2 line-clamp-3 text-sm leading-6 text-slate-400">${b.excerpt}</p>
             <div class="mt-4 flex items-center gap-1 text-cyan-400 text-sm font-bold">
-                Read More <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                Read More <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </div>
         </div>
     `).join('');
@@ -239,13 +246,13 @@ function generateLatestArticlesHtml(blogs) {
                     <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Latest <span class="text-cyan-400">Articles</span></h2>
                     <p class="mt-2 text-lg leading-8 text-slate-400">Expert tips and guides for your digital growth.</p>
                 </div>
-                <a href="${getDynamicUrl('blog', '', false)}" class="hidden sm:flex items-center gap-1 text-cyan-400 font-bold hover:text-cyan-300 transition-colors">View All <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                <a href="${getDynamicUrl('blog', '', false)}" class="hidden sm:flex items-center gap-1 text-cyan-400 font-bold hover:text-cyan-300 transition-colors">View All <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 ${cards}
             </div>
             <div class="mt-8 text-center sm:hidden">
-                 <a href="${getDynamicUrl('blog', '', false)}" class="inline-flex items-center gap-1 text-cyan-400 font-bold hover:text-cyan-300 transition-colors">View All Articles <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+                 <a href="${getDynamicUrl('blog', '', false)}" class="inline-flex items-center gap-1 text-cyan-400 font-bold hover:text-cyan-300 transition-colors">View All Articles <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
             </div>
         </div>
     </section>
@@ -290,7 +297,7 @@ function generateRelatedArticlesHtml(product, blogs) {
             </h3>
             <p class="mt-2 line-clamp-2 text-sm leading-6 text-slate-400">${b.excerpt}</p>
              <div class="mt-4 text-cyan-400 text-xs font-bold uppercase tracking-wider flex items-center gap-1">
-                Read Article <i data-lucide="arrow-right" class="w-3 h-3"></i>
+                Read Article <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </div>
         </div>
     `}).join('');
@@ -442,10 +449,11 @@ function computeProductColor(product) {
     return hslToHex(hue, 65, 45);
 }
 
-function renderProductCard(product, basePath = '/') {
+function renderProductCard(product, basePath = '/', isPriority = false) {
     const fullImgUrl = getImageUrl(product.image, basePath);
+    const loadingAttr = isPriority ? 'fetchpriority="high"' : 'loading="lazy"';
     const imageHtml = fullImgUrl 
-        ? `<img src="${fullImgUrl}" alt="${product.image_title || product.title}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" loading="lazy" decoding="async" width="400" height="300">`
+        ? `<img src="${fullImgUrl}" alt="${product.image_title || product.title}" class="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" ${loadingAttr} decoding="async" width="400" height="300">`
         : '';
     const solidColor = computeProductColor(product);
     const overlayClass = fullImgUrl ? '' : 'bg-black/0 group-hover:bg-black/0';
@@ -569,7 +577,7 @@ function generateFullHeader(unused_basePath, products, categories, siteConfig) {
         desktopNavHtml += `
             <div class="relative group px-3 py-2">
                 <button class="text-slate-300 group-hover:text-cyan-400 text-sm font-medium flex items-center gap-1 transition-colors">
-                    ${cat.name} <i data-lucide="chevron-down" class="w-3 h-3 opacity-50 group-hover:opacity-100 transition-opacity"></i>
+                    ${cat.name} <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 opacity-50 group-hover:opacity-100 transition-opacity"><path d="m6 9 6 6 6-6"/></svg>
                 </button>
                 <div class="absolute left-0 mt-2 w-56 bg-[#0F172A] border border-white/10 rounded-xl shadow-2xl py-2 hidden group-hover:block z-50 backdrop-blur-xl max-h-96 overflow-y-auto">
                     ${catItemsHtml}
@@ -585,7 +593,7 @@ function generateFullHeader(unused_basePath, products, categories, siteConfig) {
     // 2. Populate Mobile Nav
     let mobileNavHtml = `
         <a href="${getDynamicUrl('blog', '', false)}" class="block px-4 py-3 text-white font-bold bg-gradient-to-r from-cyan-600/20 to-blue-600/20 border border-cyan-500/30 rounded-xl mb-4 hover:bg-white/5 transition-all">
-            <span class="flex items-center gap-2"><i data-lucide="book-open" class="w-4 h-4 text-cyan-400"></i> Blog</span>
+            <span class="flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-cyan-400"><path d="M2 3h6a4 4 0 0 1 4 4v14a4 4 0 0 0-4-4H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a4 4 0 0 1 4-4h6z"/></svg> Blog</span>
         </a>
     `;
 
@@ -603,7 +611,7 @@ function generateFullHeader(unused_basePath, products, categories, siteConfig) {
             <div class="mb-2">
                 <button class="mobile-cat-toggle w-full flex items-center justify-between px-4 py-3 text-slate-300 hover:text-cyan-400 hover:bg-white/5 rounded-xl transition-all" data-cat="${catSlug}">
                     <span class="font-bold text-sm tracking-wide uppercase">${cat.name}</span>
-                    <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200"></i>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 transition-transform duration-200"><path d="m6 9 6 6 6-6"/></svg>
                 </button>
                 <div id="mobile-items-${catSlug}" class="hidden space-y-1 mt-1 ml-4 border-l border-white/10 pl-2">
                     <a href="${getDynamicUrl('category', catSlug, false)}" class="block px-4 py-2 text-xs font-bold text-cyan-500 hover:text-cyan-400 uppercase tracking-widest">View All ${cat.name}</a>
@@ -653,7 +661,16 @@ console.log("Reading header_partial.html...");
 
 // --- 3. Build Homepage ---
 console.log("Building Homepage...");
-const indexTemplate = fs.readFileSync('site_template.html', 'utf8'); // Keep master template in memory
+const indexTemplateRaw = fs.readFileSync('site_template.html', 'utf8'); // Keep master template in memory
+
+// Pre-fill Latest Products globally for all pages using site_template.html
+const latestProductsHtml = products.slice(-4).reverse().map(p => renderProductCard(p, '', true)).join('\n');
+const indexTemplate = indexTemplateRaw.replace('{{LATEST_PRODUCTS_GRID}}', `
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        ${latestProductsHtml}
+    </div>
+`);
+
 let indexHtml = indexTemplate;
 
 // Inject Header
@@ -677,8 +694,11 @@ indexHtml = indexHtml.replace('{{PRODUCT_GRID}}', `
     </div>
 `);
 
+// {{LATEST_PRODUCTS_GRID}} is already replaced globally in indexTemplate
+
 // Generate Footer
-indexHtml = indexHtml.replace('{{FOOTER}}', generateFooter(products, siteConfig));
+let footerHtml = generateFooter(products, siteConfig);
+indexHtml = indexHtml.replace('{{FOOTER}}', footerHtml);
 
 // Generate Latest Articles
 indexHtml = indexHtml.replace('{{LATEST_ARTICLES}}', generateLatestArticlesHtml(blogs));
@@ -690,6 +710,7 @@ indexHtml = indexHtml.replace('{{PRODUCT_IMAGE_PRELOAD}}', '');
 
 // Global Placeholders
 indexHtml = indexHtml.replace(/{{CANONICAL_URL}}/g, 'https://bestpvashop.com/');
+indexHtml = indexHtml.replace(/{{REL_PATH}}/g, './');
 indexHtml = replaceGlobalPlaceholders(indexHtml, siteConfig);
 
 // Save Homepage
@@ -698,10 +719,35 @@ console.log("Homepage built.");
 
 // --- 3.1 Build Category Pages ---
 console.log("Building Category Pages...");
-cleanDirectory('category');
+cleanDirectory(paths.category);
 const uniqueCategories = [...new Set(products.map(p => p.category))];
 let sitemap = '<?xml version="1.0" encoding="UTF-8"?>\n';
-sitemap += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+sitemap += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n';
+
+function escapeXml(unsafe) {
+    if (!unsafe) return '';
+    return unsafe.replace(/[<>&'"]/g, function (c) {
+        switch (c) {
+            case '<': return '&lt;';
+            case '>': return '&gt;';
+            case '&': return '&amp;';
+            case '\\\'': return '&apos;';
+            case '"': return '&quot;';
+        }
+    });
+}
+
+let rssFeed = `<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>${escapeXml(siteConfig.siteTitle || 'BestPVAShop')}</title>
+  <link>${getDynamicUrl('home')}</link>
+  <description>${escapeXml('Buy verified accounts and digital services')}</description>
+  <language>en-us</language>
+  <pubDate>${new Date().toUTCString()}</pubDate>
+  <lastBuildDate>${new Date().toUTCString()}</lastBuildDate>
+  <atom:link href="${getDynamicUrl('home')}feed.xml" rel="self" type="application/rss+xml" />
+`;
 
 // Add Homepage to Sitemap
 sitemap += '  <url>\n';
@@ -772,14 +818,14 @@ uniqueCategories.forEach(cat => {
     catHtml = catHtml.replace('{{LATEST_ARTICLES}}', generateLatestArticlesHtml(blogs));
     
     // Footer
-    catHtml = catHtml.replace('{{FOOTER}}', generateFooter(products, siteConfig).replace(new RegExp(`href="/${paths.product}`, 'g'), `href="../../${paths.product}`).replace(/href="#"/g, 'href="../../"'));
+    catHtml = catHtml.replace('{{FOOTER}}', generateFooter(products, siteConfig));
 
     // CSS
     catHtml = catHtml.replace(/{{CRITICAL_CSS}}/g, sharedCssTags);
     
     catHtml = catHtml.replace('{{PRODUCT_IMAGE_PRELOAD}}', '');
 
-    // Global Placeholders
+    catHtml = catHtml.replace(/{{REL_PATH}}/g, '../../');
     catHtml = replaceGlobalPlaceholders(catHtml, siteConfig);
 
     fs.writeFileSync(path.join(dir, 'index.html'), minifyHTML(catHtml));
@@ -1038,7 +1084,7 @@ for (let i = 1; i <= totalPages; i++) {
                 <div class="flex items-center justify-between mt-auto pt-6 border-t border-white/5 group-hover:border-cyan-500/20 transition-colors">
                     <span class="text-sm font-bold text-white group-hover:text-cyan-400 transition-colors">Read Article</span>
                     <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-cyan-500 group-hover:text-white transition-all duration-300 group-hover:scale-110">
-                        <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                     </div>
                 </div>
             </div>
@@ -1075,6 +1121,7 @@ for (let i = 1; i <= totalPages; i++) {
     blogListHtml = blogListHtml.replace(/{{CRITICAL_CSS}}/g, sharedCssTags);
     
     // Global Placeholders
+    blogListHtml = blogListHtml.replace(/{{REL_PATH}}/g, pageRelPath);
     blogListHtml = replaceGlobalPlaceholders(blogListHtml, siteConfig);
 
     fs.writeFileSync(path.join(pageDir, 'index.html'), minifyHTML(blogListHtml));
@@ -1112,6 +1159,7 @@ blogs.forEach((post, index) => {
     <link rel="canonical" href="${getDynamicUrl('blog', post.slug)}" />
     <meta name="robots" content="index, follow" />
     <link rel="preload" href="${sharedCssHref}" as="style">
+    <link rel="preload" href="../../ui.js" as="script">
     <link rel="stylesheet" href="${sharedCssHref}">
     <style>
         /* Robust Navigation Visibility */
@@ -1132,11 +1180,11 @@ blogs.forEach((post, index) => {
 
     <main class="max-w-7xl mx-auto px-4 py-8">
         <!-- Breadcrumb -->
-        <nav class="flex text-sm text-slate-400 mb-8 overflow-x-auto whitespace-nowrap">
-            <a href="/" class="hover:text-white">Home</a>
-            <span class="mx-2">/</span>
-            <a href="/${paths.blog}/" class="hover:text-white">Blog</a>
-            <span class="mx-2">/</span>
+        <nav class="flex items-center gap-2 text-sm text-slate-400 mb-8 overflow-x-auto whitespace-nowrap">
+            <a href="/" class="hover:text-white transition-colors">Home</a>
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 opacity-50"><path d="m9 18 6-6-6-6"/></svg>
+            <a href="/${paths.blog}/" class="hover:text-white transition-colors">Blog</a>
+            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 opacity-50"><path d="m9 18 6-6-6-6"/></svg>
             <span class="text-cyan-400 truncate">${post.title}</span>
         </nav>
 
@@ -1161,8 +1209,8 @@ blogs.forEach((post, index) => {
                 ${relatedHtml}
 
                 <div class="mt-12 pt-8 border-t border-white/10 flex justify-between items-center">
-                    <a href="/${paths.blog}/" class="font-bold text-slate-400 hover:text-white flex items-center gap-2">
-                        <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Blog
+                    <a href="/${paths.blog}/" class="font-bold text-slate-400 hover:text-white flex items-center gap-2 transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> Back to Blog
                     </a>
                 </div>
             </article>
@@ -1174,12 +1222,13 @@ blogs.forEach((post, index) => {
         </div>
     </main>
 
-    <footer class="bg-[#0F172A] border-t border-white/5 py-12 mt-20">
-        ${generateFooter(products, siteConfig).replace(new RegExp(`href="/${paths.product}`, 'g'), `href="../../${paths.product}`).replace(/href="#"/g, 'href="../../"')}
+    <footer class="bg-[#0F172A] border-t border-white/5 py-12 mt-12">
+        ${generateFooter(products, siteConfig)}
     </footer>
 
     <!-- Scripts -->
     <script src="../../ui.js" defer></script>
+    <script src="https://unpkg.com/lucide@latest" defer onload="if(window.initUI) window.initUI()"></script>
 </body>
 </html>`;
 
@@ -1194,7 +1243,19 @@ blogs.forEach((post, index) => {
     sitemap += `    <loc>${getDynamicUrl('blog', post.slug)}</loc>\n`;
     sitemap += '    <lastmod>' + new Date().toISOString().split('T')[0] + '</lastmod>\n';
     sitemap += '    <priority>0.7</priority>\n';
+    if (post.image) {
+        sitemap += `    <image:image>\n      <image:loc>${getImageUrl(post.image, baseUrl)}</image:loc>\n    </image:image>\n`;
+    }
     sitemap += '  </url>\n';
+
+    rssFeed += `
+  <item>
+    <title>${escapeXml(post.title)}</title>
+    <link>${getDynamicUrl('blog', post.slug)}</link>
+    <description>${escapeXml(post.excerpt)}</description>
+    <pubDate>${new Date(post.date).toUTCString() !== 'Invalid Date' ? new Date(post.date).toUTCString() : new Date().toUTCString()}</pubDate>
+  </item>
+`;
 });
 
 console.log("Building Product Pages...");
@@ -1203,22 +1264,26 @@ const productTemplate = fs.readFileSync('product_template.html', 'utf8');
 
 products.forEach(product => {
     if (!product.slug) return;
+    const relPath = '../../';
 
     // --- Sitemap ---
     sitemap += '  <url>\n';
     sitemap += `    <loc>${getDynamicUrl('product', product.slug)}</loc>\n`;
     sitemap += '    <lastmod>' + new Date().toISOString().split('T')[0] + '</lastmod>\n';
     sitemap += '    <priority>0.8</priority>\n';
+    if (product.image) {
+        sitemap += `    <image:image>\n      <image:loc>${getImageUrl(product.image, baseUrl)}</image:loc>\n      <image:title>${escapeXml(product.image_title || product.title)}</image:title>\n    </image:image>\n`;
+    }
     sitemap += '  </url>\n';
 
     // --- Prepare Data ---
     const slug = product.slug.trim().replace(/^\/+|\/+$/g, ''); 
     const solidColor = computeProductColor(product);
     const featuresList = product.features.map(f => 
-        `<li class="flex items-start gap-2 text-slate-300 text-sm"><i data-lucide="check-circle-2" class="w-4 h-4 text-cyan-400 mt-0.5 shrink-0"></i> ${f}</li>`
+        `<li class="flex items-start gap-2 text-slate-300 text-sm"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-cyan-400 mt-0.5 shrink-0"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg> ${f}</li>`
     ).join('');
     const bottomFeaturesList = product.features.map(f => 
-        `<li class="flex items-start gap-2 text-slate-400 text-sm"><i data-lucide="check" class="w-4 h-4 text-cyan-500 mt-0.5 shrink-0"></i> ${f}</li>`
+        `<li class="flex items-start gap-2 text-slate-400 text-sm"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-cyan-500 mt-0.5 shrink-0"><path d="M20 6 9 17l-5-5"/></svg> ${f}</li>`
     ).join('');
     
     let pricingOptions = '<option selected disabled>Choose an option</option>';
@@ -1306,27 +1371,46 @@ products.forEach(product => {
     }
 
     // JSON-LD
-    const jsonLd = {
-        "@context": "https://schema.org/",
-        "@type": "Product",
-        "name": product.title,
-        "description": product.meta_description || product.short_description,
-        "sku": String(product.id),
-        "brand": { "@type": "Brand", "name": "BestPVAShop" },
-        "offers": {
-            "@type": "AggregateOffer",
-            "priceCurrency": "USD",
-            "lowPrice": product.min_price,
-            "highPrice": product.max_price,
-            "offerCount": product.pricing ? product.pricing.length : 1,
-            "availability": "https://schema.org/InStock"
+    const jsonLd = [
+        {
+            "@context": "https://schema.org/",
+            "@type": "Product",
+            "name": product.title,
+            "description": product.meta_description || product.short_description,
+            "sku": String(product.id),
+            "brand": { "@type": "Brand", "name": "BestPVAShop" },
+            "offers": {
+                "@type": "AggregateOffer",
+                "priceCurrency": "USD",
+                "lowPrice": product.min_price,
+                "highPrice": product.max_price,
+                "offerCount": product.pricing ? product.pricing.length : 1,
+                "availability": "https://schema.org/InStock"
+            },
+            "aggregateRating": {
+                "@type": "AggregateRating",
+                "ratingValue": "5.0",
+                "reviewCount": pReviews.length > 0 ? pReviews.length : 1
+            }
         },
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "5.0",
-            "reviewCount": pReviews.length > 0 ? pReviews.length : 1
+        {
+            "@context": "https://schema.org/",
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+                { "@type": "ListItem", "position": 1, "name": "Home", "item": getDynamicUrl('home') },
+                { "@type": "ListItem", "position": 2, "name": "Categories", "item": getDynamicUrl('home') + "categories/" },
+                { "@type": "ListItem", "position": 3, "name": product.category, "item": getDynamicUrl('category', product.category.toLowerCase().replace(/ /g, '-').replace(/[^\\w-]+/g, '')) },
+                { "@type": "ListItem", "position": 4, "name": product.title, "item": getDynamicUrl('product', slug) }
+            ]
+        },
+        {
+            "@context": "https://schema.org/",
+            "@type": "Organization",
+            "name": "BestPVAShop",
+            "url": getDynamicUrl('home'),
+            "logo": siteConfig.logoUrl || getDynamicUrl('home') + "favicon.svg"
         }
-    };
+    ];
 
     // --- Replace Placeholders ---
     let html = productTemplate;
@@ -1401,11 +1485,13 @@ products.forEach(product => {
     // Link cacheable shared CSS
     html = html.replace(/{{CRITICAL_CSS}}/g, sharedCssTags);
 
+    // Footer
     html = html.replace('{{FOOTER}}', generateFooter(products, siteConfig));
 
     html = html.replace('{{SITE_CONFIG_JS}}', ''); // Remove placeholder, siteConfig is in site_data.js
 
     // Global Placeholders (Must be after Footer to catch placeholders in it)
+    html = html.replace(/{{REL_PATH}}/g, relPath);
     html = replaceGlobalPlaceholders(html, siteConfig);
 
     // Write File
@@ -1416,6 +1502,291 @@ products.forEach(product => {
     fs.writeFileSync(path.join(dir, 'index.html'), minifyHTML(html));
 });
 console.log("Product pages built.");
+
+// --- 4. Build Static Pages ---
+console.log("Building Static Pages...");
+function buildStaticPage(pagePath, title, description, content, jsonLd) {
+    const dir = path.join(pagePath);
+    if (!fs.existsSync(dir)){
+        fs.mkdirSync(dir, { recursive: true });
+    }
+    
+    let html = indexTemplate;
+    
+    const depth = pagePath.split('/').filter(Boolean).length;
+    const relPath = '../'.repeat(depth) || './';
+    
+    html = html.replace('{{HEADER}}', generateFullHeader(relPath, products, categories, siteConfig));
+    html = html.replace('{{CATEGORY_OPTIONS}}', categoryOptions);
+    
+    html = html.replace('{{HERO_TITLE}}', `<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600">${title}</span>`);
+    html = html.replace('{{HERO_SUBTITLE}}', description);
+    
+    const pageUrl = getDynamicUrl('home') + pagePath + '/';
+    html = html.replace(/{{CANONICAL_URL}}/g, pageUrl);
+    html = html.replace(/{{SITE_TITLE}}/g, `${title} | BestPVAShop`);
+    html = html.replace(/{{META_DESCRIPTION}}/g, description);
+    
+    // Inject JSON-LD Schema if provided (for SEO Rich Results)
+    if (jsonLd) {
+        const schemaTag = `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>`;
+        html = html.replace('</head>', schemaTag + '\n</head>');
+    }
+    
+    html = html.replace('{{PRODUCT_GRID}}', `
+        <div class="max-w-6xl mx-auto px-4 py-12 min-h-[40vh]">
+            ${content}
+        </div>
+    `);
+    
+    html = html.replace('{{LATEST_ARTICLES}}', '');
+    html = html.replace('{{FOOTER}}', generateFooter(products, siteConfig));
+    html = html.replace(/{{CRITICAL_CSS}}/g, sharedCssTags);
+    html = html.replace('{{PRODUCT_IMAGE_PRELOAD}}', '');
+    
+    html = html.replace(/{{REL_PATH}}/g, relPath);
+    html = replaceGlobalPlaceholders(html, siteConfig);
+    fs.writeFileSync(path.join(dir, 'index.html'), minifyHTML(html));
+    
+    sitemap += '  <url>\n';
+    sitemap += `    <loc>${pageUrl}</loc>\n`;
+    sitemap += '    <lastmod>' + new Date().toISOString().split('T')[0] + '</lastmod>\n';
+    sitemap += '    <priority>0.6</priority>\n';
+    sitemap += '  </url>\n';
+}
+
+buildStaticPage('about', 'About Us', 'Learn about BestPVAShop – your trusted source for verified PVA accounts, authentic reviews, and premium digital services since 2020.', `
+    <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Who We <span class="text-cyan-400">Are</span></h2>
+        <p class="text-slate-400 max-w-3xl mx-auto text-lg leading-relaxed">BestPVAShop is a leading provider of premium, phone-verified accounts (PVA) and authentic digital services. Since 2020, we have been helping businesses, marketers, and entrepreneurs scale their online presence with high-quality, reliable accounts.</p>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
+        <div class="bg-[#1E293B]/60 border border-white/5 rounded-2xl p-6 text-center hover:border-cyan-500/30 transition-all">
+            <div class="text-4xl font-black text-cyan-400 mb-2">5K+</div>
+            <p class="text-slate-400 text-sm font-medium">Happy Customers</p>
+        </div>
+        <div class="bg-[#1E293B]/60 border border-white/5 rounded-2xl p-6 text-center hover:border-cyan-500/30 transition-all">
+            <div class="text-4xl font-black text-green-400 mb-2">100%</div>
+            <p class="text-slate-400 text-sm font-medium">Verified Accounts</p>
+        </div>
+        <div class="bg-[#1E293B]/60 border border-white/5 rounded-2xl p-6 text-center hover:border-cyan-500/30 transition-all">
+            <div class="text-4xl font-black text-purple-400 mb-2">24/7</div>
+            <p class="text-slate-400 text-sm font-medium">Customer Support</p>
+        </div>
+        <div class="bg-[#1E293B]/60 border border-white/5 rounded-2xl p-6 text-center hover:border-cyan-500/30 transition-all">
+            <div class="text-4xl font-black text-yellow-400 mb-2">40+</div>
+            <p class="text-slate-400 text-sm font-medium">Services Available</p>
+        </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+        <div class="bg-gradient-to-br from-[#1E293B] to-[#0F172A] border border-white/5 rounded-2xl p-8 hover:border-cyan-500/30 transition-all group">
+            <div class="w-14 h-14 bg-cyan-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-cyan-500/20 transition-colors"><i data-lucide="shield-check" class="w-7 h-7 text-cyan-400"></i></div>
+            <h3 class="text-xl font-bold text-white mb-3">Secure & Verified</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">Every account undergoes rigorous verification using unique IPs and real device fingerprints, ensuring authenticity and longevity.</p>
+        </div>
+        <div class="bg-gradient-to-br from-[#1E293B] to-[#0F172A] border border-white/5 rounded-2xl p-8 hover:border-purple-500/30 transition-all group">
+            <div class="w-14 h-14 bg-purple-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-purple-500/20 transition-colors"><i data-lucide="zap" class="w-7 h-7 text-purple-400"></i></div>
+            <h3 class="text-xl font-bold text-white mb-3">Instant Delivery</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">Receive your account credentials within minutes of purchase. Our automated systems ensure lightning-fast delivery around the clock.</p>
+        </div>
+        <div class="bg-gradient-to-br from-[#1E293B] to-[#0F172A] border border-white/5 rounded-2xl p-8 hover:border-green-500/30 transition-all group">
+            <div class="w-14 h-14 bg-green-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-green-500/20 transition-colors"><i data-lucide="refresh-cw" class="w-7 h-7 text-green-400"></i></div>
+            <h3 class="text-xl font-bold text-white mb-3">Replacement Guarantee</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">If any account doesn't work upon delivery, we provide a free replacement within 24 hours. Your satisfaction is our priority.</p>
+        </div>
+    </div>
+    <div class="bg-gradient-to-r from-cyan-600/20 to-blue-600/20 border border-cyan-500/20 rounded-2xl p-8 md:p-12 text-center">
+        <h3 class="text-2xl font-bold text-white mb-4">Ready to Get Started?</h3>
+        <p class="text-slate-300 mb-8 max-w-2xl mx-auto">Browse our extensive catalog of verified accounts and digital services. Join thousands of satisfied customers today.</p>
+        <a href="/" class="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold rounded-xl shadow-lg shadow-cyan-500/20 hover:scale-105 transition-transform">Explore All Services <i data-lucide="arrow-right" class="w-5 h-5"></i></a>
+    </div>
+`);
+buildStaticPage('contact', 'Contact Us', 'Get in touch with BestPVAShop for 24/7 support via WhatsApp, Telegram, or Email. We respond within minutes.', `
+    <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Get In <span class="text-cyan-400">Touch</span></h2>
+        <p class="text-slate-400 max-w-2xl mx-auto">Have questions? Need help? Our support team is available 24/7 and typically responds within minutes.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        <a href="https://wa.me/${(siteConfig.whatsapp || '').replace(/[^0-9]/g, '')}" target="_blank" rel="noopener" class="group bg-[#1E293B]/60 border border-white/5 rounded-2xl p-8 text-center hover:border-green-500/40 hover:-translate-y-2 transition-all">
+            <div class="w-16 h-16 mx-auto bg-green-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-green-500/20 transition-colors"><i data-lucide="phone" class="w-8 h-8 text-green-400"></i></div>
+            <h3 class="text-xl font-bold text-white mb-2">WhatsApp</h3>
+            <p class="text-slate-400 text-sm mb-4">Fastest response time</p>
+            <span class="text-green-400 font-bold text-sm">${siteConfig.whatsapp || ''}</span>
+        </a>
+        <a href="https://t.me/${(siteConfig.telegram || '').replace('@', '')}" target="_blank" rel="noopener" class="group bg-[#1E293B]/60 border border-white/5 rounded-2xl p-8 text-center hover:border-blue-500/40 hover:-translate-y-2 transition-all">
+            <div class="w-16 h-16 mx-auto bg-blue-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-500/20 transition-colors"><i data-lucide="send" class="w-8 h-8 text-blue-400"></i></div>
+            <h3 class="text-xl font-bold text-white mb-2">Telegram</h3>
+            <p class="text-slate-400 text-sm mb-4">Chat with our team</p>
+            <span class="text-blue-400 font-bold text-sm">${siteConfig.telegram || ''}</span>
+        </a>
+        <a href="mailto:${siteConfig.supportEmail}" class="group bg-[#1E293B]/60 border border-white/5 rounded-2xl p-8 text-center hover:border-red-500/40 hover:-translate-y-2 transition-all">
+            <div class="w-16 h-16 mx-auto bg-red-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-red-500/20 transition-colors"><i data-lucide="mail" class="w-8 h-8 text-red-400"></i></div>
+            <h3 class="text-xl font-bold text-white mb-2">Email</h3>
+            <p class="text-slate-400 text-sm mb-4">For detailed inquiries</p>
+            <span class="text-red-400 font-bold text-sm">${siteConfig.supportEmail}</span>
+        </a>
+    </div>
+    <div class="bg-[#1E293B]/40 border border-white/5 rounded-2xl p-8 md:p-12">
+        <h3 class="text-2xl font-bold text-white mb-8 text-center">Send Us a <span class="text-cyan-400">Message</span></h3>
+        <form action="mailto:${siteConfig.supportEmail}" method="POST" enctype="text/plain" class="max-w-2xl mx-auto space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <input type="text" placeholder="Your Name" class="w-full px-5 py-4 bg-[#0F172A] border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-colors">
+                <input type="email" placeholder="Your Email" class="w-full px-5 py-4 bg-[#0F172A] border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-colors">
+            </div>
+            <input type="text" placeholder="Subject" class="w-full px-5 py-4 bg-[#0F172A] border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-colors">
+            <textarea rows="5" placeholder="Your Message..." class="w-full px-5 py-4 bg-[#0F172A] border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-colors resize-none"></textarea>
+            <button type="submit" class="w-full py-4 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold rounded-xl shadow-lg shadow-cyan-500/20 hover:scale-[1.02] transition-transform">Send Message</button>
+        </form>
+    </div>
+`);
+
+const faqItems = [
+    { q: 'How long does delivery take?', a: 'Most orders are delivered instantly after payment confirmation. Some specialized services may take up to 24 hours. You will receive your credentials via email.' },
+    { q: 'Are the accounts phone-verified (PVA)?', a: 'Yes, all our accounts are 100% phone-verified using unique phone numbers. We use real device fingerprints and unique IPs to ensure maximum account quality and longevity.' },
+    { q: 'What payment methods do you accept?', a: 'We accept multiple secure payment methods including Cryptocurrency (Bitcoin, USDT, Ethereum), PayPal, and other digital payment platforms for your convenience.' },
+    { q: 'Do you offer a refund or replacement?', a: 'Yes! We offer a replacement guarantee for any account that does not work upon delivery. Please contact our support team within 24 hours of purchase if you encounter any issues.' },
+    { q: 'Can I use these accounts for business purposes?', a: 'Our accounts are designed for legitimate business use including marketing, advertising, social media management, and research purposes. Please use them responsibly and in compliance with platform terms.' },
+    { q: 'How do I contact support?', a: 'You can reach our 24/7 support team via WhatsApp, Telegram, or Email. We typically respond within minutes during business hours.' },
+    { q: 'Are bulk orders available?', a: 'Yes, we offer bulk pricing for large orders. Contact our support team for custom quotes and enterprise solutions tailored to your needs.' },
+    { q: 'Is my personal information safe?', a: 'Absolutely. We follow strict privacy policies and never share your personal information with third parties. All transactions are encrypted and securely processed.' }
+];
+const faqJsonLd = { "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": faqItems.map(f => ({ "@type": "Question", "name": f.q, "acceptedAnswer": { "@type": "Answer", "text": f.a } })) };
+const faqHtml = faqItems.map(f => `
+    <details class="group bg-[#1E293B]/60 border border-white/5 rounded-2xl overflow-hidden hover:border-cyan-500/30 transition-all">
+        <summary class="flex items-center justify-between cursor-pointer p-6 md:p-8 text-white font-bold text-lg select-none list-none">
+            <span>${f.q}</span>
+            <i data-lucide="chevron-down" class="w-5 h-5 text-cyan-400 shrink-0 ml-4 group-open:rotate-180 transition-transform"></i>
+        </summary>
+        <div class="px-6 pb-6 md:px-8 md:pb-8 text-slate-400 leading-relaxed border-t border-white/5 pt-4">${f.a}</div>
+    </details>
+`).join('\n');
+buildStaticPage('faq', 'Frequently Asked Questions', 'Find answers to common questions about PVA accounts, delivery, payments, refunds, and more at BestPVAShop.', `
+    <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Common <span class="text-cyan-400">Questions</span></h2>
+        <p class="text-slate-400 max-w-2xl mx-auto">Everything you need to know about our services. Can't find what you're looking for? Contact our 24/7 support team.</p>
+    </div>
+    <div class="max-w-4xl mx-auto space-y-4 mb-16">${faqHtml}</div>
+    <div class="text-center bg-[#1E293B]/40 border border-white/5 rounded-2xl p-8">
+        <h3 class="text-xl font-bold text-white mb-3">Still Have Questions?</h3>
+        <p class="text-slate-400 mb-6">Our support team is available 24/7 to help you.</p>
+        <a href="/contact/" class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold rounded-xl hover:scale-105 transition-transform">Contact Support <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+    </div>
+`, faqJsonLd);
+
+buildStaticPage('guides', 'Guides & Resources', 'Expert guides, tutorials, and resources for digital marketing, PVA accounts, and growing your online business.', `
+    <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Learn & <span class="text-cyan-400">Grow</span></h2>
+        <p class="text-slate-400 max-w-2xl mx-auto">Explore our knowledge base packed with expert insights, how-to guides, and industry best practices.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+        <a href="/blog/" class="group bg-gradient-to-br from-[#1E293B] to-[#0F172A] border border-white/5 rounded-2xl p-8 hover:border-cyan-500/30 transition-all hover:-translate-y-2">
+            <div class="w-14 h-14 bg-cyan-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-cyan-500/20 transition-colors"><i data-lucide="book-open" class="w-7 h-7 text-cyan-400"></i></div>
+            <h3 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">Blog Articles</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">In-depth articles on PVA accounts, digital marketing strategies, and industry trends.</p>
+        </a>
+        <a href="/faq/" class="group bg-gradient-to-br from-[#1E293B] to-[#0F172A] border border-white/5 rounded-2xl p-8 hover:border-purple-500/30 transition-all hover:-translate-y-2">
+            <div class="w-14 h-14 bg-purple-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-purple-500/20 transition-colors"><i data-lucide="help-circle" class="w-7 h-7 text-purple-400"></i></div>
+            <h3 class="text-xl font-bold text-white mb-3 group-hover:text-purple-400 transition-colors">FAQ</h3>
+            <p class="text-slate-400 text-sm leading-relaxed">Quick answers to the most common questions about our services and policies.</p>
+        </a>
+    </div>
+    <div class="bg-gradient-to-r from-cyan-600/20 to-blue-600/20 border border-cyan-500/20 rounded-2xl p-8 text-center">
+        <h3 class="text-xl font-bold text-white mb-3">Need Personalized Help?</h3>
+        <p class="text-slate-400 mb-6">Our experts can guide you to the perfect solution for your business.</p>
+        <a href="/contact/" class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold rounded-xl hover:scale-105 transition-transform">Talk to an Expert <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+    </div>
+`);
+
+const serviceCategories = categories.map(cat => {
+    const catProds = products.filter(p => p.category === cat.name).slice(0, 4);
+    const prodLinks = catProds.map(p => `<li><a href="/product/${p.slug}/" class="text-slate-400 hover:text-cyan-400 transition-colors text-sm">${p.display_title || p.title}</a></li>`).join('');
+    return `
+        <div class="bg-[#1E293B]/60 border border-white/5 rounded-2xl p-8 hover:border-cyan-500/30 transition-all group">
+            <h3 class="text-xl font-bold text-white mb-4 group-hover:text-cyan-400 transition-colors">${cat.name}</h3>
+            <ul class="space-y-3 mb-6">${prodLinks}</ul>
+            <a href="/categories/${cat.slug}/" class="text-cyan-400 font-bold text-sm hover:underline">View All →</a>
+        </div>
+    `;
+}).join('');
+buildStaticPage('services', 'Our Services', 'Explore 40+ premium digital services including verified PVA accounts, Google Reviews, Facebook accounts, and crypto exchange accounts.', `
+    <div class="text-center mb-16">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Our <span class="text-cyan-400">Services</span></h2>
+        <p class="text-slate-400 max-w-2xl mx-auto">We offer a wide range of premium digital services across multiple platforms. All accounts are verified, secure, and delivered instantly.</p>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">${serviceCategories}</div>
+    <div class="bg-gradient-to-r from-cyan-600/20 to-blue-600/20 border border-cyan-500/20 rounded-2xl p-8 md:p-12 text-center">
+        <h3 class="text-2xl font-bold text-white mb-4">Can't Find What You Need?</h3>
+        <p class="text-slate-300 mb-8">Contact us for custom orders and bulk pricing. We can source almost any verified account.</p>
+        <a href="/contact/" class="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold rounded-xl shadow-lg shadow-cyan-500/20 hover:scale-105 transition-transform">Request Custom Order <i data-lucide="arrow-right" class="w-5 h-5"></i></a>
+    </div>
+`);
+
+const policySidebar = `
+    <div class="md:col-span-1">
+        <div class="bg-[#1E293B]/60 border border-white/5 rounded-2xl p-6 sticky top-24">
+            <h3 class="text-white font-bold mb-4 text-lg">Legal Pages</h3>
+            <nav class="space-y-2">
+                <a href="/policies/privacy-policy/" class="block px-4 py-2.5 rounded-xl text-slate-400 hover:text-cyan-400 hover:bg-white/5 transition-all text-sm font-medium">Privacy Policy</a>
+                <a href="/policies/terms-and-conditions/" class="block px-4 py-2.5 rounded-xl text-slate-400 hover:text-cyan-400 hover:bg-white/5 transition-all text-sm font-medium">Terms & Conditions</a>
+                <a href="/policies/refund-policy/" class="block px-4 py-2.5 rounded-xl text-slate-400 hover:text-cyan-400 hover:bg-white/5 transition-all text-sm font-medium">Refund Policy</a>
+                <a href="/policies/shipping-or-delivery-policy/" class="block px-4 py-2.5 rounded-xl text-slate-400 hover:text-cyan-400 hover:bg-white/5 transition-all text-sm font-medium">Delivery Policy</a>
+            </nav>
+            <div class="mt-6 pt-6 border-t border-white/5">
+                <p class="text-slate-500 text-xs">Last updated: ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
+            </div>
+        </div>
+    </div>
+`;
+function buildPolicyPage(pagePath, title, desc, sections) {
+    const sectionsHtml = sections.map(s => `
+        <div class="mb-10">
+            <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-3"><span class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center shrink-0"><i data-lucide="file-text" class="w-4 h-4 text-cyan-400"></i></span>${s.title}</h2>
+            <div class="text-slate-400 leading-relaxed space-y-3 text-sm">${s.body}</div>
+        </div>
+    `).join('');
+    buildStaticPage(pagePath, title, desc, `
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            ${policySidebar}
+            <div class="md:col-span-3 bg-[#1E293B]/40 border border-white/5 rounded-2xl p-8 md:p-10">${sectionsHtml}</div>
+        </div>
+    `);
+}
+
+buildPolicyPage('policies/privacy-policy', 'Privacy Policy', 'Read the BestPVAShop privacy policy. Learn how we collect, use, and protect your personal information.', [
+    { title: 'Information We Collect', body: '<p>We collect information you provide directly, such as your name, email address, and payment details when placing an order. We also automatically collect certain technical data including your IP address, browser type, and device information to improve our services.</p>' },
+    { title: 'How We Use Your Information', body: '<p>Your information is used to:</p><ul class="list-disc pl-5 space-y-1"><li>Process and deliver your orders</li><li>Communicate order updates and support responses</li><li>Improve our website and services</li><li>Prevent fraud and ensure security</li></ul>' },
+    { title: 'Data Protection', body: '<p>We implement industry-standard security measures including SSL encryption and secure payment processing. Your payment information is never stored on our servers and is processed through trusted third-party payment providers.</p>' },
+    { title: 'Third-Party Sharing', body: '<p>We do not sell, trade, or share your personal information with third parties for marketing purposes. Information may only be shared with payment processors and delivery partners as necessary to fulfill your order.</p>' },
+    { title: 'Cookies', body: '<p>Our website uses essential cookies to ensure proper functionality. These cookies do not track personal information and are necessary for the site to operate correctly.</p>' },
+    { title: 'Your Rights', body: '<p>You have the right to request access to, correction of, or deletion of your personal data at any time. To exercise these rights, please contact our support team via email at <a href="mailto:' + siteConfig.supportEmail + '" class="text-cyan-400 hover:underline">' + siteConfig.supportEmail + '</a>.</p>' },
+    { title: 'Contact Us', body: '<p>If you have questions about this privacy policy, please contact us at <a href="mailto:' + siteConfig.supportEmail + '" class="text-cyan-400 hover:underline">' + siteConfig.supportEmail + '</a>.</p>' }
+]);
+
+buildPolicyPage('policies/terms-and-conditions', 'Terms and Conditions', 'Read the BestPVAShop terms and conditions. Understand the rules and guidelines for using our services.', [
+    { title: 'Acceptance of Terms', body: '<p>By accessing and using BestPVAShop (bestpvashop.com), you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, please do not use our services.</p>' },
+    { title: 'Services Description', body: '<p>BestPVAShop provides digital services including phone-verified accounts (PVA), review management packages, and related digital products. All services are intended for legitimate business, marketing, and research purposes only.</p>' },
+    { title: 'User Responsibilities', body: '<ul class="list-disc pl-5 space-y-1"><li>You must be at least 18 years old to use our services</li><li>You are responsible for maintaining the confidentiality of your account credentials</li><li>You agree to use purchased accounts in compliance with applicable laws and platform terms of service</li><li>You must not use our services for any illegal or unauthorized purpose</li></ul>' },
+    { title: 'Payment Terms', body: '<p>All prices are listed in USD. Payment is required before delivery of any service. We accept cryptocurrency and other secure digital payment methods. All sales are final unless covered by our replacement guarantee.</p>' },
+    { title: 'Intellectual Property', body: '<p>All content on this website, including text, graphics, logos, and images, is the property of BestPVAShop and is protected by applicable intellectual property laws. Unauthorized reproduction is prohibited.</p>' },
+    { title: 'Limitation of Liability', body: '<p>BestPVAShop shall not be liable for any indirect, incidental, or consequential damages arising from the use of our services. Our total liability shall not exceed the amount paid for the specific service in question.</p>' },
+    { title: 'Changes to Terms', body: '<p>We reserve the right to modify these terms at any time. Changes will be effective immediately upon posting to this page. Continued use of our services constitutes acceptance of the updated terms.</p>' }
+]);
+
+buildPolicyPage('policies/refund-policy', 'Refund Policy', 'Read the BestPVAShop refund and replacement policy. Learn about our 24-hour replacement guarantee.', [
+    { title: 'Replacement Guarantee', body: '<p>We stand behind the quality of our products. If any account or service does not work as described upon delivery, we will provide a <strong class="text-white">free replacement</strong> within 24 hours of your purchase.</p>' },
+    { title: 'How to Request a Replacement', body: '<ol class="list-decimal pl-5 space-y-2"><li>Contact our support team within <strong class="text-white">24 hours</strong> of receiving your order</li><li>Provide your order details and a clear description of the issue</li><li>Our team will verify the issue and process your replacement promptly</li></ol>' },
+    { title: 'Eligibility Conditions', body: '<ul class="list-disc pl-5 space-y-1"><li>Replacement requests must be submitted within 24 hours of delivery</li><li>The account must not have been modified, had its password changed, or had recovery information altered</li><li>You must provide evidence of the issue (screenshots if applicable)</li></ul>' },
+    { title: 'Non-Refundable Cases', body: '<ul class="list-disc pl-5 space-y-1"><li>Accounts that were working at delivery but were later suspended due to user actions</li><li>Requests made after the 24-hour replacement window</li><li>Services that have been fully delivered and used as intended</li></ul>' },
+    { title: 'Contact for Refund Requests', body: '<p>For all replacement and refund inquiries, please contact our support team via <a href="https://wa.me/' + (siteConfig.whatsapp || '').replace(/[^0-9]/g, '') + '" class="text-green-400 hover:underline">WhatsApp</a> or <a href="mailto:' + siteConfig.supportEmail + '" class="text-cyan-400 hover:underline">Email</a>. We aim to resolve all issues within 12 hours.</p>' }
+]);
+
+buildPolicyPage('policies/shipping-or-delivery-policy', 'Shipping and Delivery Policy', 'Read the BestPVAShop delivery policy. All digital products are delivered instantly via email after payment.', [
+    { title: 'Digital Delivery', body: '<p>All our products and services are <strong class="text-white">100% digital</strong>. There is no physical shipping involved. You will receive your account credentials, login details, or service confirmation directly via email after payment.</p>' },
+    { title: 'Delivery Timeframe', body: '<ul class="list-disc pl-5 space-y-1"><li><strong class="text-white">Instant Delivery:</strong> Most orders are delivered automatically within minutes of payment confirmation</li><li><strong class="text-white">Standard Delivery:</strong> Some specialized or bulk orders may take up to 24 hours</li><li><strong class="text-white">Custom Orders:</strong> Large or custom orders will have delivery timelines communicated individually</li></ul>' },
+    { title: 'Delivery Method', body: '<p>Order details are delivered to the email address provided during checkout. Please ensure your email address is correct and check your spam/junk folder if you do not receive your order within the expected timeframe.</p>' },
+    { title: 'Order Confirmation', body: '<p>You will receive an order confirmation immediately after payment. If you do not receive a confirmation, please contact our support team with your payment details for verification.</p>' },
+    { title: 'Delivery Issues', body: '<p>If you experience any issues with delivery, please contact our 24/7 support team immediately via <a href="https://wa.me/' + (siteConfig.whatsapp || '').replace(/[^0-9]/g, '') + '" class="text-green-400 hover:underline">WhatsApp</a>, <a href="https://t.me/' + (siteConfig.telegram || '').replace('@', '') + '" class="text-blue-400 hover:underline">Telegram</a>, or <a href="mailto:' + siteConfig.supportEmail + '" class="text-cyan-400 hover:underline">Email</a>.</p>' }
+]);
 
 // --- 5. Generate Robots & Sitemap ---
 console.log("Building Visual Sitemap Page...");
@@ -1536,6 +1907,21 @@ sitemap += '  </url>\n';
 sitemap += '</urlset>';
 fs.writeFileSync('sitemap.xml', sitemap);
 console.log("sitemap.xml and sitemap.html created.");
+
+// Generate RSS Feed for Top 10 Newest Products
+products.slice(-10).forEach(product => {
+    rssFeed += `
+  <item>
+    <title>${escapeXml(product.title)}</title>
+    <link>${getDynamicUrl('product', product.slug)}</link>
+    <description>${escapeXml(product.short_description || product.description || product.title)}</description>
+    <pubDate>${new Date().toUTCString()}</pubDate>
+  </item>
+`;
+});
+rssFeed += `</channel>\n</rss>`;
+fs.writeFileSync('feed.xml', rssFeed);
+console.log("feed.xml created.");
 
 const robots = `User-agent: *
 Allow: /

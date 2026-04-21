@@ -1,4 +1,6 @@
-node_modules/
+service_account.json.json
+service_account*.json
+ node_modules/
 .DS_Store
 Thumbs.db
 *.log
