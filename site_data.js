@@ -173,6 +173,43 @@ var landingPageData = {
 // All 41 Products Data
 var products = [
     {
+        "id": 43,
+        "active": true,
+        "title": "Premium Tinder Account – Verified & Ready to Use",
+        "display_title": "Tinder Account",
+        "slug": "premium-tinder-account-verified--ready-to-use",
+        "category": "Accounts",
+        "image": "",
+        "image_title": "Tinder Account – Instant Delivery | Buy with Confidence",
+        "min_price": 13,
+        "max_price": 110,
+        "badge_color": "blue",
+        "is_sale": true,
+        "short_description": "Get a fully configured Tinder account with instant delivery. Whether you need it for app testing, QA workflows, or onboarding simulations — BestPVAShop lets you buy verified accounts safely and securely.",
+        "meta_description": "Want to buy a Tinder account for testing or app development? BestPVAShop offers verified, pre-configured Tinder accounts with instant delivery, replacement guarantee & 24/7 support. Starting from just $13.00 – order yours today!",
+        "features": [
+            " Pre-configured profile ready for immediate use",
+            "  Email and phone number verification completed",
+            "  App onboarding and profile setup observation",
+            "  Suitable for QA, testing and training scenarios",
+            "  Controlled and secure account delivery process",
+            "  Worldwide region access for geo-specific testing",
+            "  Instant delivery of credentials via email",
+            "  Replacement guarantee on first login failure",
+            "  24/7 support via WhatsApp, Telegram and Email",
+            "  No success or outcome guarantees"
+        ],
+        "pricing": [
+            "01 Tinder Accounts Only $13",
+            "01 Verifide New Tinder Accounts Only $65",
+            "01 Verifide Old Tinder Accounts Only $110",
+            "05 Tinder Accounts Only $60"
+        ],
+        "long_description": "<p>Looking to buy a reliable Tinder account for development, testing,&nbsp;or workflow automation? BestPVAShop offers pre-verified Tinder&nbsp;accounts designed for professionals who need stable, ready-to-use&nbsp;profiles without the hassle of manual setup.</p><p><br></p><p>Each account is carefully configured to support:</p><p>- App behavior testing and QA analysis</p><p>- Onboarding flow observation and UX research</p><p>- Profile setup simulation in controlled environments</p><p>- Training and demo scenarios</p><p><br></p><p>Why choose BestPVAShop for your Tinder account needs?</p><p><br></p><p>✔ Pre-configured &amp; Verified</p><p>Every account goes through a strict quality check before delivery,&nbsp;ensuring you receive a stable, functional profile ready for&nbsp;immediate use.</p><p><br></p><p>✔ Instant Delivery</p><p>Once your payment is confirmed, account credentials are delivered&nbsp;directly to your email — no waiting, no delays.</p><p><br></p><p>✔ Replacement Guarantee</p><p>If your account doesn't work upon first login as described,&nbsp;we offer a hassle-free replacement — no questions asked.</p><p><br></p><p>✔ Safe &amp; Controlled Delivery</p><p>Accounts are created using unique IP addresses and real device&nbsp;fingerprints, ensuring maximum stability and a natural account&nbsp;history.</p><p><br></p><p>✔ 24/7 Support</p><p>Our team is available around the clock via WhatsApp, Telegram,&nbsp;and Email to assist with any queries.</p><p><br></p><p>Pricing starts at $13.00 — select your preferred package option&nbsp;above and place your order today.</p><p><br></p><p>Note: All accounts are intended strictly for testing, research,&nbsp;and controlled workflow use. BestPVAShop does not guarantee&nbsp;any specific outcomes or results from account usage.</p>",
+        "related_ids": [],
+        "seo_title": "Verified Tinder Account – Ready to Use | Buy Instantly | BestPVAShop"
+    },
+    {
         "id": 42,
         "active": true,
         "title": "Negative Google Review Simulation",
