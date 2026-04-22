@@ -36,7 +36,8 @@ var categories = [
             "Google Maps Reviews",
             "Google Ads Accounts",
             "GitHub Account",
-            "Google Reviews"
+            "Google Reviews",
+            "Negative Google Review"
         ]
     },
     {
@@ -171,6 +172,27 @@ var landingPageData = {
 
 // All 41 Products Data
 var products = [
+    {
+        "id": 42,
+        "active": true,
+        "title": "Negative Google Review Simulation",
+        "display_title": "Negative Google Review",
+        "slug": "negative-google-reviews-simulation",
+        "category": "Google",
+        "image": "",
+        "image_title": "Negative Google Review Simulation",
+        "min_price": 25,
+        "max_price": 1350,
+        "badge_color": "blue",
+        "is_sale": true,
+        "short_description": "",
+        "meta_description": "",
+        "features": [],
+        "pricing": [],
+        "long_description": "<p><br></p>",
+        "related_ids": [],
+        "seo_title": ""
+    },
     {
         "id": 1,
         "title": "Buy Google Reviews",
