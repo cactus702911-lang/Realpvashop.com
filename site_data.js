@@ -1,24 +1,25 @@
-// site_data.js
+﻿// site_data.js
 
 // --- Site Configuration (CMS Data) ---
 var siteConfig = {
     "siteTitle": "Real PVA Shop",
-    "metaDescription": "Boost Your Digital Presence With Real Accounts. Get verified accounts and authentic reviews instantly. Secure, fast, and reliable services.",
-    "logoText": "🛒 RealPVAShop",
+    "metaDescription": "Boost your online business using genuine real accounts. Get real reviews and secure, high-quality accounts—delivered instantly.\n",
+    "logoText": "Real PVA Shop",
     "logoBadge": "🔥",
-    "heroTitle": "Empower Your Digital Growth with <span class='text-transparent bg-clip-text bg-gradient-to-r from-cyan-600 to-blue-600 text-glow'>Verified Accounts</span>",
-    "heroSubtitle": "Scale your online presence with high-quality, phone-verified accounts and authentic reviews. Reliable, secure, and ready for immediate use.",
+    "heroTitle": "Boost Your <span class='text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 text-glow typing-text'>Online Business</span> <br/>Using Genuine Real Accounts",
+    "heroSubtitle": "Get real reviews and secure, high-quality accounts—delivered instantly.",
     "heroButtonText": "Explore Services",
     "heroButtonLink": "#products-section",
     "supportEmail": "support@realpvashop.com",
     "whatsapp": "+1(548)580-1949",
-    "telegram": "RealPVAShops",
+    "telegram": "bestpvashops",
     "themeColor": "#FFFFFF",
     "popupTitle": "",
     "popupMessage": "",
-    "faviconUrl": "",
-    "logoUrl": "",
-    "analyticsId": "G-KFPRTJHYQ8"
+    "faviconUrl": "/favicon.svg",
+    "logoUrl": "/favicon.svg",
+    "analyticsId": "",
+    "redirects": []
 };
 
 // Categories (Header)
