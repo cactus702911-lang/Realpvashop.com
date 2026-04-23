@@ -1933,13 +1933,16 @@ sitemap += '</urlset>';
 fs.writeFileSync('sitemap.xml', sitemap);
 console.log("sitemap.xml and sitemap.html created.");
 
-// Generate RSS Feed for Top 10 Newest Products
-products.slice(-10).forEach(product => {
+// --- Generate RSS Feed (Newest Products & Blogs) ---
+// Sort products by ID descending to get the newest ones first
+const newestProducts = [...products].sort((a, b) => (b.id || 0) - (a.id || 0)).slice(0, 20);
+
+newestProducts.forEach(product => {
     rssFeed += `
   <item>
     <title>${escapeXml(product.title)}</title>
     <link>${getDynamicUrl('product', product.slug)}</link>
-    <description>${escapeXml(product.short_description || product.description || product.title)}</description>
+    <description>${escapeXml(product.short_description || product.title)}</description>
     <pubDate>${new Date().toUTCString()}</pubDate>
   </item>
 `;
@@ -1971,7 +1974,6 @@ try {
 } catch (err) {
     console.warn("Failed to update .htaccess:", err.message);
 }
-console.log("feed.xml created.");
 
 const robots = `User-agent: *
 Allow: /
