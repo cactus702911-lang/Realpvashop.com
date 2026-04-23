@@ -50,11 +50,11 @@ function initUI() {
                 noResults.id = 'no-results-message';
                 noResults.className = 'col-span-full py-20 text-center';
                 noResults.innerHTML = `
-                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-800 mb-4">
-                        <i data-lucide="search-x" class="w-8 h-8 text-slate-500"></i>
+                    <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
+                        <i data-lucide="search-x" class="w-8 h-8 text-gray-400"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-2">No results found</h3>
-                    <p class="text-slate-400">Try adjusting your search or category filter</p>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">No results found</h3>
+                    <p class="text-gray-500">Try adjusting your search or category filter</p>
                 `;
                 productGrid.appendChild(noResults);
                 if (window.lucide) window.lucide.createIcons();
@@ -160,8 +160,8 @@ function initUI() {
             const allBtns = tabContainer.querySelectorAll('[id^="tab-btn-"]');
             const allTabs = tabContainer.querySelectorAll('[id^="tab-"]');
 
-            const activeClass = "px-4 md:px-8 py-3 bg-[#1E293B]/50 text-cyan-400 font-bold rounded-t-lg border-t border-x border-white/5 text-sm relative top-[1px] transition-all";
-            const inactiveClass = "px-4 md:px-8 py-3 text-slate-400 hover:text-slate-200 font-medium text-sm transition-colors";
+            const activeClass = "px-4 md:px-8 py-3 bg-gray-100/50 text-cyan-600 font-bold rounded-t-lg border-t border-x border-gray-200 text-sm relative top-[1px] transition-all";
+            const inactiveClass = "px-4 md:px-8 py-3 text-gray-500 hover:text-gray-700 font-medium text-sm transition-colors";
 
             // Update Tabs
             allTabs.forEach(tab => {

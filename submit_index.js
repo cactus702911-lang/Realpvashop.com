@@ -24,7 +24,7 @@ let siteDataContent = fs.readFileSync(path.join(__dirname, 'site_data.js'), 'utf
 // Mocking the browser environment variables if any are used in site_data.js
 let products = [];
 let blogs = [];
-let siteConfig = { baseUrl: 'https://bestpvashop.com/' };
+let siteConfig = { baseUrl: 'https://realpvashop.com/' };
 
 try {
     // Strip `const` or `let` to allow eval into current scope, or just wrap it in a function
@@ -42,7 +42,7 @@ try {
     // This is a safety measure.
 }
 
-const BASE_URL = siteConfig.baseUrl || 'https://bestpvashop.com/';
+const BASE_URL = siteConfig.baseUrl || 'https://realpvashop.com/';
 
 // 3. Generate URLs to index
 function getDynamicUrl(type, slug = '') {

@@ -44,7 +44,7 @@ const gradients = sandbox.gradients || {}; // gradients might be missing or defi
 const redirects = sandbox.redirects || siteConfig.redirects || []; // For 301 redirects
 
 // --- URL Configuration ---
-const baseUrl = siteConfig.baseUrl || 'https://bestpvashop.com/';
+const baseUrl = siteConfig.baseUrl || 'https://realpvashop.com/';
 const paths = siteConfig.pathConfig || {
     product: 'product',
     category: 'categories',
@@ -155,19 +155,19 @@ function generateFooter(products, siteConfig) {
         const catData = categories.find(c => c.name === catName);
         if (!catData || !catData.slug) return '';
         const url = getDynamicUrl('category', catData.slug, false);
-        return `<li><a href="${url}" class="text-slate-400 hover:text-cyan-400 transition-colors text-sm">${catName}</a></li>`;
+        return `<li><a href="${url}" class="text-gray-500 hover:text-cyan-400 transition-colors text-sm">${catName}</a></li>`;
     }).filter(Boolean).join('');
 
     const popularProducts = products.filter(p => p.is_sale).slice(0, 5).map(p => {
         const url = getDynamicUrl('product', p.slug, false);
-        return `<li><a href="${url}" class="text-slate-400 hover:text-cyan-400 transition-colors text-sm">${p.display_title || p.title}</a></li>`;
+        return `<li><a href="${url}" class="text-gray-500 hover:text-cyan-400 transition-colors text-sm">${p.display_title || p.title}</a></li>`;
     }).join('');
 
     const logoContent = siteConfig.logoUrl 
         ? `<img src="${siteConfig.logoUrl}" alt="${siteConfig.logoText || 'Logo'}" class="h-8 w-auto">`
         : `<span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600 font-extrabold text-2xl tracking-tight">{{LOGO_TEXT}}</span>`;
 
-    const siteDomain = (siteConfig.siteTitle || 'BestPVAShop').toLowerCase().replace(/\s+/g, '') + '.com';
+    const siteDomain = (siteConfig.siteTitle || 'RealPVAShop').toLowerCase().replace(/\s+/g, '') + '.com';
 
     return `
         <div class="max-w-7xl mx-auto px-4">
@@ -176,27 +176,27 @@ function generateFooter(products, siteConfig) {
                     <div class="flex items-center gap-2 mb-4">
                         ${logoContent}
                     </div>
-                    <p class="text-slate-500 text-sm leading-relaxed mb-4">
+                    <p class="text-gray-400 text-sm leading-relaxed mb-4">
                         {{META_DESCRIPTION}}
                     </p>
                     <div class="flex gap-3">
-                        <a href="https://facebook.com/${siteDomain.split('.')[0]}" target="_blank" rel="nofollow" class="text-slate-400 hover:text-white transition-colors" aria-label="Facebook"><i data-lucide="facebook" class="w-5 h-5"></i></a>
-                        <a href="https://x.com/${siteDomain.split('.')[0]}" target="_blank" rel="nofollow" class="text-slate-400 hover:text-white transition-colors" aria-label="X (Twitter)"><i data-lucide="twitter" class="w-5 h-5"></i></a>
-                        <a href="https://t.me/${(siteConfig.telegram || '').replace('@','')}" target="_blank" rel="nofollow" class="text-slate-400 hover:text-white transition-colors" aria-label="Telegram"><i data-lucide="send" class="w-5 h-5"></i></a>
+                        <a href="https://facebook.com/${siteDomain.split('.')[0]}" target="_blank" rel="nofollow" class="text-slate-400 hover:text-cyan-400 transition-colors" aria-label="Facebook"><i data-lucide="facebook" class="w-5 h-5"></i></a>
+                        <a href="https://x.com/${siteDomain.split('.')[0]}" target="_blank" rel="nofollow" class="text-slate-400 hover:text-cyan-400 transition-colors" aria-label="X (Twitter)"><i data-lucide="twitter" class="w-5 h-5"></i></a>
+                        <a href="https://t.me/${(siteConfig.telegram || '').replace('@','')}" target="_blank" rel="nofollow" class="text-slate-400 hover:text-cyan-400 transition-colors" aria-label="Telegram"><i data-lucide="send" class="w-5 h-5"></i></a>
                     </div>
                 </div>
                 
                 <div>
                     <h4 class="text-white font-bold mb-4">Categories</h4>
                     <ul class="space-y-2">
-                        ${categoryLinks}
+                        ${categoryLinks.replace(/text-gray-500/g, 'text-slate-400').replace(/hover:text-cyan-400/g, 'hover:text-cyan-300')}
                     </ul>
                 </div>
 
                 <div>
                     <h4 class="text-white font-bold mb-4">Popular Products</h4>
                     <ul class="space-y-2">
-                        ${popularProducts}
+                        ${popularProducts.replace(/text-gray-500/g, 'text-slate-400').replace(/hover:text-cyan-400/g, 'hover:text-cyan-300')}
                     </ul>
                 </div>
 
@@ -205,31 +205,31 @@ function generateFooter(products, siteConfig) {
                     <ul class="space-y-2 text-sm text-slate-400">
                         <li class="flex items-center gap-2">
                             <i data-lucide="mail" class="w-4 h-4 text-cyan-500"></i> 
-                            <a href="mailto:{{SUPPORT_EMAIL}}" class="hover:text-white transition-colors">{{SUPPORT_EMAIL}}</a>
+                            <a href="mailto:{{SUPPORT_EMAIL}}" class="hover:text-cyan-300 transition-colors">{{SUPPORT_EMAIL}}</a>
                         </li>
                         <li class="flex items-center gap-2">
                             <i data-lucide="phone" class="w-4 h-4 text-green-500"></i> 
-                            <a href="{{WHATSAPP_LINK}}" target="_blank" rel="nofollow" class="hover:text-white transition-colors">{{WHATSAPP}}</a>
+                            <a href="{{WHATSAPP_LINK}}" target="_blank" rel="nofollow" class="hover:text-cyan-300 transition-colors">{{WHATSAPP}}</a>
                         </li>
                         <li class="flex items-center gap-2">
                             <i data-lucide="send" class="w-4 h-4 text-blue-500"></i> 
-                            <a href="{{TELEGRAM_LINK}}" target="_blank" rel="nofollow" class="hover:text-white transition-colors">@{{TELEGRAM}}</a>
+                            <a href="{{TELEGRAM_LINK}}" target="_blank" rel="nofollow" class="hover:text-cyan-300 transition-colors">@{{TELEGRAM}}</a>
                         </li>
                     </ul>
                 </div>
             </div>
             
-            <div class="border-t border-white/5 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="border-t border-gray-800 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
                 <p class="text-slate-500 text-sm">Copyright © ${new Date().getFullYear()} ${siteDomain}. All rights reserved.</p>
                 <div class="flex gap-4 text-sm text-slate-500 flex-wrap justify-center">
-                    <a href="${getDynamicUrl('about', '', false)}" class="hover:text-white transition-colors">About</a>
-                    <a href="${getDynamicUrl('contact', '', false)}" class="hover:text-white transition-colors">Contact</a>
-                    <a href="${getDynamicUrl('faq', '', false)}" class="hover:text-white transition-colors">FAQ</a>
-                    <a href="${getDynamicUrl('blog', '', false)}" class="hover:text-white transition-colors">Blog</a>
-                    <a href="${getDynamicUrl('policies/privacy-policy', '', false)}" class="hover:text-white transition-colors">Privacy Policy</a>
-                    <a href="${getDynamicUrl('policies/terms-and-conditions', '', false)}" class="hover:text-white transition-colors">Terms of Service</a>
-                    <a href="${getDynamicUrl('policies/refund-policy', '', false)}" class="hover:text-white transition-colors">Refund Policy</a>
-                    <a href="${getDynamicUrl('policies/shipping-or-delivery-policy', '', false)}" class="hover:text-white transition-colors">Shipping Policy</a>
+                    <a href="${getDynamicUrl('about', '', false)}" class="hover:text-cyan-400 transition-colors">About</a>
+                    <a href="${getDynamicUrl('contact', '', false)}" class="hover:text-cyan-400 transition-colors">Contact</a>
+                    <a href="${getDynamicUrl('faq', '', false)}" class="hover:text-cyan-400 transition-colors">FAQ</a>
+                    <a href="${getDynamicUrl('blog', '', false)}" class="hover:text-cyan-400 transition-colors">Blog</a>
+                    <a href="${getDynamicUrl('policies/privacy-policy', '', false)}" class="hover:text-cyan-400 transition-colors">Privacy Policy</a>
+                    <a href="${getDynamicUrl('policies/terms-and-conditions', '', false)}" class="hover:text-cyan-400 transition-colors">Terms of Service</a>
+                    <a href="${getDynamicUrl('policies/refund-policy', '', false)}" class="hover:text-cyan-400 transition-colors">Refund Policy</a>
+                    <a href="${getDynamicUrl('policies/shipping-or-delivery-policy', '', false)}" class="hover:text-cyan-400 transition-colors">Shipping Policy</a>
                 </div>
             </div>
         </div>
@@ -242,18 +242,18 @@ function generateLatestArticlesHtml(blogs) {
     if (!blogs || blogs.length === 0) return '';
     const latest = blogs.slice(0, 3);
     const cards = latest.map(b => `
-        <div class="group relative flex flex-col items-start bg-[#1E293B]/50 p-6 rounded-2xl border border-white/5 hover:border-cyan-500/30 transition-all">
+        <div class="group relative flex flex-col items-start bg-gray-100/50 p-6 rounded-2xl border border-gray-200 hover:border-cyan-500/30 transition-all">
             <div class="flex items-center gap-x-4 text-xs mb-3">
-                <time datetime="${b.date}" class="text-slate-400">${b.date}</time>
+                <time datetime="${b.date}" class="text-gray-500">${b.date}</time>
                 <span class="relative z-10 rounded-full bg-cyan-400/10 px-3 py-1.5 font-medium text-cyan-400">Article</span>
             </div>
-            <h3 class="mt-0 text-lg font-bold leading-6 text-white group-hover:text-cyan-400 transition-colors">
+            <h3 class="mt-0 text-lg font-bold leading-6 text-gray-900 group-hover:text-cyan-400 transition-colors">
                 <a href="${getDynamicUrl('blog', b.slug, false)}">
                     <span class="absolute inset-0"></span>
                     ${b.title}
                 </a>
             </h3>
-            <p class="mt-2 line-clamp-3 text-sm leading-6 text-slate-400">${b.excerpt}</p>
+            <p class="mt-2 line-clamp-3 text-sm leading-6 text-gray-500">${b.excerpt}</p>
             <div class="mt-4 flex items-center gap-1 text-cyan-400 text-sm font-bold">
                 Read More <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </div>
@@ -261,12 +261,12 @@ function generateLatestArticlesHtml(blogs) {
     `).join('');
 
     return `
-    <section class="py-16 bg-[#0B1120] border-t border-white/5">
+    <section class="py-16 bg-white border-t border-gray-200">
         <div class="mx-auto max-w-7xl px-4">
             <div class="flex items-center justify-between mb-10">
                 <div>
-                    <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">Latest <span class="text-cyan-400">Articles</span></h2>
-                    <p class="mt-2 text-lg leading-8 text-slate-400">Expert tips and guides for your digital growth.</p>
+                    <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Latest <span class="text-cyan-400">Articles</span></h2>
+                    <p class="mt-2 text-lg leading-8 text-gray-500">Expert tips and guides for your digital growth.</p>
                 </div>
                 <a href="${getDynamicUrl('blog', '', false)}" class="hidden sm:flex items-center gap-1 text-cyan-400 font-bold hover:text-cyan-300 transition-colors">View All <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></a>
             </div>
@@ -310,14 +310,14 @@ function generateRelatedArticlesHtml(product, blogs) {
     const cards = displayBlogs.map(b => {
         const url = getDynamicUrl('blog', b.slug, false);
         return `
-        <div class="group relative flex flex-col items-start bg-[#1E293B] p-6 rounded-2xl border border-white/5 hover:border-cyan-500/30 transition-all">
-            <h3 class="text-lg font-bold leading-6 text-white group-hover:text-cyan-400 transition-colors">
+        <div class="group relative flex flex-col items-start bg-gray-100 p-6 rounded-2xl border border-gray-200 hover:border-cyan-500/30 transition-all">
+            <h3 class="text-lg font-bold leading-6 text-gray-900 group-hover:text-cyan-400 transition-colors">
                 <a href="${url}">
                     <span class="absolute inset-0"></span>
                     ${b.title}
                 </a>
             </h3>
-            <p class="mt-2 line-clamp-2 text-sm leading-6 text-slate-400">${b.excerpt}</p>
+            <p class="mt-2 line-clamp-2 text-sm leading-6 text-gray-500">${b.excerpt}</p>
              <div class="mt-4 text-cyan-400 text-xs font-bold uppercase tracking-wider flex items-center gap-1">
                 Read Article <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
             </div>
@@ -325,9 +325,9 @@ function generateRelatedArticlesHtml(product, blogs) {
     `}).join('');
 
     return `
-    <div class="mt-16 border-t border-white/5 pt-12">
+    <div class="mt-16 border-t border-gray-200 pt-12">
         <div class="flex items-center justify-between mb-8">
-            <h2 class="text-2xl font-bold text-white">${title}</h2>
+            <h2 class="text-2xl font-bold text-gray-900">${title}</h2>
             <a href="${getDynamicUrl('blog', '', false)}" class="text-cyan-400 text-sm font-bold hover:underline">View Blog</a>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -364,11 +364,11 @@ function replaceGlobalPlaceholders(html, siteConfig) {
     output = output.replace(/{{WHATSAPP_LINK}}/g, `https://wa.me/${(siteConfig.whatsapp || '').replace(/[^0-9]/g, '')}`);
     output = output.replace(/{{TELEGRAM_LINK}}/g, `https://t.me/${(siteConfig.telegram || '').replace('@', '')}`);
     output = output.replace(/{{SUPPORT_EMAIL}}/g, siteConfig.supportEmail || '');
-    output = output.replace(/{{SITE_TITLE}}/g, siteConfig.siteTitle || 'BestPVAShop');
-    output = output.replace(/{{SITE_NAME}}/g, siteConfig.siteTitle || 'BestPVAShop');
-    output = output.replace(/{{SITE_DOMAIN}}/g, (siteConfig.siteTitle || 'BestPVAShop').toLowerCase().replace(/\s+/g, '') + '.com');
+    output = output.replace(/{{SITE_TITLE}}/g, siteConfig.siteTitle || 'RealPVAShop');
+    output = output.replace(/{{SITE_NAME}}/g, siteConfig.siteTitle || 'RealPVAShop');
+    output = output.replace(/{{SITE_DOMAIN}}/g, (siteConfig.siteTitle || 'RealPVAShop').toLowerCase().replace(/\s+/g, '') + '.com');
     output = output.replace(/{{META_DESCRIPTION}}/g, siteConfig.metaDescription || '');
-    output = output.replace(/{{LOGO_TEXT}}/g, siteConfig.logoText || 'BestPVAShop');
+    output = output.replace(/{{LOGO_TEXT}}/g, siteConfig.logoText || 'RealPVAShop');
     output = output.replace(/{{LOGO_BADGE}}/g, siteConfig.logoBadge || '');
     output = output.replace(/{{FAVICON_URL}}/g, siteConfig.faviconUrl || '/favicon.svg');
     output = output.replace(/{{LOGO_URL}}/g, siteConfig.logoUrl || '/favicon.svg');
@@ -421,7 +421,7 @@ function renderStars(rating = 5, sizeClass = "w-4 h-4") {
         const isFull = i <= rating;
         const color = isFull ? '#facc15' : 'currentColor';
         const fill = isFull ? '#facc15' : 'none';
-        const textClass = isFull ? 'text-yellow-400' : 'text-slate-600';
+        const textClass = isFull ? 'text-yellow-400' : 'text-gray-300';
         html += `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="${fill}" stroke="${color}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-star ${sizeClass} ${textClass}"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`;
     }
     return html;
@@ -500,7 +500,7 @@ function renderProductCard(product, basePath = '/', isPriority = false) {
     const overlayLayerHtml = fullImgUrl ? '' : `<div class="absolute inset-0 ${overlayClass} transition-colors duration-300"></div>`;
     const overlayTextHtml = fullImgUrl ? '' : `
             <div class="absolute top-3 left-3 bg-red-500/90 backdrop-blur-md border border-white/20 text-white text-xs font-bold px-3 py-1.5 rounded flex items-center gap-1 shadow-lg z-10">
-                <span class="text-yellow-300 text-sm">Sale!</span> BestPVAShop
+                <span class="text-yellow-300 text-sm">Sale!</span> RealPVAShop
             </div>
             
             <h3 class="text-xl font-bold leading-tight text-white mb-4 drop-shadow-lg z-10 relative">${overlayTitle}</h3>
@@ -511,7 +511,7 @@ function renderProductCard(product, basePath = '/', isPriority = false) {
     `;
     
     return `
-    <div class="card-glow bg-[#1E293B] rounded-2xl border border-white/5 overflow-hidden transition-all duration-300 group hover:-translate-y-2" style="content-visibility: auto; contain-intrinsic-size: 0 350px;">
+    <div class="card-glow bg-gray-100 rounded-2xl border border-gray-200 overflow-hidden transition-all duration-300 group hover:-translate-y-2" style="content-visibility: auto; contain-intrinsic-size: 0 350px;">
         <div role="img" aria-label="${product.image_title || product.title}" class="relative p-6 h-52 flex flex-col items-center justify-center text-center overflow-hidden" style="background-color: ${solidColor};">
             ${imageHtml}
             ${overlayLayerHtml}
@@ -526,13 +526,13 @@ function renderProductCard(product, basePath = '/', isPriority = false) {
                 </div>
             </div>
             
-            <a href="${productUrl}" class="font-bold text-slate-100 mb-3 text-sm hover:text-cyan-400 transition-colors block line-clamp-2 min-h-[40px]">
+            <a href="${productUrl}" class="font-bold text-gray-800 mb-3 text-sm hover:text-cyan-600 transition-colors block line-clamp-2 min-h-[40px]">
                 ${overlayTitle}
             </a>
             
             <div class="flex items-center justify-between mb-5">
-                <p class="text-slate-400 text-xs">Starting from</p>
-                <p class="text-white font-extrabold text-lg">
+                <p class="text-gray-500 text-xs">Starting from</p>
+                <p class="text-gray-900 font-extrabold text-lg">
                     $${product.min_price.toFixed(2)}
                 </p>
             </div>
@@ -549,48 +549,48 @@ function generateRichDescription(product) {
     
     const productName = product.title;
     return `
-        <h2 class="text-xl md:text-2xl font-bold text-white mb-4">Why You Need ${productName} for Your Business</h2>
+        <h2 class="text-xl md:text-2xl font-bold text-gray-900 mb-4">Why You Need ${productName} for Your Business</h2>
         <p class="mb-4">
             In the modern digital landscape, having a reliable <strong>${productName}</strong> is essential for building trust and scaling operations. 
             Whether you are a startup, an established agency, or an individual marketer, high-quality verified accounts and authentic reviews provide the stability you need. 
-            At <strong class="text-cyan-400">BestPVAShop</strong>, we supply premium ${productName} that are fully verified and ready to deploy. 
+            At <strong class="text-cyan-400">RealPVAShop</strong>, we supply premium ${productName} that are fully verified and ready to deploy. 
         </p>
 
-        <h3 class="text-lg font-bold text-white mb-3 mt-8">Core Benefits of ${productName}</h3>
+        <h3 class="text-lg font-bold text-gray-900 mb-3 mt-8">Core Benefits of ${productName}</h3>
         <p class="mb-4">
             Authenticity and reliability dictate online success. Utilizing ${productName} ensures your business can operate smoothly across platforms without unexpected disruptions.
         </p>
-        <ul class="list-disc pl-5 space-y-2 mb-6 text-slate-300">
+        <ul class="list-disc pl-5 space-y-2 mb-6 text-gray-600">
             <li><strong>Instant Operational Readiness:</strong> Skip the lengthy verification steps and begin immediately.</li>
             <li><strong>Enhanced Trust Signals:</strong> Our ${productName} provides immediate authority to your profile.</li>
             <li><strong>Platform Security:</strong> Created with clean IPs and unique device fingerprints to reduce suspension risks.</li>
         </ul>
 
-        <h3 class="text-lg font-bold text-white mb-3 mt-8">How We Ensure Quality for ${productName}</h3>
+        <h3 class="text-lg font-bold text-gray-900 mb-3 mt-8">How We Ensure Quality for ${productName}</h3>
         <p class="mb-4">
             Security and longevity are our top priorities. When you buy ${productName} from us, you receive a meticulously crafted asset. 
             We use residential proxies, verified phone numbers, and aged profiles where applicable, making our ${productName} indistinguishable from natural user accounts.
         </p>
 
-        <h3 class="text-lg font-bold text-white mb-3 mt-8">Frequently Asked Questions about ${productName}</h3>
+        <h3 class="text-lg font-bold text-gray-900 mb-3 mt-8">Frequently Asked Questions about ${productName}</h3>
         <div class="space-y-4 mb-6">
-            <div class="bg-[#1E293B]/50 p-4 rounded-xl border border-white/5">
-                <h4 class="font-bold text-white mb-1">Is ${productName} safe for my main business?</h4>
-                <p class="text-slate-400 text-sm">Yes, our ${productName} is generated following strict security protocols to ensure it is completely safe to integrate with your existing workflows.</p>
+            <div class="bg-gray-100/50 p-4 rounded-xl border border-gray-200">
+                <h4 class="font-bold text-gray-900 mb-1">Is ${productName} safe for my main business?</h4>
+                <p class="text-gray-500 text-sm">Yes, our ${productName} is generated following strict security protocols to ensure it is completely safe to integrate with your existing workflows.</p>
             </div>
-            <div class="bg-[#1E293B]/50 p-4 rounded-xl border border-white/5">
-                <h4 class="font-bold text-white mb-1">How quickly will I receive my ${productName}?</h4>
-                <p class="text-slate-400 text-sm">Delivery is typically instant or within a few hours depending on the stock and current network conditions.</p>
+            <div class="bg-gray-100/50 p-4 rounded-xl border border-gray-200">
+                <h4 class="font-bold text-gray-900 mb-1">How quickly will I receive my ${productName}?</h4>
+                <p class="text-gray-500 text-sm">Delivery is typically instant or within a few hours depending on the stock and current network conditions.</p>
             </div>
-            <div class="bg-[#1E293B]/50 p-4 rounded-xl border border-white/5">
-                <h4 class="font-bold text-white mb-1">Do you offer a warranty on ${productName}?</h4>
-                <p class="text-slate-400 text-sm">Absolutely. If your ${productName} does not work on the first login as described, we will replace it free of charge.</p>
+            <div class="bg-gray-100/50 p-4 rounded-xl border border-gray-200">
+                <h4 class="font-bold text-gray-900 mb-1">Do you offer a warranty on ${productName}?</h4>
+                <p class="text-gray-500 text-sm">Absolutely. If your ${productName} does not work on the first login as described, we will replace it free of charge.</p>
             </div>
         </div>
 
-        <h3 class="text-lg font-bold text-white mb-3 mt-8">Secure Your ${productName} Today</h3>
+        <h3 class="text-lg font-bold text-gray-900 mb-3 mt-8">Secure Your ${productName} Today</h3>
         <p class="mb-4">
-            Don't let verification hurdles slow down your growth. Buying a ${productName} from BestPVAShop is a strategic investment in your digital infrastructure. 
+            Don't let verification hurdles slow down your growth. Buying a ${productName} from RealPVAShop is a strategic investment in your digital infrastructure. 
             Select your package above and experience seamless delivery and 24/7 dedicated support.
         </p>
     `;
@@ -600,22 +600,22 @@ function generateFullHeader(unused_basePath, products, categories, siteConfig) {
     let header = fs.readFileSync('header_partial.html', 'utf8');
     
     // 1. Populate Desktop Nav
-    let desktopNavHtml = `<a href="/" class="text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors text-sm font-medium px-4 py-2">Shop</a>`;
+    let desktopNavHtml = `<a href="/" class="text-gray-600 hover:text-cyan-600 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium px-4 py-2">Shop</a>`;
     
     categories.forEach(cat => {
         const catItemsHtml = cat.items.map(item => {
             const p = products.find(prod => prod.slug === item || prod.title === item || prod.image_title === item || prod.display_title === item);
             const url = p ? getDynamicUrl('product', p.slug, false) : '#';
             const displayText = p ? (p.display_title || p.title) : item;
-            return `<a href="${url}" class="block px-4 py-2.5 text-sm text-slate-400 hover:text-cyan-400 hover:bg-white/5 transition-colors">${displayText}</a>`;
+            return `<a href="${url}" class="block px-4 py-2.5 text-sm text-gray-500 hover:text-cyan-400 hover:bg-gray-100 transition-colors">${displayText}</a>`;
         }).join('');
 
         desktopNavHtml += `
             <div class="relative group px-3 py-2">
-                <button class="text-slate-300 group-hover:text-cyan-400 text-sm font-medium flex items-center gap-1 transition-colors">
+                <button class="text-gray-600 group-hover:text-cyan-400 text-sm font-medium flex items-center gap-1 transition-colors">
                     ${cat.name} <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 opacity-50 group-hover:opacity-100 transition-opacity"><path d="m6 9 6 6 6-6"/></svg>
                 </button>
-                <div class="absolute left-0 mt-2 w-56 bg-[#0F172A] border border-white/10 rounded-xl shadow-2xl py-2 hidden group-hover:block z-50 backdrop-blur-xl max-h-96 overflow-y-auto">
+                <div class="absolute left-0 mt-2 w-56 bg-white border border-gray-200 rounded-xl shadow-xl py-2 hidden group-hover:block z-50 backdrop-blur-xl max-h-96 overflow-y-auto">
                     ${catItemsHtml}
                 </div>
             </div>
@@ -623,12 +623,12 @@ function generateFullHeader(unused_basePath, products, categories, siteConfig) {
     });
 
     desktopNavHtml += `
-        <a href="${getDynamicUrl('blog', '', false)}" class="text-slate-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors text-sm font-medium px-4 py-2">Blog</a>
+        <a href="${getDynamicUrl('blog', '', false)}" class="text-gray-600 hover:text-cyan-600 hover:bg-gray-100 rounded-lg transition-colors text-sm font-medium px-4 py-2">Blog</a>
     `;
 
     // 2. Populate Mobile Nav
     let mobileNavHtml = `
-        <a href="${getDynamicUrl('blog', '', false)}" class="block px-4 py-3 text-white font-bold bg-gradient-to-r from-cyan-600/20 to-blue-600/20 border border-cyan-500/30 rounded-xl mb-4 hover:bg-white/5 transition-all">
+        <a href="${getDynamicUrl('blog', '', false)}" class="block px-4 py-3 text-gray-900 font-bold bg-gradient-to-r from-cyan-600/20 to-blue-600/20 border border-cyan-500/30 rounded-xl mb-4 hover:bg-gray-100 transition-all">
             <span class="flex items-center gap-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-cyan-400"><path d="M2 3h6a4 4 0 0 1 4 4v14a4 4 0 0 0-4-4H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a4 4 0 0 1 4-4h6z"/></svg> Blog</span>
         </a>
     `;
@@ -640,16 +640,16 @@ function generateFullHeader(unused_basePath, products, categories, siteConfig) {
             const p = products.find(prod => prod.slug === item || prod.title === item || prod.image_title === item || prod.display_title === item);
             const url = p ? getDynamicUrl('product', p.slug, false) : '#';
             const displayText = p ? (p.display_title || p.title) : item;
-            return `<a href="${url}" class="block px-4 py-2 text-slate-400 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-colors text-sm">${displayText}</a>`;
+            return `<a href="${url}" class="block px-4 py-2 text-gray-500 hover:text-cyan-400 hover:bg-gray-100 rounded-lg transition-colors text-sm">${displayText}</a>`;
         }).join('');
 
         mobileNavHtml += `
             <div class="mb-2">
-                <button class="mobile-cat-toggle w-full flex items-center justify-between px-4 py-3 text-slate-300 hover:text-cyan-400 hover:bg-white/5 rounded-xl transition-all" data-cat="${catSlug}">
+                <button class="mobile-cat-toggle w-full flex items-center justify-between px-4 py-3 text-gray-600 hover:text-cyan-400 hover:bg-gray-100 rounded-xl transition-all" data-cat="${catSlug}">
                     <span class="font-bold text-sm tracking-wide uppercase">${cat.name}</span>
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 transition-transform duration-200"><path d="m6 9 6 6 6-6"/></svg>
                 </button>
-                <div id="mobile-items-${catSlug}" class="hidden space-y-1 mt-1 ml-4 border-l border-white/10 pl-2">
+                <div id="mobile-items-${catSlug}" class="hidden space-y-1 mt-1 ml-4 border-l border-gray-200 pl-2">
                     <a href="${getDynamicUrl('category', catSlug, false)}" class="block px-4 py-2 text-xs font-bold text-cyan-500 hover:text-cyan-400 uppercase tracking-widest">View All ${cat.name}</a>
                     ${catItemsHtml}
                 </div>
@@ -749,7 +749,7 @@ indexHtml = indexHtml.replace(/{{CRITICAL_CSS}}/g, sharedCssTags);
 indexHtml = indexHtml.replace('{{PRODUCT_IMAGE_PRELOAD}}', '');
 
 // Global Placeholders
-indexHtml = indexHtml.replace(/{{CANONICAL_URL}}/g, 'https://bestpvashop.com/');
+indexHtml = indexHtml.replace(/{{CANONICAL_URL}}/g, 'https://realpvashop.com/');
 indexHtml = indexHtml.replace(/{{REL_PATH}}/g, './');
 indexHtml = replaceGlobalPlaceholders(indexHtml, siteConfig);
 
@@ -770,7 +770,7 @@ sitemap += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:im
 let rssFeed = `<?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
-  <title>${escapeXml(siteConfig.siteTitle || 'BestPVAShop')}</title>
+  <title>${escapeXml(siteConfig.siteTitle || 'RealPVAShop')}</title>
   <link>${escapeXml(getDynamicUrl('home'))}</link>
   <description>${escapeXml('Buy verified accounts and digital services')}</description>
   <language>en-us</language>
@@ -806,7 +806,7 @@ uniqueCategories.forEach(cat => {
     catHtml = catHtml.replace('{{HEADER}}', generateFullHeader('../../', products, categories, siteConfig));
     
     // SEO & Hero
-    const catTitle = `${cat} Accounts & Reviews | BestPVAShop`;
+    const catTitle = `${cat} Accounts & Reviews | RealPVAShop`;
     
     // Replace Category Options
     catHtml = catHtml.replace('{{CATEGORY_OPTIONS}}', categoryOptions);
@@ -831,11 +831,11 @@ uniqueCategories.forEach(cat => {
     }).join('\n');
     
     const contentAndGrid = `
-        <div class="max-w-7xl mx-auto px-4 mb-16 prose prose-invert lg:prose-xl">
+        <div class="max-w-7xl mx-auto px-4 mb-16 prose prose lg:prose-xl">
             ${richContent}
         </div>
         <div class="max-w-7xl mx-auto px-4 mb-8">
-            <h3 class="text-2xl font-bold text-white border-l-4 border-cyan-500 pl-4">Available Packages</h3>
+            <h3 class="text-2xl font-bold text-gray-900 border-l-4 border-cyan-500 pl-4">Available Packages</h3>
         </div>
         <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             ${catGrid}
@@ -886,19 +886,19 @@ function generateSidebar(products, blogs) {
                 <img src="${b.image}" alt="${b.title}" class="w-full h-full object-cover opacity-80 hover:opacity-100 transition">
              </div>
              <div>
-                 <a href="${getDynamicUrl('blog', b.slug, false)}" class="text-sm font-bold text-slate-200 hover:text-cyan-400 leading-tight block mb-1">${b.title}</a>
-                 <span class="text-xs text-slate-500">${b.date}</span>
+                 <a href="${getDynamicUrl('blog', b.slug, false)}" class="text-sm font-bold text-gray-700 hover:text-cyan-400 leading-tight block mb-1">${b.title}</a>
+                 <span class="text-xs text-gray-400">${b.date}</span>
              </div>
         </li>
     `).join('');
 
     const bestSellers = products.filter(p => p.is_sale).slice(0, 3).map(p => `
-        <li class="flex items-center gap-3 border-b border-white/5 pb-3 last:border-0 last:pb-0">
-             <div class="w-10 h-10 bg-gradient-to-br ${gradients[p.badge_color] || gradients.blue} rounded-lg flex items-center justify-center text-white font-bold text-xs shrink-0">
+        <li class="flex items-center gap-3 border-b border-gray-200 pb-3 last:border-0 last:pb-0">
+             <div class="w-10 h-10 bg-gradient-to-br ${gradients[p.badge_color] || gradients.blue} rounded-lg flex items-center justify-center text-gray-900 font-bold text-xs shrink-0">
                 ${p.category.substring(0,2).toUpperCase()}
              </div>
              <div>
-                 <a href="${getDynamicUrl('product', p.slug, false)}" class="text-sm font-bold text-slate-200 hover:text-cyan-400 block">${p.title}</a>
+                 <a href="${getDynamicUrl('product', p.slug, false)}" class="text-sm font-bold text-gray-700 hover:text-cyan-400 block">${p.title}</a>
                  <span class="text-xs font-bold text-cyan-500">$${p.min_price}</span>
              </div>
         </li>
@@ -906,16 +906,16 @@ function generateSidebar(products, blogs) {
 
     return `
         <!-- Popular Guides -->
-        <div class="bg-[#1E293B] p-6 rounded-xl border border-white/5">
-            <h3 class="font-bold text-white mb-4 border-b border-white/10 pb-2">Popular Guides</h3>
+        <div class="bg-gray-100 p-6 rounded-xl border border-gray-200">
+            <h3 class="font-bold text-gray-900 mb-4 border-b border-gray-200 pb-2">Popular Guides</h3>
             <ul class="space-y-4">
                ${popularBlogs}
             </ul>
         </div>
 
         <!-- Trusted Products -->
-        <div class="bg-[#1E293B] p-6 rounded-xl border border-white/5">
-             <h3 class="font-bold text-white mb-4 border-b border-white/10 pb-2">Best Sellers</h3>
+        <div class="bg-gray-100 p-6 rounded-xl border border-gray-200">
+             <h3 class="font-bold text-gray-900 mb-4 border-b border-gray-200 pb-2">Best Sellers</h3>
              <ul class="space-y-3">
                  ${bestSellers}
              </ul>
@@ -923,8 +923,8 @@ function generateSidebar(products, blogs) {
 
         <!-- CTA Box -->
         <div class="bg-gradient-to-br from-cyan-600 to-blue-700 p-6 rounded-xl text-center shadow-lg shadow-cyan-500/20">
-            <h3 class="font-bold text-white mb-2 text-lg">Need Verified Accounts?</h3>
-            <p class="text-white/90 text-sm mb-6">Get premium, phone-verified accounts for Google, Facebook, and more instantly.</p>
+            <h3 class="font-bold text-gray-900 mb-2 text-lg">Need Verified Accounts?</h3>
+            <p class="text-gray-900/90 text-sm mb-6">Get premium, phone-verified accounts for Google, Facebook, and more instantly.</p>
             <a href="/" class="block bg-white text-blue-700 font-bold py-3 rounded-lg hover:bg-slate-100 transition-colors shadow-md">
                 View All Products
             </a>
@@ -938,10 +938,10 @@ function injectCTA(content, post) {
         <div class="my-10 bg-gradient-to-r from-slate-800 to-slate-900 border-l-4 border-cyan-500 p-6 rounded-r-xl shadow-lg">
             <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div class="text-center sm:text-left">
-                    <h4 class="text-lg font-bold text-white mb-1">Looking for verified accounts?</h4>
-                    <p class="text-slate-400 text-sm">${text || "Get Verified PVA Accounts Now"}</p>
+                    <h4 class="text-lg font-bold text-gray-900 mb-1">Looking for verified accounts?</h4>
+                    <p class="text-gray-500 text-sm">${text || "Get Verified PVA Accounts Now"}</p>
                 </div>
-                <a href="${link || "/"}" class="shrink-0 bg-cyan-500 hover:bg-cyan-400 text-white font-bold py-2.5 px-6 rounded-lg transition-all shadow-lg shadow-cyan-500/20 whitespace-nowrap">
+                <a href="${link || "/"}" class="shrink-0 bg-cyan-500 hover:bg-cyan-400 text-gray-900 font-bold py-2.5 px-6 rounded-lg transition-all shadow-lg shadow-cyan-500/20 whitespace-nowrap">
                     Check Availability &rarr;
                 </a>
             </div>
@@ -998,11 +998,11 @@ function distributeProductsToBlog(content, products, blogIndex, totalBlogs) {
     
     if (assignedProducts.length > 0) {
         let productsHtml = `
-            <div class="mt-16 p-8 bg-gradient-to-br from-[#1E293B] to-[#0F172A] rounded-2xl border border-white/10 shadow-2xl relative overflow-hidden">
+            <div class="mt-16 p-8 bg-gradient-to-br from-[#1E293B] to-[#0F172A] rounded-2xl border border-gray-200 shadow-2xl relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-32 h-32 bg-cyan-500/5 rounded-full blur-3xl"></div>
-                <h3 class="text-2xl font-black text-white mb-8 flex items-center gap-3">
+                <h3 class="text-2xl font-black text-gray-900 mb-8 flex items-center gap-3">
                     <span class="w-8 h-8 rounded-lg bg-cyan-500 flex items-center justify-center shadow-lg shadow-cyan-500/20">
-                        <i data-lucide="shopping-bag" class="w-4 h-4 text-white"></i>
+                        <i data-lucide="shopping-bag" class="w-4 h-4 text-gray-900"></i>
                     </span>
                     Our <span class="text-cyan-400">Featured Services</span>
                 </h3>
@@ -1012,13 +1012,13 @@ function distributeProductsToBlog(content, products, blogIndex, totalBlogs) {
         assignedProducts.forEach(p => {
             const url = getDynamicUrl('product', p.slug, false);
             productsHtml += `
-                <a href="${url}" class="flex items-center gap-4 p-4 rounded-xl bg-white/5 hover:bg-white/10 transition-all border border-white/5 group hover:border-cyan-500/30">
-                    <div class="w-10 h-10 rounded-full bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover:bg-cyan-500 group-hover:text-white transition-all duration-300">
+                <a href="${url}" class="flex items-center gap-4 p-4 rounded-xl bg-gray-100/50 hover:bg-gray-100 transition-all border border-gray-200 group hover:border-cyan-500/30">
+                    <div class="w-10 h-10 rounded-full bg-cyan-500/10 flex items-center justify-center text-cyan-400 group-hover:bg-cyan-500 group-hover:text-cyan-600 transition-all duration-300">
                         <i data-lucide="star" class="w-5 h-5"></i>
                     </div>
                     <div>
-                        <p class="text-sm font-bold text-slate-200 group-hover:text-cyan-400 transition-colors leading-tight">${p.title}</p>
-                        <p class="text-[10px] text-slate-500 mt-1 uppercase tracking-widest font-semibold">Available Now</p>
+                        <p class="text-sm font-bold text-gray-700 group-hover:text-cyan-400 transition-colors leading-tight">${p.title}</p>
+                        <p class="text-[10px] text-gray-400 mt-1 uppercase tracking-widest font-semibold">Available Now</p>
                     </div>
                 </a>
             `;
@@ -1026,9 +1026,9 @@ function distributeProductsToBlog(content, products, blogIndex, totalBlogs) {
         
         productsHtml += `
                 </div>
-                <div class="mt-8 pt-6 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <p class="text-slate-400 text-sm italic">Trusted by 5,000+ happy customers worldwide.</p>
-                    <a href="/" class="group px-6 py-2.5 rounded-full bg-cyan-500 hover:bg-cyan-400 text-white font-bold text-sm transition-all flex items-center gap-2 shadow-lg shadow-cyan-500/20">
+                <div class="mt-8 pt-6 border-t border-gray-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <p class="text-gray-500 text-sm italic">Trusted by 5,000+ happy customers worldwide.</p>
+                    <a href="/" class="group px-6 py-2.5 rounded-full bg-cyan-500 hover:bg-cyan-400 text-gray-900 font-bold text-sm transition-all flex items-center gap-2 shadow-lg shadow-cyan-500/20">
                         Explore All 41 Services <i data-lucide="arrow-right" class="w-4 h-4 group-hover:translate-x-1 transition-transform"></i>
                     </a>
                 </div>
@@ -1063,13 +1063,13 @@ for (let i = 1; i <= totalPages; i++) {
     blogListHtml = blogListHtml.replace('{{CATEGORY_OPTIONS}}', categoryOptions);
 
     const pageTitleSuffix = i > 1 ? ` - Page ${i}` : '';
-    const blogTitle = `BestPVAShop Blog – Digital Marketing Tips${pageTitleSuffix}`;
+    const blogTitle = `RealPVAShop Blog – Digital Marketing Tips${pageTitleSuffix}`;
     const blogDesc = 'Unlock the secrets of digital marketing. Expert strategies, safety tips, and growth hacks for your business.';
 
     // Enhanced Hero for Blog
     blogListHtml = blogListHtml.replace('{{HERO_TITLE}}', `
         <span class="block text-cyan-400 text-lg font-bold tracking-widest uppercase mb-4">Our Blog</span>
-        <span class="text-transparent bg-clip-text bg-gradient-to-r from-white via-cyan-100 to-blue-200 drop-shadow-sm">Latest Insights & Guides</span>${pageTitleSuffix}
+        <span class="text-black drop-shadow-sm">Latest Insights & Guides</span>${pageTitleSuffix}
     `);
     blogListHtml = blogListHtml.replace('{{HERO_SUBTITLE}}', blogDesc);
     
@@ -1083,13 +1083,13 @@ for (let i = 1; i <= totalPages; i++) {
     
     // Redesigned Eye-Catching Grid Layout
     const blogGrid = pageBlogs.map((b, idx) => `
-        <article class="group relative flex flex-col bg-[#0F172A] rounded-3xl border border-white/5 overflow-hidden transition-all duration-500 hover:border-cyan-500/50 hover:shadow-[0_0_50px_-12px_rgba(6,182,212,0.25)] hover:-translate-y-2 h-full">
+        <article class="group relative flex flex-col bg-gray-50 rounded-3xl border border-gray-200 overflow-hidden transition-all duration-500 hover:border-cyan-500/50 hover:shadow-[0_0_50px_-12px_rgba(6,182,212,0.25)] hover:-translate-y-2 h-full">
             <a href="${getDynamicUrl('blog', b.slug).replace(baseUrl, '/')}" class="h-64 overflow-hidden relative block">
                 <img src="${b.image || 'https://via.placeholder.com/600x400?text=No+Image'}" alt="${b.title}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" decoding="async" width="600" height="400">
                 <div class="absolute inset-0 bg-gradient-to-t from-[#0F172A] via-transparent to-transparent opacity-80"></div>
                 
                 <!-- Floating Date Badge -->
-                <div class="absolute top-4 left-4 bg-black/50 backdrop-blur-md border border-white/10 px-3 py-1.5 rounded-full text-xs font-bold text-white flex items-center gap-2">
+                <div class="absolute top-4 left-4 bg-black/50 backdrop-blur-md border border-gray-200 px-3 py-1.5 rounded-full text-xs font-bold text-gray-900 flex items-center gap-2">
                     <i data-lucide="calendar" class="w-3 h-3 text-cyan-400"></i> ${b.date}
                 </div>
             </a>
@@ -1102,18 +1102,18 @@ for (let i = 1; i <= totalPages; i++) {
                     <span class="text-xs font-bold text-cyan-400 tracking-widest uppercase border border-cyan-500/20 px-2 py-1 rounded">Article</span>
                 </div>
 
-                <h3 class="text-2xl font-bold text-white mb-4 leading-tight group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-cyan-400 group-hover:to-blue-400 transition-all">
+                <h3 class="text-2xl font-bold text-gray-900 mb-4 leading-tight group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-cyan-400 group-hover:to-blue-400 transition-all">
                     <a href="${getDynamicUrl('blog', b.slug).replace(baseUrl, '/')}">
                         <span class="absolute inset-0"></span>
                         ${b.title}
                     </a>
                 </h3>
                 
-                <p class="text-slate-400 text-sm mb-8 line-clamp-3 leading-relaxed flex-1 group-hover:text-slate-300 transition-colors">${b.excerpt}</p>
+                <p class="text-gray-500 text-sm mb-8 line-clamp-3 leading-relaxed flex-1 group-hover:text-gray-600 transition-colors">${b.excerpt}</p>
                 
-                <div class="flex items-center justify-between mt-auto pt-6 border-t border-white/5 group-hover:border-cyan-500/20 transition-colors">
-                    <span class="text-sm font-bold text-white group-hover:text-cyan-400 transition-colors">Read Article</span>
-                    <div class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-cyan-500 group-hover:text-white transition-all duration-300 group-hover:scale-110">
+                <div class="flex items-center justify-between mt-auto pt-6 border-t border-gray-200 group-hover:border-cyan-500/20 transition-colors">
+                    <span class="text-sm font-bold text-gray-900 group-hover:text-cyan-400 transition-colors">Read Article</span>
+                    <div class="w-10 h-10 rounded-full bg-gray-100/50 flex items-center justify-center group-hover:bg-cyan-500 group-hover:text-cyan-600 transition-all duration-300 group-hover:scale-110">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                     </div>
                 </div>
@@ -1125,15 +1125,15 @@ for (let i = 1; i <= totalPages; i++) {
     let paginationHtml = '<div class="flex justify-center items-center gap-2 mt-12">';
     if (i > 1) {
         const prevLink = i === 2 ? `/${paths.blog}/` : `/${paths.blog}/page/${i-1}/`;
-        paginationHtml += `<a href="${prevLink}" class="px-4 py-2 rounded-lg bg-slate-800 text-white hover:bg-cyan-600 transition font-bold text-sm">Previous</a>`;
+        paginationHtml += `<a href="${prevLink}" class="px-4 py-2 rounded-lg bg-slate-800 text-gray-900 hover:bg-cyan-600 transition font-bold text-sm">Previous</a>`;
     }
     for (let p = 1; p <= totalPages; p++) {
-        const activeClass = p === i ? 'bg-cyan-600 text-white' : 'bg-slate-800 text-slate-400 hover:bg-slate-700';
+        const activeClass = p === i ? 'bg-cyan-600 text-gray-900' : 'bg-slate-800 text-gray-500 hover:bg-slate-700';
         const link = p === 1 ? `/${paths.blog}/` : `/${paths.blog}/page/${p}/`;
         paginationHtml += `<a href="${link}" class="w-10 h-10 flex items-center justify-center rounded-lg ${activeClass} font-bold text-sm transition">${p}</a>`;
     }
     if (i < totalPages) {
-        paginationHtml += `<a href="/${paths.blog}/page/${i+1}/" class="px-4 py-2 rounded-lg bg-slate-800 text-white hover:bg-cyan-600 transition font-bold text-sm">Next</a>`;
+        paginationHtml += `<a href="/${paths.blog}/page/${i+1}/" class="px-4 py-2 rounded-lg bg-slate-800 text-gray-900 hover:bg-cyan-600 transition font-bold text-sm">Next</a>`;
     }
     paginationHtml += '</div>';
 
@@ -1185,7 +1185,7 @@ blogs.forEach((post, index) => {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>${post.seo_title || post.title + ' - BestPVAShop'}</title>
+    <title>${post.seo_title || post.title + ' - RealPVAShop'}</title>
     <meta name="description" content="${post.excerpt}">
     <link rel="canonical" href="${getDynamicUrl('blog', post.slug)}" />
     <meta name="robots" content="index, follow" />
@@ -1203,7 +1203,7 @@ blogs.forEach((post, index) => {
         }
     </style>
 </head>
-<body class="bg-[#0B1120] text-slate-200 font-sans antialiased">
+<body class="bg-white text-gray-700 font-sans antialiased">
     ${generateFullHeader('../../', products, categories, siteConfig)}
 
     <!-- Header Spacing -->
@@ -1211,10 +1211,10 @@ blogs.forEach((post, index) => {
 
     <main class="max-w-7xl mx-auto px-4 py-8">
         <!-- Breadcrumb -->
-        <nav class="flex items-center gap-2 text-sm text-slate-400 mb-8 overflow-x-auto whitespace-nowrap">
-            <a href="/" class="hover:text-white transition-colors">Home</a>
+        <nav class="flex items-center gap-2 text-sm text-gray-500 mb-8 overflow-x-auto whitespace-nowrap">
+            <a href="/" class="hover:text-cyan-600 transition-colors">Home</a>
             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 opacity-50"><path d="m9 18 6-6-6-6"/></svg>
-            <a href="/${paths.blog}/" class="hover:text-white transition-colors">Blog</a>
+            <a href="/${paths.blog}/" class="hover:text-cyan-600 transition-colors">Blog</a>
             <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-3 h-3 opacity-50"><path d="m9 18 6-6-6-6"/></svg>
             <span class="text-cyan-400 truncate">${post.title}</span>
         </nav>
@@ -1224,23 +1224,23 @@ blogs.forEach((post, index) => {
             <article class="lg:w-[70%]">
                 <header class="mb-8">
                     <span class="text-cyan-400 font-bold tracking-wider text-sm uppercase mb-3 block">${post.date}</span>
-                    <h1 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-white mb-6 leading-tight">${post.title}</h1>
-                    <p class="text-xl text-slate-300 leading-relaxed border-l-4 border-cyan-500 pl-4 italic">
+                    <h1 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 mb-6 leading-tight">${post.title}</h1>
+                    <p class="text-xl text-gray-600 leading-relaxed border-l-4 border-cyan-500 pl-4 italic">
                         ${post.excerpt}
                     </p>
                 </header>
 
-                ${post.image ? `<img src="${post.image}" alt="${post.title}" class="w-full rounded-2xl mb-10 shadow-2xl border border-white/5" loading="eager" fetchpriority="high" decoding="async" width="1200" height="630">` : ''}
+                ${post.image ? `<img src="${post.image}" alt="${post.title}" class="w-full rounded-2xl mb-10 shadow-2xl border border-gray-200" loading="eager" fetchpriority="high" decoding="async" width="1200" height="630">` : ''}
 
-                <div class="prose prose-invert lg:prose-xl max-w-none prose-headings:text-white prose-a:text-cyan-400 prose-a:no-underline hover:prose-a:underline prose-strong:text-white">
+                <div class="prose prose lg:prose-xl max-w-none prose-headings:text-gray-900 prose-a:text-cyan-400 prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900">
                     ${contentWithCta}
                 </div>
 
                 <!-- Trust Section / Related -->
                 ${relatedHtml}
 
-                <div class="mt-12 pt-8 border-t border-white/10 flex justify-between items-center">
-                    <a href="/${paths.blog}/" class="font-bold text-slate-400 hover:text-white flex items-center gap-2 transition-colors">
+                <div class="mt-12 pt-8 border-t border-gray-200 flex justify-between items-center">
+                    <a href="/${paths.blog}/" class="font-bold text-gray-500 hover:text-cyan-600 flex items-center gap-2 transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> Back to Blog
                     </a>
                 </div>
@@ -1253,7 +1253,7 @@ blogs.forEach((post, index) => {
         </div>
     </main>
 
-    <footer class="bg-[#0F172A] border-t border-white/5 py-12 mt-12">
+    <footer class="bg-gray-50 border-t border-gray-200 py-12 mt-12">
         ${generateFooter(products, siteConfig)}
     </footer>
 
@@ -1310,10 +1310,10 @@ products.forEach(product => {
     // --- Prepare Data ---
     const slug = slugify(product.slug);    const solidColor = computeProductColor(product);
     const featuresList = product.features.map(f => 
-        `<li class="flex items-start gap-2 text-slate-300 text-sm"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-cyan-400 mt-0.5 shrink-0"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg> ${f}</li>`
+        `<li class="flex items-start gap-2 text-gray-600 text-sm"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-cyan-400 mt-0.5 shrink-0"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="m9 12 2 2 4-4"/></svg> ${f}</li>`
     ).join('');
     const bottomFeaturesList = product.features.map(f => 
-        `<li class="flex items-start gap-2 text-slate-400 text-sm"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-cyan-500 mt-0.5 shrink-0"><path d="M20 6 9 17l-5-5"/></svg> ${f}</li>`
+        `<li class="flex items-start gap-2 text-gray-500 text-sm"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4 text-cyan-500 mt-0.5 shrink-0"><path d="M20 6 9 17l-5-5"/></svg> ${f}</li>`
     ).join('');
     
     let pricingOptions = '<option selected disabled>Choose an option</option>';
@@ -1340,16 +1340,16 @@ products.forEach(product => {
         const relOverlayClass = relImgUrl ? '' : 'bg-black/0 group-hover:bg-black/0';
         const relOverlayLayerHtml = relImgUrl ? '' : `<div class="absolute inset-0 ${relOverlayClass} transition-colors duration-300"></div>`;
         const relOverlayTextHtml = relImgUrl ? '' : `
-                    <div class="absolute top-2 left-2 bg-red-500/90 backdrop-blur-md border border-white/10 text-xs font-bold px-3 py-1 rounded flex gap-1 z-10">
-                        <span class="text-yellow-300 text-sm">Sale!</span> BestPVAShop
+                    <div class="absolute top-2 left-2 bg-red-500/90 backdrop-blur-md border border-gray-200 text-xs font-bold px-3 py-1 rounded flex gap-1 z-10">
+                        <span class="text-yellow-300 text-sm">Sale!</span> <span class="text-white">RealPVAShop</span>
                     </div>
                     <h3 class="font-bold text-lg leading-tight mb-2 px-2 drop-shadow-md z-10 relative">${p.display_title || p.title.replace(/^Buy\s+/i, '')}</h3>
-                    <div class="bg-white/10 hover:bg-white/20 text-xs font-bold px-4 py-1.5 rounded-full cursor-pointer transition-colors border border-white/20 z-10">ORDER NOW</div>
+                    <div class="bg-gray-100 hover:bg-gray-200 text-xs font-bold px-4 py-1.5 rounded-full cursor-pointer transition-colors border border-gray-300 z-10">ORDER NOW</div>
         `;
 
         return `
-            <div class="card-glow bg-[#1E293B] rounded-xl border border-white/5 overflow-hidden transition-all duration-300 group hover:-translate-y-2" style="content-visibility: auto; contain-intrinsic-size: 0 350px;">
-                <div role="img" aria-label="${p.image_title || p.title}" class="p-4 h-44 relative flex flex-col items-center justify-center text-center text-white group-hover:scale-105 transition-transform duration-500" style="background-color: ${relColor};">
+            <div class="card-glow bg-gray-100 rounded-xl border border-gray-200 overflow-hidden transition-all duration-300 group hover:-translate-y-2" style="content-visibility: auto; contain-intrinsic-size: 0 350px;">
+                <div role="img" aria-label="${p.image_title || p.title}" class="p-4 h-44 relative flex flex-col items-center justify-center text-center text-gray-900 group-hover:scale-105 transition-transform duration-500" style="background-color: ${relColor};">
                     ${relImgHtml}
                     ${relOverlayLayerHtml}
                     ${relOverlayTextHtml}
@@ -1360,8 +1360,8 @@ products.forEach(product => {
                     <div class="flex gap-0.5 mb-3">
                         ${renderStars(5, "w-3 h-3")} 
                     </div>
-                    <div class="text-white text-sm mb-4 font-extrabold">$${p.min_price.toFixed(2)} - $${p.max_price.toFixed(2)}</div>
-                    <a href="${relUrl}" class="block w-full bg-white/5 hover:bg-cyan-600 text-white text-center py-3.5 rounded-lg text-sm font-bold transition-all border border-white/10 hover:border-cyan-500">Order Now</a>
+                    <div class="text-gray-900 text-sm mb-4 font-extrabold">$${p.min_price.toFixed(2)} - $${p.max_price.toFixed(2)}</div>
+                    <a href="${relUrl}" class="block w-full bg-gray-100/50 hover:bg-cyan-600 text-gray-900 text-center py-3.5 rounded-lg text-sm font-bold transition-all border border-gray-200 hover:border-cyan-500">Order Now</a>
                 </div>
             </div>`;
     }).join('');
@@ -1370,18 +1370,18 @@ products.forEach(product => {
     const pReviews = reviewsData ? reviewsData.filter(r => r.productId === product.id) : [];
     let reviewsHtml = '';
     if (pReviews.length === 0) {
-        reviewsHtml = '<div class="text-center py-10 bg-[#0F172A] rounded-xl border border-white/5"><p class="text-slate-400 mb-2">No reviews yet.</p><p class="text-sm text-slate-500">Be the first to write a review!</p></div>';
+        reviewsHtml = '<div class="text-center py-10 bg-gray-50 rounded-xl border border-gray-200"><p class="text-gray-500 mb-2">No reviews yet.</p><p class="text-sm text-gray-400">Be the first to write a review!</p></div>';
     } else {
         reviewsHtml = pReviews.map(r => `
-            <div class="bg-[#0F172A] p-6 rounded-2xl border border-white/5 hover:border-cyan-500/30 transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-500/5 group">
+            <div class="bg-gray-50 p-6 rounded-2xl border border-gray-200 hover:border-cyan-500/30 transition-all duration-300 hover:shadow-2xl hover:shadow-cyan-500/5 group">
                 <div class="flex items-start justify-between mb-4">
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center text-white font-black text-lg border-2 border-white/10 shadow-lg group-hover:scale-110 transition-transform duration-300">
+                        <div class="w-12 h-12 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-full flex items-center justify-center text-gray-900 font-black text-lg border-2 border-gray-200 shadow-lg group-hover:scale-110 transition-transform duration-300">
                             ${r.avatar || (r.user ? r.user.charAt(0).toUpperCase() : 'U')}
                         </div>
                         <div>
-                            <h4 class="font-bold text-white text-base mb-0.5">${r.user}</h4>
-                            <div class="flex items-center gap-2 text-xs font-medium text-slate-500">
+                            <h4 class="font-bold text-gray-900 text-base mb-0.5">${r.user}</h4>
+                            <div class="flex items-center gap-2 text-xs font-medium text-gray-400">
                                 <span>${r.date}</span>
                                 ${r.verified !== false ? `
                                 <span class="text-cyan-400 flex items-center gap-1 bg-cyan-400/10 px-2 py-0.5 rounded-full text-[10px] border border-cyan-400/20">
@@ -1390,12 +1390,12 @@ products.forEach(product => {
                             </div>
                         </div>
                     </div>
-                    <div class="flex gap-0.5 bg-white/5 p-1.5 rounded-lg">
+                    <div class="flex gap-0.5 bg-gray-100/50 p-1.5 rounded-lg">
                         ${renderStars(r.rating, "w-3 h-3")}
                     </div>
                 </div>
-                ${r.title ? `<h5 class="text-white font-bold text-base mb-2 group-hover:text-cyan-400 transition-colors">${r.title}</h5>` : ''}
-                <p class="text-slate-400 text-sm leading-relaxed opacity-90 group-hover:opacity-100 transition-opacity">${r.text}</p>
+                ${r.title ? `<h5 class="text-gray-900 font-bold text-base mb-2 group-hover:text-cyan-400 transition-colors">${r.title}</h5>` : ''}
+                <p class="text-gray-500 text-sm leading-relaxed opacity-90 group-hover:opacity-100 transition-opacity">${r.text}</p>
             </div>
         `).join('');
     }
@@ -1408,7 +1408,7 @@ products.forEach(product => {
             "name": product.title,
             "description": product.meta_description || product.short_description,
             "sku": String(product.id),
-            "brand": { "@type": "Brand", "name": "BestPVAShop" },
+            "brand": { "@type": "Brand", "name": "RealPVAShop" },
             "offers": {
                 "@type": "AggregateOffer",
                 "priceCurrency": "USD",
@@ -1436,7 +1436,7 @@ products.forEach(product => {
         {
             "@context": "https://schema.org/",
             "@type": "Organization",
-            "name": "BestPVAShop",
+            "name": "RealPVAShop",
             "url": getDynamicUrl('home'),
             "logo": siteConfig.logoUrl || getDynamicUrl('home') + "favicon.svg"
         }
@@ -1448,12 +1448,12 @@ products.forEach(product => {
     html = html.replace('{{HEADER}}', generateFullHeader('../../', products, categories, siteConfig));
 
     // SEO
-    const seoTitle = product.seo_title || `${product.title} – Verified & Fast | BestPVAShop`;
+    const seoTitle = product.seo_title || `${product.title} – Verified & Fast | RealPVAShop`;
     let seoDesc = product.meta_description || product.short_description || `Buy ${product.title} instantly.`;
     
     // Ensure Description Length (120-160 chars)
     if (seoDesc.length < 120) {
-        seoDesc += " Get high-quality verified accounts instantly at BestPVAShop. Secure, fast, and reliable service with 24/7 support.";
+        seoDesc += " Get high-quality verified accounts instantly at RealPVAShop. Secure, fast, and reliable service with 24/7 support.";
     }
     if (seoDesc.length > 160) {
         seoDesc = seoDesc.substring(0, 157) + "...";
@@ -1554,7 +1554,7 @@ function buildStaticPage(pagePath, title, description, content, jsonLd) {
     
     const pageUrl = getDynamicUrl('home') + pagePath + '/';
     html = html.replace(/{{CANONICAL_URL}}/g, pageUrl);
-    html = html.replace(/{{SITE_TITLE}}/g, `${title} | BestPVAShop`);
+    html = html.replace(/{{SITE_TITLE}}/g, `${title} | RealPVAShop`);
     html = html.replace(/{{META_DESCRIPTION}}/g, description);
     
     // Inject JSON-LD Schema if provided (for SEO Rich Results)
@@ -1585,184 +1585,184 @@ function buildStaticPage(pagePath, title, description, content, jsonLd) {
     sitemap += '  </url>\n';
 }
 
-buildStaticPage('about', 'About Us', 'Learn about BestPVAShop – your trusted source for verified PVA accounts, authentic reviews, and premium digital services since 2020.', `
+buildStaticPage('about', 'About RealPVAShop', 'Discover how RealPVAShop has become a trusted partner for businesses seeking verified digital assets and authentic reputation management since 2020.', `
     <div class="text-center mb-16">
-        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Who We <span class="text-cyan-400">Are</span></h2>
-        <p class="text-slate-400 max-w-3xl mx-auto text-lg leading-relaxed">BestPVAShop is a leading provider of premium, phone-verified accounts (PVA) and authentic digital services. Since 2020, we have been helping businesses, marketers, and entrepreneurs scale their online presence with high-quality, reliable accounts.</p>
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Your Partner in <span class="text-cyan-400">Digital Growth</span></h2>
+        <p class="text-gray-500 max-w-3xl mx-auto text-lg leading-relaxed">At RealPVAShop, we specialize in providing high-quality, phone-verified accounts (PVA) and authentic digital services. Since our inception in 2020, we have empowered thousands of marketers and entrepreneurs to bypass technical hurdles and focus on scaling their core business operations.</p>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
-        <div class="bg-[#1E293B]/60 border border-white/5 rounded-2xl p-6 text-center hover:border-cyan-500/30 transition-all">
-            <div class="text-4xl font-black text-cyan-400 mb-2">5K+</div>
-            <p class="text-slate-400 text-sm font-medium">Happy Customers</p>
+        <div class="bg-gray-100/60 border border-gray-200 rounded-2xl p-6 text-center hover:border-cyan-500/30 transition-all">
+            <div class="text-4xl font-black text-cyan-400 mb-2">5,000+</div>
+            <p class="text-gray-500 text-sm font-medium">Satisfied Clients</p>
         </div>
-        <div class="bg-[#1E293B]/60 border border-white/5 rounded-2xl p-6 text-center hover:border-cyan-500/30 transition-all">
+        <div class="bg-gray-100/60 border border-gray-200 rounded-2xl p-6 text-center hover:border-cyan-500/30 transition-all">
             <div class="text-4xl font-black text-green-400 mb-2">100%</div>
-            <p class="text-slate-400 text-sm font-medium">Verified Accounts</p>
+            <p class="text-gray-500 text-sm font-medium">Verification Rate</p>
         </div>
-        <div class="bg-[#1E293B]/60 border border-white/5 rounded-2xl p-6 text-center hover:border-cyan-500/30 transition-all">
+        <div class="bg-gray-100/60 border border-gray-200 rounded-2xl p-6 text-center hover:border-cyan-500/30 transition-all">
             <div class="text-4xl font-black text-purple-400 mb-2">24/7</div>
-            <p class="text-slate-400 text-sm font-medium">Customer Support</p>
+            <p class="text-gray-500 text-sm font-medium">Expert Support</p>
         </div>
-        <div class="bg-[#1E293B]/60 border border-white/5 rounded-2xl p-6 text-center hover:border-cyan-500/30 transition-all">
-            <div class="text-4xl font-black text-yellow-400 mb-2">40+</div>
-            <p class="text-slate-400 text-sm font-medium">Services Available</p>
+        <div class="bg-gray-100/60 border border-gray-200 rounded-2xl p-6 text-center hover:border-cyan-500/30 transition-all">
+            <div class="text-4xl font-black text-yellow-400 mb-2">50+</div>
+            <p class="text-gray-500 text-sm font-medium">Specialized Services</p>
         </div>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-        <div class="bg-gradient-to-br from-[#1E293B] to-[#0F172A] border border-white/5 rounded-2xl p-8 hover:border-cyan-500/30 transition-all group">
+        <div class="bg-gradient-to-br from-[#1E293B] to-[#0F172A] border border-gray-200 rounded-2xl p-8 hover:border-cyan-500/30 transition-all group">
             <div class="w-14 h-14 bg-cyan-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-cyan-500/20 transition-colors"><i data-lucide="shield-check" class="w-7 h-7 text-cyan-400"></i></div>
-            <h3 class="text-xl font-bold text-white mb-3">Secure & Verified</h3>
-            <p class="text-slate-400 text-sm leading-relaxed">Every account undergoes rigorous verification using unique IPs and real device fingerprints, ensuring authenticity and longevity.</p>
+            <h3 class="text-xl font-bold text-gray-900 mb-3">Integrity First</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">We utilize unique residential IPs and real device footprints for every account we create, ensuring they are stable and compliant with platform standards.</p>
         </div>
-        <div class="bg-gradient-to-br from-[#1E293B] to-[#0F172A] border border-white/5 rounded-2xl p-8 hover:border-purple-500/30 transition-all group">
+        <div class="bg-gradient-to-br from-[#1E293B] to-[#0F172A] border border-gray-200 rounded-2xl p-8 hover:border-purple-500/30 transition-all group">
             <div class="w-14 h-14 bg-purple-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-purple-500/20 transition-colors"><i data-lucide="zap" class="w-7 h-7 text-purple-400"></i></div>
-            <h3 class="text-xl font-bold text-white mb-3">Instant Delivery</h3>
-            <p class="text-slate-400 text-sm leading-relaxed">Receive your account credentials within minutes of purchase. Our automated systems ensure lightning-fast delivery around the clock.</p>
+            <h3 class="text-xl font-bold text-gray-900 mb-3">Rapid Fulfillment</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">Time is money. Our streamlined systems ensure that your verified assets are delivered to your inbox within moments of order confirmation.</p>
         </div>
-        <div class="bg-gradient-to-br from-[#1E293B] to-[#0F172A] border border-white/5 rounded-2xl p-8 hover:border-green-500/30 transition-all group">
+        <div class="bg-gradient-to-br from-[#1E293B] to-[#0F172A] border border-gray-200 rounded-2xl p-8 hover:border-green-500/30 transition-all group">
             <div class="w-14 h-14 bg-green-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-green-500/20 transition-colors"><i data-lucide="refresh-cw" class="w-7 h-7 text-green-400"></i></div>
-            <h3 class="text-xl font-bold text-white mb-3">Replacement Guarantee</h3>
-            <p class="text-slate-400 text-sm leading-relaxed">If any account doesn't work upon delivery, we provide a free replacement within 24 hours. Your satisfaction is our priority.</p>
+            <h3 class="text-xl font-bold text-gray-900 mb-3">Peace of Mind</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">Your satisfaction is our priority. We provide a comprehensive replacement guarantee for any account that fails to meet expectations upon delivery.</p>
         </div>
     </div>
     <div class="bg-gradient-to-r from-cyan-600/20 to-blue-600/20 border border-cyan-500/20 rounded-2xl p-8 md:p-12 text-center">
-        <h3 class="text-2xl font-bold text-white mb-4">Ready to Get Started?</h3>
-        <p class="text-slate-300 mb-8 max-w-2xl mx-auto">Browse our extensive catalog of verified accounts and digital services. Join thousands of satisfied customers today.</p>
-        <a href="/" class="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold rounded-xl shadow-lg shadow-cyan-500/20 hover:scale-105 transition-transform">Explore All Services <i data-lucide="arrow-right" class="w-5 h-5"></i></a>
+        <h3 class="text-2xl font-bold text-gray-900 mb-4">Start Scaling Today</h3>
+        <p class="text-gray-600 mb-8 max-w-2xl mx-auto">Join thousands of successful businesses that rely on our verified services. Your next growth milestone is just a few clicks away.</p>
+        <a href="/" class="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold rounded-xl shadow-lg shadow-cyan-500/20 hover:scale-105 transition-transform">Explore Our Catalog <i data-lucide="arrow-right" class="w-5 h-5"></i></a>
     </div>
 `);
-buildStaticPage('contact', 'Contact Us', 'Get in touch with BestPVAShop for 24/7 support via WhatsApp, Telegram, or Email. We respond within minutes.', `
+buildStaticPage('contact', 'Contact Us', 'Get in touch with RealPVAShop for 24/7 support via WhatsApp, Telegram, or Email. We respond within minutes.', `
     <div class="text-center mb-16">
-        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Get In <span class="text-cyan-400">Touch</span></h2>
-        <p class="text-slate-400 max-w-2xl mx-auto">Have questions? Need help? Our support team is available 24/7 and typically responds within minutes.</p>
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Get In <span class="text-cyan-400">Touch</span></h2>
+        <p class="text-gray-500 max-w-2xl mx-auto">Have questions? Need help? Our support team is available 24/7 and typically responds within minutes.</p>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-        <a href="https://wa.me/${(siteConfig.whatsapp || '').replace(/[^0-9]/g, '')}" target="_blank" rel="noopener" class="group bg-[#1E293B]/60 border border-white/5 rounded-2xl p-8 text-center hover:border-green-500/40 hover:-translate-y-2 transition-all">
+        <a href="https://wa.me/${(siteConfig.whatsapp || '').replace(/[^0-9]/g, '')}" target="_blank" rel="noopener" class="group bg-gray-100/60 border border-gray-200 rounded-2xl p-8 text-center hover:border-green-500/40 hover:-translate-y-2 transition-all">
             <div class="w-16 h-16 mx-auto bg-green-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-green-500/20 transition-colors"><i data-lucide="phone" class="w-8 h-8 text-green-400"></i></div>
-            <h3 class="text-xl font-bold text-white mb-2">WhatsApp</h3>
-            <p class="text-slate-400 text-sm mb-4">Fastest response time</p>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">WhatsApp</h3>
+            <p class="text-gray-500 text-sm mb-4">Fastest response time</p>
             <span class="text-green-400 font-bold text-sm">${siteConfig.whatsapp || ''}</span>
         </a>
-        <a href="https://t.me/${(siteConfig.telegram || '').replace('@', '')}" target="_blank" rel="noopener" class="group bg-[#1E293B]/60 border border-white/5 rounded-2xl p-8 text-center hover:border-blue-500/40 hover:-translate-y-2 transition-all">
+        <a href="https://t.me/${(siteConfig.telegram || '').replace('@', '')}" target="_blank" rel="noopener" class="group bg-gray-100/60 border border-gray-200 rounded-2xl p-8 text-center hover:border-blue-500/40 hover:-translate-y-2 transition-all">
             <div class="w-16 h-16 mx-auto bg-blue-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-blue-500/20 transition-colors"><i data-lucide="send" class="w-8 h-8 text-blue-400"></i></div>
-            <h3 class="text-xl font-bold text-white mb-2">Telegram</h3>
-            <p class="text-slate-400 text-sm mb-4">Chat with our team</p>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Telegram</h3>
+            <p class="text-gray-500 text-sm mb-4">Chat with our team</p>
             <span class="text-blue-400 font-bold text-sm">${siteConfig.telegram || ''}</span>
         </a>
-        <a href="mailto:${siteConfig.supportEmail}" class="group bg-[#1E293B]/60 border border-white/5 rounded-2xl p-8 text-center hover:border-red-500/40 hover:-translate-y-2 transition-all">
+        <a href="mailto:${siteConfig.supportEmail}" class="group bg-gray-100/60 border border-gray-200 rounded-2xl p-8 text-center hover:border-red-500/40 hover:-translate-y-2 transition-all">
             <div class="w-16 h-16 mx-auto bg-red-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-red-500/20 transition-colors"><i data-lucide="mail" class="w-8 h-8 text-red-400"></i></div>
-            <h3 class="text-xl font-bold text-white mb-2">Email</h3>
-            <p class="text-slate-400 text-sm mb-4">For detailed inquiries</p>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Email</h3>
+            <p class="text-gray-500 text-sm mb-4">For detailed inquiries</p>
             <span class="text-red-400 font-bold text-sm">${siteConfig.supportEmail}</span>
         </a>
     </div>
-    <div class="bg-[#1E293B]/40 border border-white/5 rounded-2xl p-8 md:p-12">
-        <h3 class="text-2xl font-bold text-white mb-8 text-center">Send Us a <span class="text-cyan-400">Message</span></h3>
+    <div class="bg-gray-100/40 border border-gray-200 rounded-2xl p-8 md:p-12">
+        <h3 class="text-2xl font-bold text-gray-900 mb-8 text-center">Send Us a <span class="text-cyan-400">Message</span></h3>
         <form action="mailto:${siteConfig.supportEmail}" method="POST" enctype="text/plain" class="max-w-2xl mx-auto space-y-6">
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <input type="text" placeholder="Your Name" class="w-full px-5 py-4 bg-[#0F172A] border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-colors">
-                <input type="email" placeholder="Your Email" class="w-full px-5 py-4 bg-[#0F172A] border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-colors">
+                <input type="text" placeholder="Your Name" class="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-cyan-500 transition-colors">
+                <input type="email" placeholder="Your Email" class="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-cyan-500 transition-colors">
             </div>
-            <input type="text" placeholder="Subject" class="w-full px-5 py-4 bg-[#0F172A] border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-colors">
-            <textarea rows="5" placeholder="Your Message..." class="w-full px-5 py-4 bg-[#0F172A] border border-white/10 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:border-cyan-500 transition-colors resize-none"></textarea>
+            <input type="text" placeholder="Subject" class="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-cyan-500 transition-colors">
+            <textarea rows="5" placeholder="Your Message..." class="w-full px-5 py-4 bg-gray-50 border border-gray-200 rounded-xl text-gray-900 placeholder-gray-400 focus:outline-none focus:border-cyan-500 transition-colors resize-none"></textarea>
             <button type="submit" class="w-full py-4 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold rounded-xl shadow-lg shadow-cyan-500/20 hover:scale-[1.02] transition-transform">Send Message</button>
         </form>
     </div>
 `);
 
 const faqItems = [
-    { q: 'How long does delivery take?', a: 'Most orders are delivered instantly after payment confirmation. Some specialized services may take up to 24 hours. You will receive your credentials via email.' },
-    { q: 'Are the accounts phone-verified (PVA)?', a: 'Yes, all our accounts are 100% phone-verified using unique phone numbers. We use real device fingerprints and unique IPs to ensure maximum account quality and longevity.' },
-    { q: 'What payment methods do you accept?', a: 'We accept multiple secure payment methods including Cryptocurrency (Bitcoin, USDT, Ethereum), PayPal, and other digital payment platforms for your convenience.' },
-    { q: 'Do you offer a refund or replacement?', a: 'Yes! We offer a replacement guarantee for any account that does not work upon delivery. Please contact our support team within 24 hours of purchase if you encounter any issues.' },
-    { q: 'Can I use these accounts for business purposes?', a: 'Our accounts are designed for legitimate business use including marketing, advertising, social media management, and research purposes. Please use them responsibly and in compliance with platform terms.' },
-    { q: 'How do I contact support?', a: 'You can reach our 24/7 support team via WhatsApp, Telegram, or Email. We typically respond within minutes during business hours.' },
-    { q: 'Are bulk orders available?', a: 'Yes, we offer bulk pricing for large orders. Contact our support team for custom quotes and enterprise solutions tailored to your needs.' },
-    { q: 'Is my personal information safe?', a: 'Absolutely. We follow strict privacy policies and never share your personal information with third parties. All transactions are encrypted and securely processed.' }
+    { q: 'How soon will I receive my order?', a: 'Most orders are processed and delivered instantly upon payment confirmation. For specialized or bulk orders, delivery may take up to 24 hours. You will receive all necessary credentials and instructions directly in your email.' },
+    { q: 'What are phone-verified accounts (PVA)?', a: 'PVA stands for Phone Verified Accounts. Every account we provide is verified using a unique, real phone number. We also use residential IPs and real device fingerprints to ensure each account is stable and long-lasting.' },
+    { q: 'Which payment methods do you support?', a: 'We offer a variety of secure payment options for your convenience, including major cryptocurrencies (Bitcoin, USDT, Ethereum), PayPal, and other popular digital payment platforms.' },
+    { q: 'Do you provide a guarantee or replacement?', a: 'Absolutely. We offer a 24-hour replacement guarantee for any account that fails to function as described upon delivery. Your satisfaction and trust are our top priorities.' },
+    { q: 'Are these accounts safe for long-term use?', a: 'Yes, our accounts are created following strict security protocols to maximize longevity. They are perfect for legitimate business activities, marketing campaigns, and social media management.' },
+    { q: 'How can I get assistance if I have an issue?', a: 'Our dedicated support team is available 24/7. You can reach out to us anytime via WhatsApp, Telegram, or Email. We typically respond within minutes during business hours.' },
+    { q: 'Is there a discount for bulk purchases?', a: 'We certainly offer competitive pricing for bulk and enterprise-level orders. Please contact our support desk for a custom quote tailored to your specific requirements.' },
+    { q: 'How do you handle my personal data?', a: 'We take privacy seriously. Your personal information is handled with extreme care and is never shared with third parties. All transactions are processed through secure, encrypted channels.' }
 ];
 const faqJsonLd = { "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": faqItems.map(f => ({ "@type": "Question", "name": f.q, "acceptedAnswer": { "@type": "Answer", "text": f.a } })) };
 const faqHtml = faqItems.map(f => `
-    <details class="group bg-[#1E293B]/60 border border-white/5 rounded-2xl overflow-hidden hover:border-cyan-500/30 transition-all">
-        <summary class="flex items-center justify-between cursor-pointer p-6 md:p-8 text-white font-bold text-lg select-none list-none">
+    <details class="group bg-gray-100/60 border border-gray-200 rounded-2xl overflow-hidden hover:border-cyan-500/30 transition-all">
+        <summary class="flex items-center justify-between cursor-pointer p-6 md:p-8 text-gray-900 font-bold text-lg select-none list-none">
             <span>${f.q}</span>
             <i data-lucide="chevron-down" class="w-5 h-5 text-cyan-400 shrink-0 ml-4 group-open:rotate-180 transition-transform"></i>
         </summary>
-        <div class="px-6 pb-6 md:px-8 md:pb-8 text-slate-400 leading-relaxed border-t border-white/5 pt-4">${f.a}</div>
+        <div class="px-6 pb-6 md:px-8 md:pb-8 text-gray-500 leading-relaxed border-t border-gray-200 pt-4">${f.a}</div>
     </details>
 `).join('\n');
-buildStaticPage('faq', 'Frequently Asked Questions', 'Find answers to common questions about PVA accounts, delivery, payments, refunds, and more at BestPVAShop.', `
+buildStaticPage('faq', 'Frequently Asked Questions', 'Find answers to common questions about PVA accounts, delivery, payments, refunds, and more at RealPVAShop.', `
     <div class="text-center mb-16">
-        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Common <span class="text-cyan-400">Questions</span></h2>
-        <p class="text-slate-400 max-w-2xl mx-auto">Everything you need to know about our services. Can't find what you're looking for? Contact our 24/7 support team.</p>
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Common <span class="text-cyan-400">Questions</span></h2>
+        <p class="text-gray-500 max-w-2xl mx-auto">Everything you need to know about our services. Can't find what you're looking for? Contact our 24/7 support team.</p>
     </div>
     <div class="max-w-4xl mx-auto space-y-4 mb-16">${faqHtml}</div>
-    <div class="text-center bg-[#1E293B]/40 border border-white/5 rounded-2xl p-8">
-        <h3 class="text-xl font-bold text-white mb-3">Still Have Questions?</h3>
-        <p class="text-slate-400 mb-6">Our support team is available 24/7 to help you.</p>
+    <div class="text-center bg-gray-100/40 border border-gray-200 rounded-2xl p-8">
+        <h3 class="text-xl font-bold text-gray-900 mb-3">Still Have Questions?</h3>
+        <p class="text-gray-500 mb-6">Our support team is available 24/7 to help you.</p>
         <a href="/contact/" class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold rounded-xl hover:scale-105 transition-transform">Contact Support <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
     </div>
 `, faqJsonLd);
 
-buildStaticPage('guides', 'Guides & Resources', 'Expert guides, tutorials, and resources for digital marketing, PVA accounts, and growing your online business.', `
+buildStaticPage('guides', 'Guides & Insights', 'Explore our curated selection of expert guides and insights designed to help you navigate the digital landscape with confidence and authority.', `
     <div class="text-center mb-16">
-        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Learn & <span class="text-cyan-400">Grow</span></h2>
-        <p class="text-slate-400 max-w-2xl mx-auto">Explore our knowledge base packed with expert insights, how-to guides, and industry best practices.</p>
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Knowledge <span class="text-cyan-400">Hub</span></h2>
+        <p class="text-gray-500 max-w-2xl mx-auto">Master the art of digital growth with our expert resources. From platform-specific strategies to technical deep-dives, we provide the insights you need to succeed.</p>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-        <a href="/blog/" class="group bg-gradient-to-br from-[#1E293B] to-[#0F172A] border border-white/5 rounded-2xl p-8 hover:border-cyan-500/30 transition-all hover:-translate-y-2">
+        <a href="/blog/" class="group bg-gradient-to-br from-[#1E293B] to-[#0F172A] border border-gray-200 rounded-2xl p-8 hover:border-cyan-500/30 transition-all hover:-translate-y-2">
             <div class="w-14 h-14 bg-cyan-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-cyan-500/20 transition-colors"><i data-lucide="book-open" class="w-7 h-7 text-cyan-400"></i></div>
-            <h3 class="text-xl font-bold text-white mb-3 group-hover:text-cyan-400 transition-colors">Blog Articles</h3>
-            <p class="text-slate-400 text-sm leading-relaxed">In-depth articles on PVA accounts, digital marketing strategies, and industry trends.</p>
+            <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-cyan-400 transition-colors">Expert Blog</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">Stay updated with the latest trends in PVA accounts, SEO, and social media marketing through our detailed articles.</p>
         </a>
-        <a href="/faq/" class="group bg-gradient-to-br from-[#1E293B] to-[#0F172A] border border-white/5 rounded-2xl p-8 hover:border-purple-500/30 transition-all hover:-translate-y-2">
+        <a href="/faq/" class="group bg-gradient-to-br from-[#1E293B] to-[#0F172A] border border-gray-200 rounded-2xl p-8 hover:border-purple-500/30 transition-all hover:-translate-y-2">
             <div class="w-14 h-14 bg-purple-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-purple-500/20 transition-colors"><i data-lucide="help-circle" class="w-7 h-7 text-purple-400"></i></div>
-            <h3 class="text-xl font-bold text-white mb-3 group-hover:text-purple-400 transition-colors">FAQ</h3>
-            <p class="text-slate-400 text-sm leading-relaxed">Quick answers to the most common questions about our services and policies.</p>
+            <h3 class="text-xl font-bold text-gray-900 mb-3 group-hover:text-purple-400 transition-colors">Help Center</h3>
+            <p class="text-gray-500 text-sm leading-relaxed">Find immediate answers to your technical and operational questions in our comprehensive FAQ section.</p>
         </a>
     </div>
     <div class="bg-gradient-to-r from-cyan-600/20 to-blue-600/20 border border-cyan-500/20 rounded-2xl p-8 text-center">
-        <h3 class="text-xl font-bold text-white mb-3">Need Personalized Help?</h3>
-        <p class="text-slate-400 mb-6">Our experts can guide you to the perfect solution for your business.</p>
-        <a href="/contact/" class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold rounded-xl hover:scale-105 transition-transform">Talk to an Expert <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
+        <h3 class="text-xl font-bold text-gray-900 mb-3">Looking for Bespoke Advice?</h3>
+        <p class="text-gray-500 mb-6">Our consultants are ready to help you develop a strategy tailored to your unique business goals.</p>
+        <a href="/contact/" class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold rounded-xl hover:scale-105 transition-transform">Consult Our Team <i data-lucide="arrow-right" class="w-4 h-4"></i></a>
     </div>
 `);
 
 const serviceCategories = categories.map(cat => {
     const catProds = products.filter(p => p.category === cat.name).slice(0, 4);
-    const prodLinks = catProds.map(p => `<li><a href="/product/${p.slug}/" class="text-slate-400 hover:text-cyan-400 transition-colors text-sm">${p.display_title || p.title}</a></li>`).join('');
+    const prodLinks = catProds.map(p => `<li><a href="/product/${p.slug}/" class="text-gray-500 hover:text-cyan-400 transition-colors text-sm">${p.display_title || p.title}</a></li>`).join('');
     return `
-        <div class="bg-[#1E293B]/60 border border-white/5 rounded-2xl p-8 hover:border-cyan-500/30 transition-all group">
-            <h3 class="text-xl font-bold text-white mb-4 group-hover:text-cyan-400 transition-colors">${cat.name}</h3>
+        <div class="bg-gray-100/60 border border-gray-200 rounded-2xl p-8 hover:border-cyan-500/30 transition-all group">
+            <h3 class="text-xl font-bold text-gray-900 mb-4 group-hover:text-cyan-400 transition-colors">${cat.name}</h3>
             <ul class="space-y-3 mb-6">${prodLinks}</ul>
             <a href="/categories/${cat.slug}/" class="text-cyan-400 font-bold text-sm hover:underline">View All →</a>
         </div>
     `;
 }).join('');
-buildStaticPage('services', 'Our Services', 'Explore 40+ premium digital services including verified PVA accounts, Google Reviews, Facebook accounts, and crypto exchange accounts.', `
+buildStaticPage('services', 'Digital Solutions', 'Explore our comprehensive portfolio of 50+ premium digital services, including verified PVA accounts, reputation management, and secure financial assets.', `
     <div class="text-center mb-16">
-        <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Our <span class="text-cyan-400">Services</span></h2>
-        <p class="text-slate-400 max-w-2xl mx-auto">We offer a wide range of premium digital services across multiple platforms. All accounts are verified, secure, and delivered instantly.</p>
+        <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Our <span class="text-cyan-400">Expertise</span></h2>
+        <p class="text-gray-500 max-w-2xl mx-auto">We provide a curated selection of high-performance digital assets designed to give your business a competitive edge. Every service is backed by our rigorous verification process and instant delivery commitment.</p>
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">${serviceCategories}</div>
     <div class="bg-gradient-to-r from-cyan-600/20 to-blue-600/20 border border-cyan-500/20 rounded-2xl p-8 md:p-12 text-center">
-        <h3 class="text-2xl font-bold text-white mb-4">Can't Find What You Need?</h3>
-        <p class="text-slate-300 mb-8">Contact us for custom orders and bulk pricing. We can source almost any verified account.</p>
-        <a href="/contact/" class="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold rounded-xl shadow-lg shadow-cyan-500/20 hover:scale-105 transition-transform">Request Custom Order <i data-lucide="arrow-right" class="w-5 h-5"></i></a>
+        <h3 class="text-2xl font-bold text-gray-900 mb-4">Seeking a Custom Configuration?</h3>
+        <p class="text-gray-600 mb-8">If your requirements are unique or you need bulk quantities, our team is ready to develop a bespoke solution that fits your exact operational needs.</p>
+        <a href="/contact/" class="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-bold rounded-xl shadow-lg shadow-cyan-500/20 hover:scale-105 transition-transform">Request a Custom Quote <i data-lucide="arrow-right" class="w-5 h-5"></i></a>
     </div>
 `);
 
 const policySidebar = `
     <div class="md:col-span-1">
-        <div class="bg-[#1E293B]/60 border border-white/5 rounded-2xl p-6 sticky top-24">
-            <h3 class="text-white font-bold mb-4 text-lg">Legal Pages</h3>
+        <div class="bg-gray-100/60 border border-gray-200 rounded-2xl p-6 sticky top-24">
+            <h3 class="text-gray-900 font-bold mb-4 text-lg">Legal Pages</h3>
             <nav class="space-y-2">
-                <a href="/policies/privacy-policy/" class="block px-4 py-2.5 rounded-xl text-slate-400 hover:text-cyan-400 hover:bg-white/5 transition-all text-sm font-medium">Privacy Policy</a>
-                <a href="/policies/terms-and-conditions/" class="block px-4 py-2.5 rounded-xl text-slate-400 hover:text-cyan-400 hover:bg-white/5 transition-all text-sm font-medium">Terms & Conditions</a>
-                <a href="/policies/refund-policy/" class="block px-4 py-2.5 rounded-xl text-slate-400 hover:text-cyan-400 hover:bg-white/5 transition-all text-sm font-medium">Refund Policy</a>
-                <a href="/policies/shipping-or-delivery-policy/" class="block px-4 py-2.5 rounded-xl text-slate-400 hover:text-cyan-400 hover:bg-white/5 transition-all text-sm font-medium">Delivery Policy</a>
+                <a href="/policies/privacy-policy/" class="block px-4 py-2.5 rounded-xl text-gray-500 hover:text-cyan-400 hover:bg-gray-100 transition-all text-sm font-medium">Privacy Policy</a>
+                <a href="/policies/terms-and-conditions/" class="block px-4 py-2.5 rounded-xl text-gray-500 hover:text-cyan-400 hover:bg-gray-100 transition-all text-sm font-medium">Terms & Conditions</a>
+                <a href="/policies/refund-policy/" class="block px-4 py-2.5 rounded-xl text-gray-500 hover:text-cyan-400 hover:bg-gray-100 transition-all text-sm font-medium">Refund Policy</a>
+                <a href="/policies/shipping-or-delivery-policy/" class="block px-4 py-2.5 rounded-xl text-gray-500 hover:text-cyan-400 hover:bg-gray-100 transition-all text-sm font-medium">Delivery Policy</a>
             </nav>
-            <div class="mt-6 pt-6 border-t border-white/5">
-                <p class="text-slate-500 text-xs">Last updated: ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
+            <div class="mt-6 pt-6 border-t border-gray-200">
+                <p class="text-gray-400 text-xs">Last updated: ${new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
             </div>
         </div>
     </div>
@@ -1770,52 +1770,47 @@ const policySidebar = `
 function buildPolicyPage(pagePath, title, desc, sections) {
     const sectionsHtml = sections.map(s => `
         <div class="mb-10">
-            <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-3"><span class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center shrink-0"><i data-lucide="file-text" class="w-4 h-4 text-cyan-400"></i></span>${s.title}</h2>
-            <div class="text-slate-400 leading-relaxed space-y-3 text-sm">${s.body}</div>
+            <h2 class="text-xl font-bold text-gray-900 mb-4 flex items-center gap-3"><span class="w-8 h-8 rounded-lg bg-cyan-500/10 flex items-center justify-center shrink-0"><i data-lucide="file-text" class="w-4 h-4 text-cyan-400"></i></span>${s.title}</h2>
+            <div class="text-gray-500 leading-relaxed space-y-3 text-sm">${s.body}</div>
         </div>
     `).join('');
     buildStaticPage(pagePath, title, desc, `
         <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
             ${policySidebar}
-            <div class="md:col-span-3 bg-[#1E293B]/40 border border-white/5 rounded-2xl p-8 md:p-10">${sectionsHtml}</div>
+            <div class="md:col-span-3 bg-gray-100/40 border border-gray-200 rounded-2xl p-8 md:p-10">${sectionsHtml}</div>
         </div>
     `);
 }
 
-buildPolicyPage('policies/privacy-policy', 'Privacy Policy', 'Read the BestPVAShop privacy policy. Learn how we collect, use, and protect your personal information.', [
-    { title: 'Information We Collect', body: '<p>We collect information you provide directly, such as your name, email address, and payment details when placing an order. We also automatically collect certain technical data including your IP address, browser type, and device information to improve our services.</p>' },
-    { title: 'How We Use Your Information', body: '<p>Your information is used to:</p><ul class="list-disc pl-5 space-y-1"><li>Process and deliver your orders</li><li>Communicate order updates and support responses</li><li>Improve our website and services</li><li>Prevent fraud and ensure security</li></ul>' },
-    { title: 'Data Protection', body: '<p>We implement industry-standard security measures including SSL encryption and secure payment processing. Your payment information is never stored on our servers and is processed through trusted third-party payment providers.</p>' },
-    { title: 'Third-Party Sharing', body: '<p>We do not sell, trade, or share your personal information with third parties for marketing purposes. Information may only be shared with payment processors and delivery partners as necessary to fulfill your order.</p>' },
-    { title: 'Cookies', body: '<p>Our website uses essential cookies to ensure proper functionality. These cookies do not track personal information and are necessary for the site to operate correctly.</p>' },
-    { title: 'Your Rights', body: '<p>You have the right to request access to, correction of, or deletion of your personal data at any time. To exercise these rights, please contact our support team via email at <a href="mailto:' + siteConfig.supportEmail + '" class="text-cyan-400 hover:underline">' + siteConfig.supportEmail + '</a>.</p>' },
-    { title: 'Contact Us', body: '<p>If you have questions about this privacy policy, please contact us at <a href="mailto:' + siteConfig.supportEmail + '" class="text-cyan-400 hover:underline">' + siteConfig.supportEmail + '</a>.</p>' }
+buildPolicyPage('policies/privacy-policy', 'Privacy Commitment', 'Our Privacy Commitment explains how RealPVAShop handles your information with the highest standards of security and transparency.', [
+    { title: 'Data Collection Practices', body: '<p>We collect only the essential information required to fulfill your orders and provide support. This includes your name, email address, and payment details. We also analyze technical data like IP addresses to improve site performance and security.</p>' },
+    { title: 'Information Usage', body: '<p>Your data is used exclusively to:</p><ul class="list-disc pl-5 space-y-1"><li>Process and deliver digital assets</li><li>Provide responsive customer support</li><li>Enhance our service offerings</li><li>Maintain a secure platform against unauthorized access</li></ul>' },
+    { title: 'Security Protocols', body: '<p>We employ advanced encryption and secure processing environments. Your financial data is handled by trusted third-party providers and is never stored on our local servers.</p>' },
+    { title: 'Third-Party Disclosure', body: '<p>We never sell or trade your personal data. Disclosure to third parties occurs only when necessary for payment processing or as required by law to maintain the integrity of our platform.</p>' },
+    { title: 'Cookie Policy', body: '<p>We use functional cookies to optimize your browsing experience. These do not store personal identifiers and are used solely for site functionality.</p>' },
+    { title: 'User Autonomy', body: '<p>You have full control over your data. You may request access, corrections, or deletion of your information at any time by contacting us at <a href="mailto:' + siteConfig.supportEmail + '" class="text-cyan-400 hover:underline">' + siteConfig.supportEmail + '</a>.</p>' }
 ]);
 
-buildPolicyPage('policies/terms-and-conditions', 'Terms and Conditions', 'Read the BestPVAShop terms and conditions. Understand the rules and guidelines for using our services.', [
-    { title: 'Acceptance of Terms', body: '<p>By accessing and using BestPVAShop (bestpvashop.com), you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, please do not use our services.</p>' },
-    { title: 'Services Description', body: '<p>BestPVAShop provides digital services including phone-verified accounts (PVA), review management packages, and related digital products. All services are intended for legitimate business, marketing, and research purposes only.</p>' },
-    { title: 'User Responsibilities', body: '<ul class="list-disc pl-5 space-y-1"><li>You must be at least 18 years old to use our services</li><li>You are responsible for maintaining the confidentiality of your account credentials</li><li>You agree to use purchased accounts in compliance with applicable laws and platform terms of service</li><li>You must not use our services for any illegal or unauthorized purpose</li></ul>' },
-    { title: 'Payment Terms', body: '<p>All prices are listed in USD. Payment is required before delivery of any service. We accept cryptocurrency and other secure digital payment methods. All sales are final unless covered by our replacement guarantee.</p>' },
-    { title: 'Intellectual Property', body: '<p>All content on this website, including text, graphics, logos, and images, is the property of BestPVAShop and is protected by applicable intellectual property laws. Unauthorized reproduction is prohibited.</p>' },
-    { title: 'Limitation of Liability', body: '<p>BestPVAShop shall not be liable for any indirect, incidental, or consequential damages arising from the use of our services. Our total liability shall not exceed the amount paid for the specific service in question.</p>' },
-    { title: 'Changes to Terms', body: '<p>We reserve the right to modify these terms at any time. Changes will be effective immediately upon posting to this page. Continued use of our services constitutes acceptance of the updated terms.</p>' }
+buildPolicyPage('policies/terms-and-conditions', 'Service Agreement', 'Our Service Agreement outlines the terms of use for RealPVAShop, ensuring a clear understanding of our professional standards and client responsibilities.', [
+    { title: 'Standard Acceptance', body: '<p>By engaging with RealPVAShop (realpvashop.com), you acknowledge and agree to the professional standards and guidelines outlined in this Service Agreement. If you find any part of these terms unsuitable, we advise against using our platform.</p>' },
+    { title: 'Scope of Services', body: '<p>RealPVAShop provides premium digital assets, including phone-verified accounts (PVA) and brand reputation management solutions. These services are developed specifically for legitimate business development, professional marketing, and research activities.</p>' },
+    { title: 'Client Obligations', body: '<ul class="list-disc pl-5 space-y-1"><li>Clients must be at least 18 years of age to purchase from our store</li><li>Account security and confidentiality of credentials remain the client\'s responsibility post-delivery</li><li>Users agree to employ all assets in compliance with the respective platform guidelines and local regulations</li><li>The use of our services for illicit activities is strictly prohibited</li></ul>' },
+    { title: 'Transaction Guidelines', body: '<p>All pricing is denominated in USD. Full payment is required before the activation and delivery of services. We support a range of secure payment gateways. Transactions are considered final unless otherwise specified by our replacement guarantee.</p>' },
+    { title: 'Intellectual Ownership', body: '<p>All intellectual property, including proprietary text, branding, and imagery on this site, belongs to RealPVAShop. Unauthorized use or reproduction is strictly prohibited.</p>' },
+    { title: 'Liability Framework', body: '<p>RealPVAShop is not responsible for any consequential or incidental outcomes resulting from the use of our digital assets. Our maximum liability is limited to the purchase price of the specific asset in question.</p>' }
 ]);
 
-buildPolicyPage('policies/refund-policy', 'Refund Policy', 'Read the BestPVAShop refund and replacement policy. Learn about our 24-hour replacement guarantee.', [
-    { title: 'Replacement Guarantee', body: '<p>We stand behind the quality of our products. If any account or service does not work as described upon delivery, we will provide a <strong class="text-white">free replacement</strong> within 24 hours of your purchase.</p>' },
-    { title: 'How to Request a Replacement', body: '<ol class="list-decimal pl-5 space-y-2"><li>Contact our support team within <strong class="text-white">24 hours</strong> of receiving your order</li><li>Provide your order details and a clear description of the issue</li><li>Our team will verify the issue and process your replacement promptly</li></ol>' },
-    { title: 'Eligibility Conditions', body: '<ul class="list-disc pl-5 space-y-1"><li>Replacement requests must be submitted within 24 hours of delivery</li><li>The account must not have been modified, had its password changed, or had recovery information altered</li><li>You must provide evidence of the issue (screenshots if applicable)</li></ul>' },
-    { title: 'Non-Refundable Cases', body: '<ul class="list-disc pl-5 space-y-1"><li>Accounts that were working at delivery but were later suspended due to user actions</li><li>Requests made after the 24-hour replacement window</li><li>Services that have been fully delivered and used as intended</li></ul>' },
-    { title: 'Contact for Refund Requests', body: '<p>For all replacement and refund inquiries, please contact our support team via <a href="https://wa.me/' + (siteConfig.whatsapp || '').replace(/[^0-9]/g, '') + '" class="text-green-400 hover:underline">WhatsApp</a> or <a href="mailto:' + siteConfig.supportEmail + '" class="text-cyan-400 hover:underline">Email</a>. We aim to resolve all issues within 12 hours.</p>' }
+buildPolicyPage('policies/refund-policy', 'Replacement Guarantee', 'Our Replacement Guarantee ensures that you receive the high-quality digital assets you expect. Learn about our 24-hour verification window.', [
+    { title: 'Our Quality Promise', body: '<p>We take pride in the quality of our verified assets. If an account fails to meet its functional description upon delivery, we provide a <strong class="text-gray-900">hassle-free replacement</strong> within 24 hours of your purchase.</p>' },
+    { title: 'Initiating a Request', body: '<ol class="list-decimal pl-5 space-y-2"><li>Contact our support desk within <strong class="text-gray-900">24 hours</strong> of receiving your digital delivery</li><li>Include your order reference and a brief description of the functional issue</li><li>Our team will verify the case and process a replacement asset immediately</li></ol>' },
+    { title: 'Guarantee Terms', body: '<ul class="list-disc pl-5 space-y-1"><li>Requests must be made within the 24-hour delivery window</li><li>Assets must remain in their delivered state (no password or recovery changes)</li><li>Supporting documentation or screenshots of the issue must be provided</li></ul>' },
+    { title: 'Exclusions', body: '<ul class="list-disc pl-5 space-y-1"><li>Suspensions resulting from user activity after a successful initial login</li><li>Requests submitted after the guarantee period has elapsed</li><li>Digital assets that have been fully utilized for their intended purpose</li></ul>' }
 ]);
 
-buildPolicyPage('policies/shipping-or-delivery-policy', 'Shipping and Delivery Policy', 'Read the BestPVAShop delivery policy. All digital products are delivered instantly via email after payment.', [
-    { title: 'Digital Delivery', body: '<p>All our products and services are <strong class="text-white">100% digital</strong>. There is no physical shipping involved. You will receive your account credentials, login details, or service confirmation directly via email after payment.</p>' },
-    { title: 'Delivery Timeframe', body: '<ul class="list-disc pl-5 space-y-1"><li><strong class="text-white">Instant Delivery:</strong> Most orders are delivered automatically within minutes of payment confirmation</li><li><strong class="text-white">Standard Delivery:</strong> Some specialized or bulk orders may take up to 24 hours</li><li><strong class="text-white">Custom Orders:</strong> Large or custom orders will have delivery timelines communicated individually</li></ul>' },
-    { title: 'Delivery Method', body: '<p>Order details are delivered to the email address provided during checkout. Please ensure your email address is correct and check your spam/junk folder if you do not receive your order within the expected timeframe.</p>' },
-    { title: 'Order Confirmation', body: '<p>You will receive an order confirmation immediately after payment. If you do not receive a confirmation, please contact our support team with your payment details for verification.</p>' },
-    { title: 'Delivery Issues', body: '<p>If you experience any issues with delivery, please contact our 24/7 support team immediately via <a href="https://wa.me/' + (siteConfig.whatsapp || '').replace(/[^0-9]/g, '') + '" class="text-green-400 hover:underline">WhatsApp</a>, <a href="https://t.me/' + (siteConfig.telegram || '').replace('@', '') + '" class="text-blue-400 hover:underline">Telegram</a>, or <a href="mailto:' + siteConfig.supportEmail + '" class="text-cyan-400 hover:underline">Email</a>.</p>' }
+buildPolicyPage('policies/shipping-or-delivery-policy', 'Delivery Framework', 'Our Delivery Framework ensures that your digital assets are handled with speed and precision. Experience seamless fulfillment today.', [
+    { title: 'Instant Asset Delivery', body: '<p>RealPVAShop operates a <strong class="text-gray-900">100% digital ecosystem</strong>. All credentials and access details are delivered electronically, eliminating the need for physical logistics. Your assets are sent directly to your registered email address.</p>' },
+    { title: 'Fulfillment Timelines', body: '<ul class="list-disc pl-5 space-y-1"><li><strong class="text-gray-900">Automated Delivery:</strong> Most standard orders are fulfilled within minutes of successful payment</li><li><strong class="text-gray-900">Curated Delivery:</strong> Specialized or aged assets may require up to 24 hours for final verification</li><li><strong class="text-gray-900">Custom Solutions:</strong> Timeline for enterprise or custom orders will be established during the consultation phase</li></ul>' },
+    { title: 'Receiving Your Order', body: '<p>Please ensure that the email address provided during checkout is accurate. We recommend monitoring your inbox and checking your junk folders for your delivery notification. If your order hasn\'t arrived within the expected window, our support desk is ready to assist.</p>' }
 ]);
 
 // --- 5. Generate Robots & Sitemap ---
@@ -1824,28 +1819,28 @@ let sitemapHtmlContent = `
     <div class="max-w-7xl mx-auto px-4 py-12">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <!-- Main Pages -->
-            <div class="bg-[#1E293B]/50 backdrop-blur-sm border border-white/5 rounded-2xl p-8 shadow-xl hover:border-cyan-500/30 transition-all group">
-                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+            <div class="bg-gray-100/50 backdrop-blur-sm border border-gray-200 rounded-2xl p-8 shadow-xl hover:border-cyan-500/30 transition-all group">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
                     <div class="p-2 bg-cyan-500/10 rounded-lg group-hover:bg-cyan-500/20 transition-colors">
                         <i data-lucide="home" class="w-6 h-6 text-cyan-400"></i>
                     </div>
                     Main Pages
                 </h2>
                 <div class="flex flex-col gap-4">
-                    <a href="/" class="text-slate-400 hover:text-white transition-colors flex items-center gap-2 group/link">
-                        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-600 group-hover/link:text-cyan-400 transition-colors"></i> 
+                    <a href="/" class="text-gray-500 hover:text-cyan-600 transition-colors flex items-center gap-2 group/link">
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-gray-300 group-hover/link:text-cyan-400 transition-colors"></i> 
                         <span class="font-medium">Home Page</span>
                     </a>
-                    <a href="/${paths.blog}/" class="text-slate-400 hover:text-white transition-colors flex items-center gap-2 group/link">
-                        <i data-lucide="chevron-right" class="w-4 h-4 text-slate-600 group-hover/link:text-cyan-400 transition-colors"></i> 
+                    <a href="/${paths.blog}/" class="text-gray-500 hover:text-cyan-600 transition-colors flex items-center gap-2 group/link">
+                        <i data-lucide="chevron-right" class="w-4 h-4 text-gray-300 group-hover/link:text-cyan-400 transition-colors"></i> 
                         <span class="font-medium">Our Blog</span>
                     </a>
                 </div>
             </div>
 
             <!-- Categories -->
-            <div class="bg-[#1E293B]/50 backdrop-blur-sm border border-white/5 rounded-2xl p-8 shadow-xl hover:border-cyan-500/30 transition-all group">
-                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+            <div class="bg-gray-100/50 backdrop-blur-sm border border-gray-200 rounded-2xl p-8 shadow-xl hover:border-cyan-500/30 transition-all group">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
                     <div class="p-2 bg-purple-500/10 rounded-lg group-hover:bg-purple-500/20 transition-colors">
                         <i data-lucide="layers" class="w-6 h-6 text-purple-400"></i>
                     </div>
@@ -1856,8 +1851,8 @@ let sitemapHtmlContent = `
                         if (!cat.slug) return '';
                         const slug = cat.slug;
                         return `
-                        <a href="/${paths.category}/${slug}/" class="text-slate-400 hover:text-white transition-colors flex items-center gap-2 group/link">
-                            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-600 group-hover/link:text-purple-400 transition-colors"></i> 
+                        <a href="/${paths.category}/${slug}/" class="text-gray-500 hover:text-cyan-600 transition-colors flex items-center gap-2 group/link">
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-gray-300 group-hover/link:text-purple-400 transition-colors"></i> 
                             <span class="font-medium">${cat.name}</span>
                         </a>`;
                     }).join('')}
@@ -1865,8 +1860,8 @@ let sitemapHtmlContent = `
             </div>
 
             <!-- Blog Posts -->
-            <div class="bg-[#1E293B]/50 backdrop-blur-sm border border-white/5 rounded-2xl p-8 shadow-xl hover:border-cyan-500/30 transition-all group">
-                <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+            <div class="bg-gray-100/50 backdrop-blur-sm border border-gray-200 rounded-2xl p-8 shadow-xl hover:border-cyan-500/30 transition-all group">
+                <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
                     <div class="p-2 bg-pink-500/10 rounded-lg group-hover:bg-pink-500/20 transition-colors">
                         <i data-lucide="book-open" class="w-6 h-6 text-pink-400"></i>
                     </div>
@@ -1874,8 +1869,8 @@ let sitemapHtmlContent = `
                 </h2>
                 <div class="flex flex-col gap-4 max-h-[400px] overflow-y-auto pr-2 scrollbar-hide">
                     ${blogs.map(post => `
-                        <a href="/${paths.blog}/${post.slug}/" class="text-slate-400 hover:text-white transition-colors flex items-center gap-2 group/link">
-                            <i data-lucide="chevron-right" class="w-4 h-4 text-slate-600 group-hover/link:text-pink-400 transition-colors"></i> 
+                        <a href="/${paths.blog}/${post.slug}/" class="text-gray-500 hover:text-cyan-600 transition-colors flex items-center gap-2 group/link">
+                            <i data-lucide="chevron-right" class="w-4 h-4 text-gray-300 group-hover/link:text-pink-400 transition-colors"></i> 
                             <span class="text-sm font-medium line-clamp-1">${post.title}</span>
                         </a>
                     `).join('')}
@@ -1891,8 +1886,8 @@ let sitemapHtmlContent = `
                 const color = `hsl(${hue}, 70%, 60%)`;
                 
                 return `
-                    <div class="bg-[#1E293B]/50 backdrop-blur-sm border border-white/5 rounded-2xl p-8 shadow-xl hover:border-cyan-500/30 transition-all group">
-                        <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <div class="bg-gray-100/50 backdrop-blur-sm border border-gray-200 rounded-2xl p-8 shadow-xl hover:border-cyan-500/30 transition-all group">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
                             <div class="p-2 rounded-lg group-hover:opacity-80 transition-opacity" style="background-color: ${color}20">
                                 <i data-lucide="shopping-cart" class="w-6 h-6" style="color: ${color}"></i>
                             </div>
@@ -1900,8 +1895,8 @@ let sitemapHtmlContent = `
                         </h2>
                         <div class="flex flex-col gap-4 max-h-[300px] overflow-y-auto pr-2 scrollbar-hide">
                               ${catProducts.map(p => `
-                                  <a href="/${paths.product}/${p.slug}/" class="text-slate-400 hover:text-white transition-colors flex items-center gap-2 group/link">
-                                      <i data-lucide="chevron-right" class="w-4 h-4 text-slate-600 transition-colors"></i>
+                                  <a href="/${paths.product}/${p.slug}/" class="text-gray-500 hover:text-cyan-600 transition-colors flex items-center gap-2 group/link">
+                                      <i data-lucide="chevron-right" class="w-4 h-4 text-gray-300 transition-colors"></i>
                                       <span class="text-sm font-medium line-clamp-1">${p.display_title || p.title}</span>
                                   </a>
                               `).join('')}
@@ -1922,7 +1917,7 @@ sitemapPageHtml = sitemapPageHtml.replace('{{PRODUCT_GRID}}', sitemapHtmlContent
 sitemapPageHtml = sitemapPageHtml.replace('{{LATEST_ARTICLES}}', ''); // Clear latest articles section
 sitemapPageHtml = sitemapPageHtml.replace('{{FOOTER}}', generateFooter(products, siteConfig));
 sitemapPageHtml = sitemapPageHtml.replace(/{{CRITICAL_CSS}}/g, sharedCssTags);
-sitemapPageHtml = sitemapPageHtml.replace(/Best PVA Shop – Buy Verified Accounts & Reviews Instantly/g, 'Sitemap | BestPVAShop');
+sitemapPageHtml = sitemapPageHtml.replace(/Real PVA Shop – Buy Verified Accounts & Reviews Instantly/g, 'Sitemap | RealPVAShop');
 
 // Important: Replace all global placeholders in sitemap page too
 sitemapPageHtml = replaceGlobalPlaceholders(sitemapPageHtml, siteConfig);
